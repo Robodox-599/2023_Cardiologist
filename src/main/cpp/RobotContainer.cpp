@@ -28,16 +28,12 @@ void RobotContainer::ConfigureBindings() {
                         frc::XboxController::Button::kY)
       .OnTrue(command_ZeroGyro(&m_Drive).ToPtr());
   
-  frc2::JoystickButton(&XboxDrive,
-                       frc::XboxController::Button::kX)
-      .OnTrue(command_ShiftThrottle(&m_Drive).ToPtr());
-  
-  frc2::JoystickButton(&XboxDrive, frc::XboxController::Button::kStart).OnTrue(command_DriveAuton(&m_Drive, "TestPath.wpilib.json", true).ToPtr());
+
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  // return autos::ExampleAuto(&m_subsystem);
-  return autos::TestAuto(&m_Drive, "TestPath.wpilib.json", true);
+  return autos::ExampleAuto(&m_subsystem);
+  // return autos::TestAuto(&m_Drive, "TestPath.wpilib.json", true);
 }
  

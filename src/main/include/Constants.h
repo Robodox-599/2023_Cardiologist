@@ -9,9 +9,11 @@
 #include <units/time.h>
 #include <units/acceleration.h>
 #include <units/angular_acceleration.h>
-
+#include <frc/controller/ProfiledPIDController.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/trajectory/TrapezoidProfile.h>
+#include <frc/controller/PIDController.h>
+
 
 
 
@@ -82,16 +84,6 @@ namespace SwerveConstants{
                                                m_BackRight};
 
 
-    const frc::Translation2d m_frontLeftLocation{+0.381_m, +0.381_m};
-    const frc::Translation2d m_frontRightLocation{+0.381_m, -0.381_m};
-    const frc::Translation2d m_backLeftLocation{-0.381_m, +0.381_m};
-    const frc::Translation2d m_backRightLocation{-0.381_m, -0.381_m};
-
-
-
-    const frc::SwerveDriveKinematics<4> m_kinematicsTwo{
-      m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
-      m_backRightLocation};
 
 
     constexpr double LinearThrottle = 1;
@@ -121,7 +113,7 @@ namespace SwerveConstants{
     
 
     /*Swerve Angle Motor PID gains*/
-    constexpr double AngleKP = 0.4;
+    constexpr double AngleKP = 0.2;
     constexpr double AngleKI = 0.0;
     constexpr double AngleKD = 0.004;
     constexpr double AngleKF = 0.0;
@@ -135,7 +127,7 @@ namespace SwerveConstants{
 
     
     /*Swerve Drive Motor PID gains*/
-    constexpr double DriveKP = 0.2;
+    constexpr double DriveKP = 0.1;
     constexpr double DriveKI = 0.0;
     constexpr double DriveKD = 0.002;
     constexpr double DriveKF = 0.0;
@@ -193,23 +185,31 @@ namespace BackRightModule{
 }
 
 namespace AutoConstants{
-    constexpr units::meters_per_second_t MaxSpeed{ 0 };
-    constexpr units::meters_per_second_squared_t MaxAccel{ 0 };
-    constexpr units::radians_per_second_t MaxAngularSpeed{ 0 };
-    constexpr units::radians_per_second_squared_t MaxAngularAccel{ 0 };
+    constexpr units::meters_per_second_t MaxSpeed{ 1 };
+    constexpr units::meters_per_second_squared_t MaxAccel{ 1 };
+    constexpr units::radians_per_second_t MaxAngularSpeed{ 1 };
+    constexpr units::radians_per_second_squared_t MaxAngularAccel{ 1 };
 
 
         /*Auto Swerve Drive Motor PID gains*/
-    constexpr double AutoDriveKP = 0.0;
-    constexpr double AutoDriveKI = 0.0;
-    constexpr double AutoDriveKD = 0.0;
-    constexpr double AutoDriveKF = 0.0;
+    constexpr double XDriveKP = 1.0;
+    constexpr double XDriveKD = 1.0;
+
+    const frc2::PIDController XPID{ frc2::PIDController{XDriveKP, 0, XDriveKD} };
+    
+
+    constexpr double YDriveKP = 1.0;
+    constexpr double YDriveKD = 1.0;
+    
+    const frc2::PIDController YPID{ frc2::PIDController{YDriveKP, 0, YDriveKD} };
+
 
         /* Auto Swerve Angle Motor PID gains*/
-    constexpr double AutoAngleKP = 0.0;
-    constexpr double AutoAngleKI = 0.0;
-    constexpr double AutoAngleKD = 0.0;
-    constexpr double AutoAngleKF = 0.0;
+    constexpr double AngleKP = 1.0;
+    constexpr double AngleKD = 1.0;
+
+
+
 
 
 }

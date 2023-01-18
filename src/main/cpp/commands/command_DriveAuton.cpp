@@ -8,16 +8,14 @@ command_DriveAuton::command_DriveAuton(subsystem_DriveTrain* DriveTrain, std::st
 m_DriveTrain{DriveTrain}, m_ToReset{ToReset} {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({m_DriveTrain});
-  fs::path deployDirectory = frc::filesystem::GetDeployDirectory();
-  deployDirectory = deployDirectory / "pathplanner" / TrajFilePath;
-  m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
+  // m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
+  m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );
 
-  
-  
-  
-  
+
+
+
+
 }
-
 
 
 // Called when the command is initially scheduled.
@@ -27,32 +25,27 @@ void command_DriveAuton::Initialize() {
   m_Timer.Start();
 
   if( m_ToReset ){
-    m_DriveTrain->ResetOdometry(m_Trajectory.InitialPose());
+    m_DriveTrain->ResetOdometry(m_Trajectory.getInitialPose());
   }
-  frc::ProfiledPIDController<units::radians> ThetaController{AutoConstants::AutoDriveKP, 
-                                              AutoConstants::AutoDriveKI, 
-                                              AutoConstants::AutoDriveKD, 
+
+    frc::ProfiledPIDController<units::angle::radian> ThetaPID{AutoConstants::AngleKP, 
+                                              0, 
+                                              AutoConstants::AngleKD, 
                                               frc::TrapezoidProfile<units::radians>::Constraints{AutoConstants::MaxAngularSpeed,
                                                                                                  AutoConstants::MaxAngularAccel}};
 
-  ThetaController.EnableContinuousInput(-units::radian_t{3.14}, units::radian_t{ 3.14} );
-
-  frc2::SwerveControllerCommand<4> swerveControllerCommand(m_Trajectory,
-                                                            [this]{return m_DriveTrain->GetPose();}, 
-                                                            SwerveConstants::m_kinematics,
-                                                            frc2::PIDController{10,10,10},
-                                                            frc2::PIDController{10,10,10},
-                                                            ThetaController,
-                                                            [this](auto moduleStates) { m_DriveTrain->SetModuleStates(moduleStates); },
-                                                            {m_DriveTrain});
-                                                            
-                                                            
-                                                            //.AndThen([]{ return m_DriveTrain->DriveTrain(0.0, 0.0, 0.0, false, false)});
-                                                            
-                                                            
-  
+    ThetaPID.EnableContinuousInput(-1 * units::angle::radian_t{3.14}, units::angle::radian_t{3.14});
 
 
+    
+    frc::HolonomicDriveController m_DriveController{AutoConstants::XPID, AutoConstants::YPID, ThetaPID};
+    pathplanner::PathPlannerTrajectory::PathPlannerState state = m_Trajectory.sample(m_Timer.Get()); 
+    auto chasisSpeeds = m_DriveController.Calculate(m_DriveTrain->GetPose(), 
+                                                    state.pose,
+                                                    state.velocity,
+                                                    state.holonomicRotation);
+    auto ModuleStates = SwerveConstants::m_kinematics.ToSwerveModuleStates(chasisSpeeds);
+    m_DriveTrain->SetModuleStates(ModuleStates);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -65,5 +58,5 @@ void command_DriveAuton::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool command_DriveAuton::IsFinished() {
-  return m_Timer.Get() >= (m_Trajectory.TotalTime() *1.2);
+  return m_Timer.Get() >= (m_Trajectory.getTotalTime());
 }

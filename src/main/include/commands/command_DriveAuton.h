@@ -52,10 +52,11 @@ class command_DriveAuton:
 
     private:
       subsystem_DriveTrain* m_DriveTrain;
-      frc::Trajectory m_Trajectory;
+      pathplanner::PathPlannerTrajectory m_Trajectory;
       bool m_ToReset;
       frc::Timer m_Timer{};
-   
+      
+
 
 
 };

@@ -13,7 +13,6 @@ frc2::CommandPtr autos::ExampleAuto(ExampleSubsystem* subsystem) {
                              ExampleCommand(subsystem).ToPtr());
 }
 
-
-frc2::CommandPtr autos::TestAuto(subsystem_DriveTrain* DriveTrain, std::string TrajFilePath, bool ToReset){
-  return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, TrajFilePath, ToReset).ToPtr());
+frc2::CommandPtr autos::TestAuto(subsystem_DriveTrain* DriveTrain){
+  return command_DriveAuton(DriveTrain, "TestPath", true).ToPtr();
 }
