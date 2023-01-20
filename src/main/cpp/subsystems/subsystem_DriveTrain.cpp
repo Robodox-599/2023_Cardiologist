@@ -52,18 +52,11 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
      m_BackLeftModule.SetDesiredState(BackLeft, IsOpenLoop);
     m_BackRightModule.SetDesiredState(BackRight, IsOpenLoop);
 
-    frc::SmartDashboard::SmartDashboard::PutNumber("Front Left Angle", FrontLeft.angle.Degrees().value() );
-    frc::SmartDashboard::SmartDashboard::PutNumber("Front Left Drive", FrontLeft.speed.value() );    
-
-    frc::SmartDashboard::SmartDashboard::PutNumber("Front Right Angle", FrontRight.angle.Degrees().value() );
-    frc::SmartDashboard::SmartDashboard::PutNumber("Front Right Drive", FrontRight.speed.value() );
-    
-    frc::SmartDashboard::SmartDashboard::PutNumber("Back Left Angle", BackLeft.angle.Degrees().value() );
-    frc::SmartDashboard::SmartDashboard::PutNumber("Back Left Drive", BackLeft.speed.value() );
-
-    frc::SmartDashboard::SmartDashboard::PutNumber("Back Right Angle", BackRight.angle.Degrees().value() );
-    frc::SmartDashboard::SmartDashboard::PutNumber("Back Right Drive", BackRight.speed.value() );
 }
+
+// void subsystem_DriveTrain::SetAngleToHoRotation(frc::Rotation2d ho){
+    
+// }
 
 void subsystem_DriveTrain::SetModuleStates(wpi::array<frc::SwerveModuleState, 4> desiredStates){
   SwerveConstants::m_kinematics.DesaturateWheelSpeeds(&desiredStates,
@@ -82,10 +75,7 @@ double subsystem_DriveTrain::SetThrottle(double input){
     //Written by Ayush; everyone point and laugh at 
     //"Sussy baka" - Ayush Singhal 2023
     double shiftedThrottle = input < 0.0 ? DegreeOfThrottle == 1 ? input : -1 * pow(input, DegreeOfThrottle) : pow(input, DegreeOfThrottle);
-    frc::SmartDashboard::SmartDashboard::PutNumber("TEST THROTTLE SHIFT", shiftedThrottle);
-    
-    frc::SmartDashboard::SmartDashboard::PutNumber("Input THROTTLE", input);
-    frc::SmartDashboard::SmartDashboard::PutNumber("Throttle Degree", DegreeOfThrottle);
+
 
     if(DegreeOfThrottle == 1){
         return input;
@@ -143,6 +133,10 @@ void subsystem_DriveTrain::ZeroGyro(){
 
 // This method will be called once per scheduler run
 void subsystem_DriveTrain::Periodic() {
+
+    frc::SmartDashboard::SmartDashboard::PutNumber("X Position", m_PoseEstimator.GetEstimatedPosition().X().value());
+    frc::SmartDashboard::SmartDashboard::PutNumber("Y Position", m_PoseEstimator.GetEstimatedPosition().Y().value());
+
 
 
 

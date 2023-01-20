@@ -33,7 +33,7 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return autos::ExampleAuto(&m_subsystem);
+  return autos::TestAuto(&m_Drive);
   // return autos::TestAuto(&m_Drive, "TestPath.wpilib.json", true);
 }
  

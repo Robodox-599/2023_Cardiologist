@@ -185,28 +185,28 @@ namespace BackRightModule{
 }
 
 namespace AutoConstants{
-    constexpr units::meters_per_second_t MaxSpeed{ 1 };
-    constexpr units::meters_per_second_squared_t MaxAccel{ 1 };
-    constexpr units::radians_per_second_t MaxAngularSpeed{ 1 };
-    constexpr units::radians_per_second_squared_t MaxAngularAccel{ 1 };
+    constexpr units::meters_per_second_t MaxSpeed{ 5 };
+    constexpr units::meters_per_second_squared_t MaxAccel{ 5 };
+    constexpr units::radians_per_second_t MaxAngularSpeed{ 5 };
+    constexpr units::radians_per_second_squared_t MaxAngularAccel{ 5 };
 
 
         /*Auto Swerve Drive Motor PID gains*/
-    constexpr double XDriveKP = 1.0;
-    constexpr double XDriveKD = 1.0;
+    constexpr double XDriveKP = 1.6;
+    constexpr double XDriveKD = 0.075;
 
     const frc2::PIDController XPID{ frc2::PIDController{XDriveKP, 0, XDriveKD} };
     
 
-    constexpr double YDriveKP = 1.0;
-    constexpr double YDriveKD = 1.0;
+    constexpr double YDriveKP = 1.6;
+    constexpr double YDriveKD = 0.075;
     
     const frc2::PIDController YPID{ frc2::PIDController{YDriveKP, 0, YDriveKD} };
 
 
         /* Auto Swerve Angle Motor PID gains*/
-    constexpr double AngleKP = 1.0;
-    constexpr double AngleKD = 1.0;
+    constexpr double AngleKP = 0.1;
+    constexpr double AngleKD = 0.0;
 
 
 

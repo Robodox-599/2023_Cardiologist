@@ -47,6 +47,8 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   void SetStationBalance();
   units::meters_per_second_t CalculatePitch();
   units::meters_per_second_t CalculateRoll();
+  // auto GetChassisSpeed(auto chassisSpeed);
+  // void SetAngleToHoloRotation(frc::Rotation2d holo);
 
 
   /**
@@ -75,7 +77,10 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   frc::SwerveDrivePoseEstimator<4> m_PoseEstimator;
   frc::PIDController m_PID;
 
+
+
   bool StartBalance;
+  // auto m_chassisSpeed;
 
   
 
