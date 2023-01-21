@@ -26,7 +26,7 @@ void command_DriveAuton::Initialize() {
   m_Timer.Start();
 
   if( m_ToReset ){
-    m_DriveTrain->ResetOdometry(m_Trajectory.getInitialPose());
+    m_DriveTrain->ResetOdometry(m_DriveTrain->GetYaw(), {m_Trajectory.getInitialState().pose.Translation(), m_Trajectory.getInitialState().holonomicRotation});
   }
 
 }
@@ -40,7 +40,7 @@ void command_DriveAuton::Execute() {
                                               frc::TrapezoidProfile<units::radians>::Constraints{AutoConstants::MaxAngularSpeed,
                                                                                                  AutoConstants::MaxAngularAccel}};
 
-    ThetaPID.EnableContinuousInput(-1 * units::angle::radian_t{3.14}, units::angle::radian_t{3.14});
+    ThetaPID.EnableContinuousInput(-1 * units::angle::radian_t{3.1415926535897}, units::angle::radian_t{3.1415926535897});
     frc::HolonomicDriveController m_DriveController{AutoConstants::XPID, AutoConstants::YPID, ThetaPID};
     
     pathplanner::PathPlannerTrajectory::PathPlannerState state = m_Trajectory.sample(m_Timer.Get()); 
@@ -58,10 +58,11 @@ void command_DriveAuton::Execute() {
     frc::SmartDashboard::SmartDashboard::PutNumber("Velocity_Y: ", chassisSpeeds.vy.value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Pose_x: ", m_DriveTrain->GetPose().X().value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Pose_Y: ", m_DriveTrain->GetPose().Y().value());
+    // frc::SmartDashboard::SmartDashboard::PutNumber("Angular Vel (Real): ", m_DriveTrain->);
     frc::SmartDashboard::SmartDashboard::PutNumber("Angular Vel: ", state.angularVelocity.value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Acceleration: ", state.acceleration.value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Holonomic Rotation: ", state.holonomicRotation.Degrees().value());
-    frc::SmartDashboard::SmartDashboard::PutNumber("(chassis angular velocity): ", chassisSpeeds.omega());
+    frc::SmartDashboard::SmartDashboard::PutNumber("chassis angular velocity: ", chassisSpeeds.omega());
 }
 
 // Called once the command ends or is interrupted.

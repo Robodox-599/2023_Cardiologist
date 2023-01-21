@@ -40,7 +40,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   void ChangeThrottle();
 
   void ZeroGyro();
-  void ResetOdometry(frc::Pose2d Pose);
+  void ResetOdometry(frc::Rotation2d Rotation, frc::Pose2d Pose);
   frc::Pose2d GetPose();
   frc::Rotation2d GetYaw();
 
@@ -49,6 +49,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   units::meters_per_second_t CalculateRoll();
   // auto GetChassisSpeed(auto chassisSpeed);
   // void SetAngleToHoloRotation(frc::Rotation2d holo);
+  units::radians_per_second_t GetAngularVelocity();
 
 
   /**

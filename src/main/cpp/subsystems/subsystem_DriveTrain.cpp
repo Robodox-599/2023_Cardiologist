@@ -65,6 +65,7 @@ void subsystem_DriveTrain::SetModuleStates(wpi::array<frc::SwerveModuleState, 4>
   m_FrontRightModule.SetDesiredState(desiredStates[1], false);
   m_BackLeftModule.SetDesiredState(desiredStates[2], false);
   m_BackRightModule.SetDesiredState(desiredStates[3], false);
+
 }
 
 void subsystem_DriveTrain::SwapOrientation(){
@@ -72,9 +73,7 @@ void subsystem_DriveTrain::SwapOrientation(){
 }
 
 double subsystem_DriveTrain::SetThrottle(double input){
-    //Written by Ayush; everyone point and laugh at 
-    //"Sussy baka" - Ayush Singhal 2023
-    double shiftedThrottle = input < 0.0 ? DegreeOfThrottle == 1 ? input : -1 * pow(input, DegreeOfThrottle) : pow(input, DegreeOfThrottle);
+    // double shiftedThrottle = input < 0.0 ? DegreeOfThrottle == 1 ? input : -1 * pow(input, DegreeOfThrottle) : pow(input, DegreeOfThrottle);
 
 
     if(DegreeOfThrottle == 1){
@@ -93,14 +92,16 @@ void subsystem_DriveTrain::ChangeThrottle(){
     }
 }
 
-void subsystem_DriveTrain::ResetOdometry(frc::Pose2d Pose){
-    m_PoseEstimator.ResetPosition(m_Gyro.GetRotation2d(),
+void subsystem_DriveTrain::ResetOdometry(frc::Rotation2d Rotation, frc::Pose2d Pose){
+    ZeroGyro();
+    m_PoseEstimator.ResetPosition(Rotation,
                             {m_FrontLeftModule.GetPosition(), 
                                 m_FrontRightModule.GetPosition(),
                                 m_BackLeftModule.GetPosition(),
                                 m_BackRightModule.GetPosition()},
                             Pose);
 }
+
 
 frc::Pose2d subsystem_DriveTrain::GetPose(){
     return m_PoseEstimator.GetEstimatedPosition();
@@ -129,6 +130,10 @@ void subsystem_DriveTrain::ZeroGyro(){
     m_Gyro.SetYaw(0);
 }
 
+units::radians_per_second_t subsystem_DriveTrain::GetAngularVelocity(){
+
+}
+
 
 
 // This method will be called once per scheduler run
@@ -136,9 +141,9 @@ void subsystem_DriveTrain::Periodic() {
 
     frc::SmartDashboard::SmartDashboard::PutNumber("X Position", m_PoseEstimator.GetEstimatedPosition().X().value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Y Position", m_PoseEstimator.GetEstimatedPosition().Y().value());
+    frc::SmartDashboard::SmartDashboard::PutNumber("Rotation", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value());
 
-
-
+    
 
     m_PoseEstimator.Update(m_Gyro.GetRotation2d(),
                       {m_FrontLeftModule.GetPosition(), 
