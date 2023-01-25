@@ -13,6 +13,7 @@
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/trajectory/TrapezoidProfile.h>
 #include <frc/controller/PIDController.h>
+#include <frc/trajectory/TrapezoidProfile.h>
 
 
 
@@ -73,10 +74,10 @@ namespace SwerveConstants{
     
     constexpr units::meter_t WheelCircumference{ 4.0_in * M_PI  };
 
-    const frc::Translation2d m_FrontLeft{14.0_in, -14.0_in};
-    const frc::Translation2d m_FrontRight{14.0_in, 14.0_in};
-    const frc::Translation2d m_BackLeft{-14.0_in, -14.0_in};
-    const frc::Translation2d m_BackRight{-14.0_in, 14.0_in};
+    const frc::Translation2d m_FrontLeft{14.0_in, 14.0_in};
+    const frc::Translation2d m_FrontRight{14.0_in, -14.0_in};
+    const frc::Translation2d m_BackLeft{-14.0_in, 14.0_in};
+    const frc::Translation2d m_BackRight{-14.0_in, -14.0_in};
 
     const frc::SwerveDriveKinematics<4> m_kinematics{m_FrontLeft,
                                                m_FrontRight,
@@ -135,7 +136,7 @@ namespace SwerveConstants{
     constexpr double DrivePeakCurrentDuration = 0.1;
 
     /*Motor Inverts Config*/
-    constexpr bool AngleMotorInvert = false;
+    constexpr bool AngleMotorInvert = true;
     constexpr bool DriveMotorInvert = false;
 
     /* Swerve Profiling values */
@@ -182,17 +183,25 @@ namespace AutoConstants{
     constexpr units::radians_per_second_squared_t MaxAngularAccel{ 30 };
 
     /*Auto Swerve Drive Motor PID gains*/
-    constexpr double XDriveKP = 1.6;
-    constexpr double XDriveKD = 0.075;
+    constexpr double XDriveKP = 1;
+    constexpr double XDriveKD = 0;
 
-    const frc2::PIDController XPID{ frc2::PIDController{XDriveKP, 0, XDriveKD} };
+    const frc2::PIDController XPID{ XDriveKP, 0, XDriveKD };
     
-    constexpr double YDriveKP = 1.6;
-    constexpr double YDriveKD = 0.075;
+    constexpr double YDriveKP = 1;
+    constexpr double YDriveKD = 0;
     
-    const frc2::PIDController YPID{ frc2::PIDController{YDriveKP, 0, YDriveKD} };
+    const frc2::PIDController YPID{ YDriveKP, 0, YDriveKD };
 
-    /* Auto Swerve Angle Motor PID gains*/
-    constexpr double AngleKP = 1.6;
+    /* Auto Swerve Angle Motor PID gains*/  
+    constexpr double AngleKP = 1;
     constexpr double AngleKD = 0.0;
+
+    const frc2::PIDController ZPID{ YDriveKP, 0, AngleKD };
+
+    const frc::ProfiledPIDController<units::angle::radian> ThetaPID{AngleKP, 
+                                              0, 
+                                              AngleKD, 
+                                              frc::TrapezoidProfile<units::radians>::Constraints{MaxAngularSpeed,
+                                                                                                 MaxAngularAccel}};
 }

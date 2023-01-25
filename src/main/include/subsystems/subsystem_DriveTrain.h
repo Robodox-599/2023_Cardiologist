@@ -30,14 +30,12 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
                    units::radians_per_second_t zRot,
                    bool FieldRelative, 
                    bool IsOpenLoop);
-  void SwerveDrive(frc::Translation2d Translation, 
-                  units::degrees_per_second_t Rotation,
-                  bool FieldRelative, 
-                  bool IsOpenLoop  );
+
   void SetModuleStates(wpi::array<frc::SwerveModuleState, 4> desiredStates);
   void SwapOrientation();
   double SetThrottle(double input);
   void ChangeThrottle();
+  void ResetModulesToAbsolute();
 
   void ZeroGyro();
   void ResetOdometry(frc::Rotation2d Rotation, frc::Pose2d Pose);
@@ -49,7 +47,6 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   units::meters_per_second_t CalculateRoll();
   // auto GetChassisSpeed(auto chassisSpeed);
   // void SetAngleToHoloRotation(frc::Rotation2d holo);
-  units::radians_per_second_t GetAngularVelocity();
 
 
   /**

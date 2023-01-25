@@ -22,12 +22,16 @@ subsystem_DriveTrain::subsystem_DriveTrain():
       frc::Pose2d{}}, 
     m_PID{SwerveConstants::BalancekP, SwerveConstants::BalancekI, SwerveConstants::BalancekD}
 {
+    
+
     m_Gyro.ConfigFactoryDefault();
     ZeroGyro();
     m_PID.SetSetpoint(0.0);
     m_PID.SetTolerance(5.0);
     DegreeOfThrottle = 1;
     StartBalance = false;
+
+
 }
 
 void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
@@ -54,9 +58,12 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
 
 }
 
-// void subsystem_DriveTrain::SetAngleToHoRotation(frc::Rotation2d ho){
-    
-// }
+    void subsystem_DriveTrain::ResetModulesToAbsolute(){
+        m_FrontLeftModule.ResetToAbsolute();
+        m_FrontRightModule.ResetToAbsolute();
+        m_BackLeftModule.ResetToAbsolute();
+        m_BackRightModule.ResetToAbsolute();
+    }
 
 void subsystem_DriveTrain::SetModuleStates(wpi::array<frc::SwerveModuleState, 4> desiredStates){
   SwerveConstants::m_kinematics.DesaturateWheelSpeeds(&desiredStates,
@@ -130,9 +137,6 @@ void subsystem_DriveTrain::ZeroGyro(){
     m_Gyro.SetYaw(0);
 }
 
-units::radians_per_second_t subsystem_DriveTrain::GetAngularVelocity(){
-
-}
 
 
 

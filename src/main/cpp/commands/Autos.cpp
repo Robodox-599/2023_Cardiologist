@@ -15,5 +15,5 @@ frc2::CommandPtr autos::ExampleAuto(ExampleSubsystem* subsystem) {
 }
 
 frc2::CommandPtr autos::TestAuto(subsystem_DriveTrain* DriveTrain){
-  return command_DriveAuton(DriveTrain, "LinePath", true).ToPtr();
+  return command_DriveAuton(DriveTrain, "SineRotPath", true).ToPtr();
 }
