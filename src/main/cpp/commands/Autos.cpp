@@ -3,11 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 
-#include "commands/Autos.h"
 
 #include <frc2/command/Commands.h>
 
 #include "commands/ExampleCommand.h"
+#include "commands/Autos.h"
 
 frc2::CommandPtr autos::ExampleAuto(ExampleSubsystem* subsystem) {
   return frc2::cmd::Sequence(subsystem->ExampleMethodCommand(),
