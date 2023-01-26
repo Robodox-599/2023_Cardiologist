@@ -20,6 +20,7 @@ class SwerveModule {
         void SetDegrees(units::degree_t Degrees);
         void SwapOrientation();   
         frc::SwerveModulePosition GetPosition();
+        void ResetToAbsolute();
 
         units::meter_t FalconToMeters(double Counts);    
         units::degree_t FalconToDegrees(double Counts);
@@ -33,7 +34,6 @@ class SwerveModule {
         
 
     private:
-        void resetToAbsolute();
         
         units::degree_t m_LastAngle;
         ctre::phoenix::motorcontrol::can::WPI_TalonFX m_DriveMotor;

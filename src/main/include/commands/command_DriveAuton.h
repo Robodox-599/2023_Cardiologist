@@ -7,7 +7,6 @@
 
 
 #include <frc2/command/CommandBase.h>
-#include <frc/geometry/Rotation2d.h>
 #include <frc2/command/CommandHelper.h>
 #include <frc/controller/HolonomicDriveController.h>
 #include <frc2/command/SwerveControllerCommand.h>
@@ -29,14 +28,21 @@
 #include <units/angular_velocity.h>
 #include <units/velocity.h>
 #include "subsystems/subsystem_DriveTrain.h"
-// #include <pathplanner/lib/PathPlanner.h>
+#include <pathplanner/lib/PathPlanner.h>
+#include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
 #include <frc/Timer.h>
-#include "Constants.h"
+/**
+ * An example command.
+ *
+ * <p>Note that this extends CommandHelper, rather extending CommandBase
+ * directly; this is crucially important, or else the decorator functions in
+ * Command will *not* work!
+ */
 
 class command_DriveAuton: 
   public frc2::CommandHelper<frc2::CommandBase, command_DriveAuton> {
     public:
-      command_DriveAuton(subsystem_DriveTrain* DriveTrain, bool ToReset);
+      command_DriveAuton(subsystem_DriveTrain* DriveTrain, std::string TrajFilePath, bool ToReset);
 
       void Initialize() override;
 
@@ -48,8 +54,13 @@ class command_DriveAuton:
 
     private:
       subsystem_DriveTrain* m_DriveTrain;
+      pathplanner::PathPlannerTrajectory m_Trajectory;
       bool m_ToReset;
-   
+      // pathplanner::PPHolonomicDriveController m_DriveController;
+      frc::HolonomicDriveController m_DriveController;
+      frc::Timer m_Timer{};
+      
+
 
 
 };

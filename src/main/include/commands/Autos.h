@@ -6,22 +6,20 @@
 
 #include <frc2/command/CommandPtr.h>
 
-#include "subsystems/subsystem_DriveTrain.h"
-#include "commands/command_DriveAuton.h"
 
-#include <frc/trajectory/Trajectory.h>
-#include <frc/trajectory/TrajectoryConfig.h>
-#include <frc/trajectory/TrajectoryUtil.h>
-#include <frc/trajectory/TrajectoryGenerator.h>
-#include <frc/Filesystem.h>
-#include <wpi/fs.h>
 
+#include "command_DriveAuton.h"
 #include "subsystems/ExampleSubsystem.h"
 
 namespace autos {
 /**
  * Example static factory for an autonomous command.
  */
-    frc2::CommandPtr ExampleAuto(ExampleSubsystem* subsystem);
-    frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, bool ToReset);
+frc2::CommandPtr ExampleAuto(ExampleSubsystem* subsystem);
+
+frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain);
+
+
 }  // namespace autos
+
+

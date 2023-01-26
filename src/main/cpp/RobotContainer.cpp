@@ -10,9 +10,9 @@
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
   m_Drive.SetDefaultCommand( command_DriveTeleop(&m_Drive,
-                                                       [this]{return XboxDrive.GetRawAxis(ControllerConstants::xboxLYAxis);},
-                                                       [this]{return XboxDrive.GetRawAxis(ControllerConstants::xboxLXAxis);},
-                                                       [this]{return XboxDrive.GetRawAxis(ControllerConstants::xboxRXAxis);},
+                                                       [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLYAxis);},
+                                                       [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLXAxis);},
+                                                       [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxRXAxis);},
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
   // Configure the button bindings
@@ -28,16 +28,12 @@ void RobotContainer::ConfigureBindings() {
                         frc::XboxController::Button::kY)
       .OnTrue(command_ZeroGyro(&m_Drive).ToPtr());
   
-  frc2::JoystickButton(&XboxDrive,
-                       frc::XboxController::Button::kX)
-      .OnTrue(command_ShiftThrottle(&m_Drive).ToPtr());
-  
-  frc2::JoystickButton(&XboxDrive, frc::XboxController::Button::kA).OnTrue(command_DriveAuton(&m_Drive, false).ToPtr());
+
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  // return autos::ExampleAuto(&m_subsystem);
-  return autos::TestAuto(&m_Drive, false);
+  return autos::TestAuto(&m_Drive);
+  // return autos::TestAuto(&m_Drive, "TestPath.wpilib.json", true);
 }
  

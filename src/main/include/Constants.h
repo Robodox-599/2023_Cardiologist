@@ -9,9 +9,12 @@
 #include <units/time.h>
 #include <units/acceleration.h>
 #include <units/angular_acceleration.h>
-
+#include <frc/controller/ProfiledPIDController.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/trajectory/TrapezoidProfile.h>
+#include <frc/controller/PIDController.h>
+#include <frc/trajectory/TrapezoidProfile.h>
+
 
 
 
@@ -59,7 +62,7 @@ namespace SwerveConstants{
     constexpr int BalancekD = 0;
 
     constexpr int CANCoderID = 12; 
-    constexpr bool InvertGyro = true;
+    constexpr bool InvertGyro = false;
 
     /*Drivetrain constants*/
     constexpr double OpenLoopRamp = 0.25;
@@ -71,10 +74,10 @@ namespace SwerveConstants{
     
     constexpr units::meter_t WheelCircumference{ 4.0_in * M_PI  };
 
-    const frc::Translation2d m_FrontLeft{14.0_in, -14.0_in};
-    const frc::Translation2d m_FrontRight{14.0_in, 14.0_in};
-    const frc::Translation2d m_BackLeft{-14.0_in, -14.0_in};
-    const frc::Translation2d m_BackRight{-14.0_in, 14.0_in};
+    const frc::Translation2d m_FrontLeft{14.0_in, 14.0_in};
+    const frc::Translation2d m_FrontRight{14.0_in, -14.0_in};
+    const frc::Translation2d m_BackLeft{-14.0_in, 14.0_in};
+    const frc::Translation2d m_BackRight{-14.0_in, -14.0_in};
 
     const frc::SwerveDriveKinematics<4> m_kinematics{m_FrontLeft,
                                                m_FrontRight,
@@ -82,16 +85,6 @@ namespace SwerveConstants{
                                                m_BackRight};
 
 
-    const frc::Translation2d m_frontLeftLocation{+0.381_m, +0.381_m};
-    const frc::Translation2d m_frontRightLocation{+0.381_m, -0.381_m};
-    const frc::Translation2d m_backLeftLocation{-0.381_m, +0.381_m};
-    const frc::Translation2d m_backRightLocation{-0.381_m, -0.381_m};
-
-
-
-    const frc::SwerveDriveKinematics<4> m_kinematicsTwo{
-      m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
-      m_backRightLocation};
 
 
     constexpr double LinearThrottle = 1;
@@ -118,8 +111,6 @@ namespace SwerveConstants{
     /*Angle Encoder Invert*/
     constexpr bool CanCoderInvert = false;
 
-    
-
     /*Swerve Angle Motor PID gains*/
     constexpr double AngleKP = 0.2;
     constexpr double AngleKI = 0.0;
@@ -131,8 +122,6 @@ namespace SwerveConstants{
     constexpr int AngleContinuousCurrentLimit = 20;
     constexpr int AnglePeakCurrentLimit = 40;
     constexpr double AnglePeakCurrentDuration = 0.1;
-
-
     
     /*Swerve Drive Motor PID gains*/
     constexpr double DriveKP = 0.1;
@@ -146,26 +135,22 @@ namespace SwerveConstants{
     constexpr int DrivePeakCurrentLimit = 40;
     constexpr double DrivePeakCurrentDuration = 0.1;
 
-
     /*Motor Inverts Config*/
-    constexpr bool AngleMotorInvert = false;
+    constexpr bool AngleMotorInvert = true;
     constexpr bool DriveMotorInvert = false;
-
 
     /* Swerve Profiling values */
     constexpr units::meters_per_second_t MaxSpeed{3};
     constexpr units::degrees_per_second_t MaxAngularVelocity{360};
-
     constexpr bool IsFieldRelative = true;
     constexpr bool IsOpenLoop = false;  
 }
-
 
 namespace FrontLeftModule{
     constexpr int DriveMotorID = 0;
     constexpr int AngleMotorID = 1;
     constexpr int CanCoderID = 2;
-    constexpr double AngleOffset = 6.4;
+    constexpr double AngleOffset = 353.232;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset };
 }
 
@@ -173,43 +158,50 @@ namespace FrontRightModule{
     constexpr int DriveMotorID = 3;
     constexpr int AngleMotorID = 4;
     constexpr int CanCoderID = 5;
-    constexpr double AngleOffset = 38.6 ;
-
+    constexpr double AngleOffset = 321.064;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackLeftModule{
     constexpr int DriveMotorID = 6;
     constexpr int AngleMotorID = 7;
     constexpr int CanCoderID = 8;
-    constexpr auto AngleOffset = 93.6;
+    constexpr auto AngleOffset = 266.045;
     constexpr double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackRightModule{
     constexpr int DriveMotorID = 9;
     constexpr int AngleMotorID = 10;
     constexpr int CanCoderID = 11;
-    constexpr double AngleOffset = -70.2;
+    constexpr double AngleOffset = 70.664;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 
 namespace AutoConstants{
-    constexpr units::meters_per_second_t MaxSpeed{ 0 };
-    constexpr units::meters_per_second_squared_t MaxAccel{ 0 };
-    constexpr units::radians_per_second_t MaxAngularSpeed{ 0 };
-    constexpr units::radians_per_second_squared_t MaxAngularAccel{ 0 };
+    constexpr units::meters_per_second_t MaxSpeed{ 1 };
+    constexpr units::meters_per_second_squared_t MaxAccel{ 1 };
+    constexpr units::radians_per_second_t MaxAngularSpeed{ 30 };
+    constexpr units::radians_per_second_squared_t MaxAngularAccel{ 30 };
 
+    /*Auto Swerve Drive Motor PID gains*/
+    constexpr double XDriveKP = 1;
+    constexpr double XDriveKD = 0;
 
-        /*Auto Swerve Drive Motor PID gains*/
-    constexpr double AutoDriveKP = 0.0;
-    constexpr double AutoDriveKI = 0.0;
-    constexpr double AutoDriveKD = 0.0;
-    constexpr double AutoDriveKF = 0.0;
+    const frc2::PIDController XPID{ XDriveKP, 0, XDriveKD };
+    
+    constexpr double YDriveKP = 1;
+    constexpr double YDriveKD = 0;
+    
+    const frc2::PIDController YPID{ YDriveKP, 0, YDriveKD };
 
-        /* Auto Swerve Angle Motor PID gains*/
-    constexpr double AutoAngleKP = 0.0;
-    constexpr double AutoAngleKI = 0.0;
-    constexpr double AutoAngleKD = 0.0;
-    constexpr double AutoAngleKF = 0.0;
+    /* Auto Swerve Angle Motor PID gains*/  
+    constexpr double AngleKP = 1;
+    constexpr double AngleKD = 0.0;
 
+    const frc2::PIDController ZPID{ YDriveKP, 0, AngleKD };
 
+    const frc::ProfiledPIDController<units::angle::radian> ThetaPID{AngleKP, 
+                                              0, 
+                                              AngleKD, 
+                                              frc::TrapezoidProfile<units::radians>::Constraints{MaxAngularSpeed,
+                                                                                                 MaxAngularAccel}};
 }
