@@ -14,6 +14,7 @@ RobotContainer::RobotContainer() : m_IntakeRun(&m_Intake, [=]{return 0.0;}) {
   m_Intake.SetDefaultCommand(command_IntakeRun(&m_Intake, [this] {return xbox.GetRawAxis(ControllerConstants::XboxLTAxis) - xbox.GetRawAxis(ControllerConstants::XboxRTAxis);}));
   // Configure the button bindings
   ConfigureBindings();
+  
 }
 
 void RobotContainer::ConfigureBindings() {
