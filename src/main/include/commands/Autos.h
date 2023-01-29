@@ -17,7 +17,7 @@ namespace autos {
  */
 frc2::CommandPtr ExampleAuto(ExampleSubsystem* subsystem);
 
-frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain);
+frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, frc::DriverStation::Alliance AllianceColor);
 
 
 }  // namespace autos

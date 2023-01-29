@@ -32,7 +32,6 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
                    bool IsOpenLoop);
 
   void SetModuleStates(wpi::array<frc::SwerveModuleState, 4> desiredStates);
-  void SwapOrientation();
   double SetThrottle(double input);
   void ChangeThrottle();
   void ResetModulesToAbsolute();

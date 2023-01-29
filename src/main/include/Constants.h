@@ -18,7 +18,6 @@
 
 
 
-
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants.  This should not be used for any other
@@ -55,6 +54,7 @@ namespace ControllerConstants{
     constexpr int xboxRightDPad = 11;
 }
 
+
 namespace SwerveConstants{
 
     constexpr int BalancekP = 0;
@@ -62,11 +62,11 @@ namespace SwerveConstants{
     constexpr int BalancekD = 0;
 
     constexpr int CANCoderID = 12; 
-    constexpr bool InvertGyro = true;
+    constexpr bool InvertGyro = false;
 
     /*Drivetrain constants*/
     constexpr double OpenLoopRamp = 0.25;
-    constexpr double closedLoopRamp = 0.2;
+    constexpr double closedLoopRamp = 0.4;
 
     constexpr double DriveGearRatio = 6.75;
     constexpr double AngleGearRatio = 150.0 / 7.0;
@@ -150,7 +150,7 @@ namespace FrontLeftModule{
     constexpr int DriveMotorID = 0;
     constexpr int AngleMotorID = 1;
     constexpr int CanCoderID = 2;
-    constexpr double AngleOffset = 6.4;
+    constexpr double AngleOffset = 352.705;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset };
 }
 
@@ -158,21 +158,21 @@ namespace FrontRightModule{
     constexpr int DriveMotorID = 3;
     constexpr int AngleMotorID = 4;
     constexpr int CanCoderID = 5;
-    constexpr double AngleOffset = 38.6 ;
+    constexpr double AngleOffset = 320.977;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackLeftModule{
     constexpr int DriveMotorID = 6;
     constexpr int AngleMotorID = 7;
     constexpr int CanCoderID = 8;
-    constexpr auto AngleOffset = 93.6;
+    constexpr auto AngleOffset = 265.69;
     constexpr double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackRightModule{
     constexpr int DriveMotorID = 9;
     constexpr int AngleMotorID = 10;
     constexpr int CanCoderID = 11;
-    constexpr double AngleOffset = -70.2;
+    constexpr double AngleOffset = 71.016;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 

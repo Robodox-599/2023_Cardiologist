@@ -8,22 +8,16 @@ SwerveModule::SwerveModule(const double Module[] ):
                                                  m_AngleOffset{ Module[3] },
                                                  m_Feedforward{SwerveConstants::DriveKS, SwerveConstants::DriveKV, SwerveConstants::DriveKA}
 {
-    frc::Wait(1_s);
     //Config Angle Encoder
     m_AngleEncoder.ConfigFactoryDefault();
     m_AngleEncoder.ConfigAllSettings(m_Settings.SwerveCanCoderConfig);
-    m_AngleEncoder.ConfigMagnetOffset(m_AngleOffset.value());
+    
     //Config Angle Motor
     m_AngleMotor.ConfigFactoryDefault();
     m_AngleMotor.ConfigAllSettings(m_Settings.SwerveAngleFXConfig);
     m_AngleMotor.SetInverted(SwerveConstants::AngleMotorInvert);
     m_AngleMotor.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
-    m_AngleMotor.SetSelectedSensorPosition((DegreesToFalcon(0_deg - GetCANCoder().Degrees()) ));
-
-
-
-
-
+    m_AngleMotor.SetSelectedSensorPosition(( DegreesToFalcon(GetCANCoder().Degrees() - m_AngleOffset) ));
 
     //Config Drive Motor
     m_DriveMotor.ConfigFactoryDefault();
@@ -50,9 +44,7 @@ void SwerveModule::SetDegrees(units::degree_t Degrees){
 double SwerveModule::getTurnCounts(){
     return m_AngleMotor.GetSelectedSensorPosition();
 }
-void SwerveModule::SwapOrientation(){
-    m_DriveMotor.SetInverted(!m_DriveMotor.GetInverted());
-}
+
 
 void SwerveModule::SetDesiredState(frc::SwerveModuleState& DesiredState, bool IsOpenLoop){
     DesiredState = Optimize(DesiredState, GetState().angle);
@@ -102,7 +94,7 @@ frc::SwerveModuleState SwerveModule::Optimize(frc::SwerveModuleState DesiredStat
 }
 
 void SwerveModule::ResetToAbsolute(){
-    m_AngleMotor.SetSelectedSensorPosition((DegreesToFalcon(0_deg - GetCANCoder().Degrees()) ));
+    m_AngleMotor.SetSelectedSensorPosition(( DegreesToFalcon(GetCANCoder().Degrees() - m_AngleOffset) ));
 }
 
 frc::Rotation2d SwerveModule::GetCANCoder(){

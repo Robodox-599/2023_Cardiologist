@@ -22,14 +22,11 @@ subsystem_DriveTrain::subsystem_DriveTrain():
       frc::Pose2d{}}, 
     m_PID{SwerveConstants::BalancekP, SwerveConstants::BalancekI, SwerveConstants::BalancekD}
 {
-    
-
+    frc::Wait(1_s);
+    ResetModulesToAbsolute();
     m_Gyro.ConfigFactoryDefault();
     ZeroGyro();
-    m_PID.SetSetpoint(0.0);
-    m_PID.SetTolerance(5.0);
     DegreeOfThrottle = 1;
-    StartBalance = false;
 
 
 }
@@ -39,6 +36,7 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
                                         units::radians_per_second_t zRot,
                                         bool FieldRelative, 
                                         bool IsOpenLoop){
+
     if(StartBalance){
         // xSpeed += CalculateRoll();
         // ySpeed += CalculatePitch();
@@ -58,12 +56,7 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
 
 }
 
-    void subsystem_DriveTrain::ResetModulesToAbsolute(){
-        m_FrontLeftModule.ResetToAbsolute();
-        m_FrontRightModule.ResetToAbsolute();
-        m_BackLeftModule.ResetToAbsolute();
-        m_BackRightModule.ResetToAbsolute();
-    }
+
 
 void subsystem_DriveTrain::SetModuleStates(wpi::array<frc::SwerveModuleState, 4> desiredStates){
   SwerveConstants::m_kinematics.DesaturateWheelSpeeds(&desiredStates,
@@ -75,19 +68,26 @@ void subsystem_DriveTrain::SetModuleStates(wpi::array<frc::SwerveModuleState, 4>
 
 }
 
-void subsystem_DriveTrain::SwapOrientation(){
-    m_FrontLeftModule.SwapOrientation();
-}
+
 
 double subsystem_DriveTrain::SetThrottle(double input){
     // double shiftedThrottle = input < 0.0 ? DegreeOfThrottle == 1 ? input : -1 * pow(input, DegreeOfThrottle) : pow(input, DegreeOfThrottle);
 
-
-    if(DegreeOfThrottle == 1){
+    // if(DegreeOfThrottle == 1){
+    //     return input;
+    // } else {
+    //     return input < 0.0 ? -1 * pow(input, DegreeOfThrottle) : pow(input, DegreeOfThrottle);
+    // }
+    frc::SmartDashboard::SmartDashboard::PutNumber("DegreeOfThrottle",DegreeOfThrottle);
+    if(DegreeOfThrottle != 2){
         return input;
     } else {
-        return input < 0.0 ? -1 * pow(input, DegreeOfThrottle) : pow(input, DegreeOfThrottle);
-    }    
+        if(input < 0.0){
+            return -1 * pow(input, DegreeOfThrottle);
+        } else {
+            return pow(input, DegreeOfThrottle);
+        }
+    }
     
     }
 
@@ -134,7 +134,16 @@ void subsystem_DriveTrain::SetStationBalance(){
 }
 
 void subsystem_DriveTrain::ZeroGyro(){
+    
     m_Gyro.SetYaw(0);
+
+}
+
+void subsystem_DriveTrain::ResetModulesToAbsolute(){
+    m_FrontLeftModule.ResetToAbsolute();
+    m_FrontRightModule.ResetToAbsolute();
+    m_BackLeftModule.ResetToAbsolute();
+    m_BackRightModule.ResetToAbsolute();
 }
 
 

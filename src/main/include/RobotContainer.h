@@ -41,9 +41,8 @@ class RobotContainer {
   ExampleSubsystem m_subsystem;
   subsystem_DriveTrain m_Drive;
 
-  frc::XboxController XboxDrive{ControllerConstants::XboxDriveID};
-  frc::Joystick XboxDriveBtns{ControllerConstants::XboxDriveID};
-  frc::Joystick XboxYaperator{ControllerConstants::XboxYaperatorID};
+  frc::XboxController XboxDrive{0};
+
 
   void ConfigureBindings();
 };

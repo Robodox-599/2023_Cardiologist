@@ -26,14 +26,19 @@ void command_DriveTeleop::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void command_DriveTeleop::Execute() {
 
-  m_DriveTrain -> SwerveDrive( m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_xSpeed(), 0.1))* SwerveConstants::MaxSpeed,
+  m_DriveTrain -> SwerveDrive( m_DriveTrain-> SetThrottle( frc::ApplyDeadband(m_xSpeed(), 0.1) )* SwerveConstants::MaxSpeed,
                                 m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_ySpeed(), 0.1)) * SwerveConstants::MaxSpeed,
                                 m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_zRotation(), 0.1)) * SwerveConstants::MaxAngularVelocity,
                                 m_FieldRelative(),
                                 m_OpenLoop());
 
+
+  frc::SmartDashboard::SmartDashboard::PutNumber("YInputBefore",  frc::ApplyDeadband(m_ySpeed(), 0.1) );
+  frc::SmartDashboard::SmartDashboard::PutNumber("YInput", m_DriveTrain->SetThrottle(frc::ApplyDeadband(m_ySpeed(), 0.1)) );
+
   
   
+
 }
 
 // Called once the command ends or is interrupted.

@@ -5,13 +5,14 @@
 #include "commands/command_DriveAuton.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 
-command_DriveAuton::command_DriveAuton(subsystem_DriveTrain* DriveTrain, std::string TrajFilePath, bool ToReset):
+command_DriveAuton::command_DriveAuton(subsystem_DriveTrain* DriveTrain, std::string TrajFilePath, frc::DriverStation::Alliance AllianceColor, bool ToReset):
 m_DriveTrain{DriveTrain}, m_ToReset{ToReset}, m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ThetaPID} {
   // pathplanner::PPHolonomicDriveController m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ZPID};
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({m_DriveTrain});
   // m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
   m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );  
+  pathplanner::PathPlannerTrajectory::transformTrajectoryForAlliance(m_Trajectory, AllianceColor);
   }
 
 

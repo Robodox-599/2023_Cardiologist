@@ -42,7 +42,7 @@
 class command_DriveAuton: 
   public frc2::CommandHelper<frc2::CommandBase, command_DriveAuton> {
     public:
-      command_DriveAuton(subsystem_DriveTrain* DriveTrain, std::string TrajFilePath, bool ToReset);
+      command_DriveAuton(subsystem_DriveTrain* DriveTrain, std::string TrajFilePath, frc::DriverStation::Alliance AllianceColor, bool ToReset);
 
       void Initialize() override;
 
@@ -56,7 +56,6 @@ class command_DriveAuton:
       subsystem_DriveTrain* m_DriveTrain;
       pathplanner::PathPlannerTrajectory m_Trajectory;
       bool m_ToReset;
-      // pathplanner::PPHolonomicDriveController m_DriveController;
       frc::HolonomicDriveController m_DriveController;
       frc::Timer m_Timer{};
       
