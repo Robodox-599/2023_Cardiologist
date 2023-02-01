@@ -5,7 +5,7 @@
 #pragma once
 
 #include <frc2/command/CommandPtr.h>
-
+#include "command_DriveAuton.h"
 #include "subsystems/ExampleSubsystem.h"
 
 namespace autos {
@@ -13,4 +13,11 @@ namespace autos {
  * Example static factory for an autonomous command.
  */
 frc2::CommandPtr ExampleAuto(ExampleSubsystem* subsystem);
+
+
+frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, frc::DriverStation::Alliance AllianceColor);
+
+
 }  // namespace autos
+
+
