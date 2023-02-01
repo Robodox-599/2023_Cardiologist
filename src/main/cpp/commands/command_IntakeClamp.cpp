@@ -17,7 +17,7 @@ void command_IntakeClamp::Initialize() {
     m_Intake->IntakeClose();
     printf("Intake close");
     finish = true;
-  } else if (!m_Intake->IsIntakeOpen()) {
+  } else {
     m_Intake->IntakeOpen();
     printf("Intake open");
     finish = true;

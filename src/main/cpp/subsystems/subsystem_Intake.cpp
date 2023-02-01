@@ -6,20 +6,21 @@
 
 subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMotorID, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
                                        m_LeftSolenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonLA, IntakeConstants::IntakePistonLB},
-                                       m_RightSolenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonRA, IntakeConstants::IntakePistonRB} {
+                                       m_RightSolenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonRA, IntakeConstants::IntakePistonRB},
+                                       m_ColorSensor{frc::I2C::Port::kOnboard} {
 
 }
 
 void subsystem_Intake::IntakeClose() {
     m_LeftSolenoid.Set(frc::DoubleSolenoid::kReverse);
     m_RightSolenoid.Set(frc::DoubleSolenoid::kReverse);
-    m_IsClamped = false;
+    m_IsClamped = true;
 }
 
 void subsystem_Intake::IntakeOpen() {
     m_LeftSolenoid.Set(frc::DoubleSolenoid::kForward);
     m_RightSolenoid.Set(frc::DoubleSolenoid::kForward);
-    m_IsClamped = true;
+    m_IsClamped = false;
 }
 
 void subsystem_Intake::SetIntakeWheelsOn(double outputPower) {

@@ -8,6 +8,9 @@
 #include "Constants.h"
 #include "rev/CANSparkMax.h"
 #include "frc/DoubleSolenoid.h"
+#include "rev/ColorSensorV3.h"
+#include "rev/ColorMatch.h"
+
 
 class subsystem_Intake : public frc2::SubsystemBase {
  public:
@@ -23,6 +26,8 @@ class subsystem_Intake : public frc2::SubsystemBase {
    */
   void Periodic() override;
 
+  frc::Color detectedColor = m_ColorSensor.GetColor();
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
@@ -31,4 +36,10 @@ class subsystem_Intake : public frc2::SubsystemBase {
   frc::DoubleSolenoid m_RightSolenoid;
 
   bool m_IsClamped = true;
+
+  rev::ColorSensorV3 m_ColorSensor;
+  rev::ColorMatch m_ColorMatcher;
+
+  
+
 };

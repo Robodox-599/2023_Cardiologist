@@ -4,6 +4,8 @@
 
 #pragma once
 
+//#include ""
+
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants.  This should not be used for any other
@@ -34,3 +36,6 @@ namespace ControllerConstants {
     constexpr int XboxLTAxis = 2;
     constexpr int XboxRTAxis = 3;
 }
+
+//namespace ColorConstants {
+  //  constexpr 
