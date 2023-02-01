@@ -13,6 +13,6 @@ frc2::CommandPtr autos::ExampleAuto(ExampleSubsystem* subsystem) {
                              ExampleCommand(subsystem).ToPtr());
 }
 
-frc2::CommandPtr autos::TestAuto(subsystem_DriveTrain* DriveTrain, frc::DriverStation::Alliance AllianceColor){
-  return command_DriveAuton(DriveTrain, "LPath", AllianceColor, true).ToPtr();
+frc2::CommandPtr autos::TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, frc::DriverStation::Alliance AllianceColor){
+  return command_DriveAuton(DriveTrain, PoseTracker, "LinePath", AllianceColor, true).ToPtr();
 }

@@ -139,6 +139,10 @@ void subsystem_DriveTrain::ZeroGyro(){
 
 }
 
+void subsystem_DriveTrain::ImplementVisionPose(std::pair<frc::Pose2d, units::millisecond_t> pair){
+        m_PoseEstimator.AddVisionMeasurement(pair.first, pair.second);
+}
+
 void subsystem_DriveTrain::ResetModulesToAbsolute(){
     m_FrontLeftModule.ResetToAbsolute();
     m_FrontRightModule.ResetToAbsolute();
@@ -146,6 +150,7 @@ void subsystem_DriveTrain::ResetModulesToAbsolute(){
     m_BackRightModule.ResetToAbsolute();
 }
 
+// void subsystem_DriveTrain::
 
 
 
@@ -154,9 +159,31 @@ void subsystem_DriveTrain::Periodic() {
 
     frc::SmartDashboard::SmartDashboard::PutNumber("X Position", m_PoseEstimator.GetEstimatedPosition().X().value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Y Position", m_PoseEstimator.GetEstimatedPosition().Y().value());
-    frc::SmartDashboard::SmartDashboard::PutNumber("Rotation", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value());
+    frc::SmartDashboard::SmartDashboard::PutNumber("Rotation", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value()); 
 
+    double velFL = m_FrontLeftModule.GetState().speed.value();
+    double velFR = m_FrontRightModule.GetState().speed.value();
+    double velBL = m_BackLeftModule.GetState().speed.value();
+    double velBR = m_BackRightModule.GetState().speed.value();
+    double average = velFL + velFR + velBL + velBR;
     
+    frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarFL", fabs(average - velFL)/average);
+    frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarFR", fabs(average - velFR)/average);
+    frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarBL", fabs(average - velBL)/average);
+    frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarBR", fabs(average - velBR)/average);   
+
+
+    frc::SmartDashboard::SmartDashboard::PutNumber("FrontLeftSpeed", velFL);   
+    frc::SmartDashboard::SmartDashboard::PutNumber("FrontRightSpeed", velFR);   
+    frc::SmartDashboard::SmartDashboard::PutNumber("BackLeftSpeed", velBL);   
+    frc::SmartDashboard::SmartDashboard::PutNumber("BackRightSpeed", velBR);
+
+    // frc::SmartDashboard::SmartDashboard::PutNumber("FL - FR", velFL - velFR);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("FL - BL", velFL - velBL);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("FL - BR", velFL - velBR);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("FR - BL", velFR - velBL);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("FR - BR", velFR - velBR);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("BL - BR", velBL - velBR);   
 
     m_PoseEstimator.Update(m_Gyro.GetRotation2d(),
                       {m_FrontLeftModule.GetPosition(), 

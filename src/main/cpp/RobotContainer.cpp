@@ -10,7 +10,7 @@
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
   m_PoseTracker.SetDefaultCommand(command_VisionPose(&m_PoseTracker));
-  m_Drive.SetDefaultCommand( command_DriveTeleop(&m_Drive,
+  m_Drive.SetDefaultCommand( command_DriveTeleop(&m_Drive, &m_PoseTracker,
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLYAxis);},
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLXAxis);},
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxRXAxis);},
@@ -35,7 +35,6 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return autos::TestAuto(&m_Drive, frc::DriverStation::Alliance::kBlue);
+  return autos::TestAuto(&m_Drive, &m_PoseTracker, frc::DriverStation::Alliance::kBlue);
   // return autos::TestAuto(&m_Drive, "TestPath.wpilib.json", true);
 }
- 

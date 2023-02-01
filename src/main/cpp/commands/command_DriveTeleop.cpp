@@ -4,12 +4,12 @@
 
 #include "commands/command_DriveTeleop.h"
 #include "frc/smartdashboard/SmartDashboard.h"
- command_DriveTeleop::command_DriveTeleop(subsystem_DriveTrain* DriveTrain,
+ command_DriveTeleop::command_DriveTeleop(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker,
                                                       std::function<double()> xSpeed,
                                                       std::function<double()> ySpeed,
                                                       std::function<double()> zRotation,
                                                       std::function<bool()> FieldRelative,
-                                                      std::function<bool()> OpenLoop): m_DriveTrain{DriveTrain},
+                                                      std::function<bool()> OpenLoop): m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker},
                                                                                           m_xSpeed{xSpeed},
                                                                                           m_ySpeed{ySpeed},
                                                                                           m_zRotation{zRotation},
@@ -25,7 +25,11 @@ void command_DriveTeleop::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void command_DriveTeleop::Execute() {
-
+frc::SmartDashboard::SmartDashboard::PutBoolean("HasTarget", m_PoseTracker ->hasTarget());
+  if(m_PoseTracker->hasTarget()){
+    m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());
+  }
+  
   m_DriveTrain -> SwerveDrive( m_DriveTrain-> SetThrottle( frc::ApplyDeadband(m_xSpeed(), 0.1) )* SwerveConstants::MaxSpeed,
                                 m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_ySpeed(), 0.1)) * SwerveConstants::MaxSpeed,
                                 m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_zRotation(), 0.1)) * SwerveConstants::MaxAngularVelocity,

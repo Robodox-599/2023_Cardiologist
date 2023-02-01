@@ -28,6 +28,7 @@
 #include <units/angular_velocity.h>
 #include <units/velocity.h>
 #include "subsystems/subsystem_DriveTrain.h"
+#include "subsystems/subsystem_PoseTracker.h"
 #include <pathplanner/lib/PathPlanner.h>
 #include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
 #include <frc/Timer.h>
@@ -42,7 +43,7 @@
 class command_DriveAuton: 
   public frc2::CommandHelper<frc2::CommandBase, command_DriveAuton> {
     public:
-      command_DriveAuton(subsystem_DriveTrain* DriveTrain, std::string TrajFilePath, frc::DriverStation::Alliance AllianceColor, bool ToReset);
+      command_DriveAuton(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::string TrajFilePath, frc::DriverStation::Alliance AllianceColor, bool ToReset);
 
       void Initialize() override;
 
@@ -54,10 +55,12 @@ class command_DriveAuton:
 
     private:
       subsystem_DriveTrain* m_DriveTrain;
+      subsystem_PoseTracker* m_PoseTracker;
       pathplanner::PathPlannerTrajectory m_Trajectory;
       bool m_ToReset;
       frc::HolonomicDriveController m_DriveController;
       frc::Timer m_Timer{};
+
       
 
 

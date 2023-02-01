@@ -9,8 +9,12 @@
 
 #include "subsystems/subsystem_DriveTrain.h"
 #include "subsystems/subsystem_PoseTracker.h"
-#include "Constants.h"
-#include "units/length.h"
+
+#include <frc/controller/PIDController.h>
+#include <units/length.h>
+#include <units/angle.h>
+
+
 /**
  * An example command.
  *
@@ -18,15 +22,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class command_DriveTeleop
-    : public frc2::CommandHelper<frc2::CommandBase, command_DriveTeleop> {
+class command_AlignToDesired
+    : public frc2::CommandHelper<frc2::CommandBase, command_AlignToDesired> {
  public:
-  command_DriveTeleop(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker,
-                            std::function<double()> xSpeed,
-                            std::function<double()> ySpeed,
-                            std::function<double()> zRotation,
-                            std::function<bool()> FieldRelative,
-                            std::function<bool()> OpenLoop);
+  command_AlignToDesired(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::function<double()> XDesired, std::function<double()> YDesired, std::function<double()> ThetaDesired);
 
   void Initialize() override;
 
@@ -39,9 +38,12 @@ class command_DriveTeleop
   private:
   subsystem_DriveTrain* m_DriveTrain;
   subsystem_PoseTracker* m_PoseTracker;
-  std::function<double()> m_xSpeed;
-  std::function<double()> m_ySpeed;
-  std::function<double()> m_zRotation;
-  std::function<bool()> m_FieldRelative;
-  std::function<bool()> m_OpenLoop;
+  std::function<double()>  m_X;
+  std::function<double()>  m_Y;
+  std::function<double()>  m_Theta;
+
+  
+  frc::PIDController XPID {0.01, 0, 0};
+  frc::PIDController YPID {0.01, 0, 0};
+  frc::PIDController ThetaPID {0.01, 0, 0};
 };

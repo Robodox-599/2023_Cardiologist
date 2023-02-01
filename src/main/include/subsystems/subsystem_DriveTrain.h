@@ -38,6 +38,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
 
   void ZeroGyro();
   void ResetOdometry(frc::Rotation2d Rotation, frc::Pose2d Pose);
+  void ImplementVisionPose(std::pair<frc::Pose2d, units::millisecond_t> pair);
   frc::Pose2d GetPose();
   frc::Rotation2d GetYaw();
 

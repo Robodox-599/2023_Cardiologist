@@ -20,23 +20,24 @@ int subsystem_PoseTracker::getID()
   return targetID;
 }
 
-std::pair<frc::Pose2d, units::millisecond_t> subsystem_PoseTracker::getEstimatedGlobalPose(
-    frc::Pose3d prevEstimatedRobotPose)
-{
-  estimator.Update();
-  estimator.SetReferencePose(prevEstimatedRobotPose);
-  units::millisecond_t currentTime = frc::Timer::GetFPGATimestamp();
-  auto result = estimator.Update();
+bool subsystem_PoseTracker::hasTarget(){
+  frc::SmartDashboard::SmartDashboard::PutNumber("Size", (int)tags.size());
+  // result = camera.GetLatestResult();
+  return result.HasTargets() && target.GetPoseAmbiguity() <= 0.2 && targetID >= 0 /* && targetID < (int)tags.size()*/;
+}
 
-  if (result.second)
-  {
-    return std::make_pair<>(result.first.ToPose2d(),
-                            currentTime - result.second);
-  }
-  else
-  {
-    return std::make_pair(frc::Pose2d(), 0_ms);
-  }
+std::pair<frc::Pose2d, units::millisecond_t> subsystem_PoseTracker::getEstimatedGlobalPose()
+{
+  result = camera.GetLatestResult();
+  units::second_t timeStamp{result.GetTimestamp()};
+  target = result.GetBestTarget();
+  targetID = target.GetFiducialId();   
+  auto targetPose = aprilTags.get()->GetTagPose(targetID);
+  frc::Transform3d camToTarget = target.GetBestCameraToTarget();
+  frc::Pose3d camPose = targetPose.value().TransformBy(camToTarget.Inverse()); 
+  frc::Pose3d visionMeasurement = camPose.TransformBy(robotToCam.Inverse());
+  return std::make_pair<>(visionMeasurement.ToPose2d(), timeStamp);
+  // return std::make_pair(frc::Pose2d(), 0_ms);
 }
 // This method will be called once per scheduler run
 void subsystem_PoseTracker::Periodic()
@@ -50,10 +51,13 @@ void subsystem_PoseTracker::Periodic()
   pitch = target.GetPitch();
   area = target.GetArea();
   targetID = target.GetFiducialId();
+  poseAmbiguity = target.GetPoseAmbiguity();
   
   auto targetPose = aprilTags.get()->GetTagPose(targetID);
   
   frc::Transform3d camToTarget = target.GetBestCameraToTarget();
+
+
   if(targetPose.has_value()){
     frc::Pose3d camPose = targetPose.value().TransformBy(camToTarget.Inverse()); 
     frc::Pose3d visionMeasurement = camPose.TransformBy(robotToCam.Inverse());
@@ -64,6 +68,8 @@ void subsystem_PoseTracker::Periodic()
   frc::SmartDashboard::SmartDashboard::PutNumber("Pitch", pitch);
   frc::SmartDashboard::SmartDashboard::PutNumber("Area", area);
   frc::SmartDashboard::SmartDashboard::PutBoolean("Targets", hasTargets);
+  frc::SmartDashboard::SmartDashboard::PutNumber("Ambiguity", poseAmbiguity);
+  
   } 
   
   

@@ -150,7 +150,7 @@ namespace FrontLeftModule{
     constexpr int DriveMotorID = 0;
     constexpr int AngleMotorID = 1;
     constexpr int CanCoderID = 2;
-    constexpr double AngleOffset = 352.705;
+    constexpr double AngleOffset = 353.232;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset };
 }
 
@@ -158,21 +158,21 @@ namespace FrontRightModule{
     constexpr int DriveMotorID = 3;
     constexpr int AngleMotorID = 4;
     constexpr int CanCoderID = 5;
-    constexpr double AngleOffset = 320.977;
+    constexpr double AngleOffset = 321.064;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackLeftModule{
     constexpr int DriveMotorID = 6;
     constexpr int AngleMotorID = 7;
     constexpr int CanCoderID = 8;
-    constexpr auto AngleOffset = 265.69;
+    constexpr auto AngleOffset = 266.045;
     constexpr double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackRightModule{
     constexpr int DriveMotorID = 9;
     constexpr int AngleMotorID = 10;
     constexpr int CanCoderID = 11;
-    constexpr double AngleOffset = 71.016;
+    constexpr double AngleOffset = 70.664;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 
