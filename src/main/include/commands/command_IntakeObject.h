@@ -7,6 +7,8 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
+#include "subsystems/subsystem_Intake.h"
+
 /**
  * An example command.
  *
@@ -14,10 +16,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class cGroup_OuttakeCube
-    : public frc2::CommandHelper<frc2::CommandBase, cGroup_OuttakeCube> {
+class command_IntakeObject
+    : public frc2::CommandHelper<frc2::CommandBase, command_IntakeObject> {
  public:
-  cGroup_OuttakeCube();
+  command_IntakeObject(subsystem_Intake* intake);
 
   void Initialize() override;
 
@@ -26,4 +28,9 @@ class cGroup_OuttakeCube
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
+  private:
+    subsystem_Intake* m_Intake;
+    bool finish = false;
+
 };

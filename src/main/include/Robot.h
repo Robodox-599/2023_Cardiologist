@@ -11,6 +11,10 @@
 
 #include "RobotContainer.h"
 
+#include <rev/ColorSensorV3.h>
+#include <rev/ColorMatch.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+
 class Robot : public frc::TimedRobot {
  public:
   void RobotInit() override;
@@ -31,4 +35,5 @@ class Robot : public frc::TimedRobot {
   std::optional<frc2::CommandPtr> m_autonomousCommand;
 
   RobotContainer m_container;
+
 };

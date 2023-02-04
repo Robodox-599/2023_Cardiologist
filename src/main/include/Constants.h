@@ -3,8 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #pragma once
-
-//#include ""
+#include <frc/util/Color.h>
 
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
@@ -37,5 +36,9 @@ namespace ControllerConstants {
     constexpr int XboxRTAxis = 3;
 }
 
-//namespace ColorConstants {
-  //  constexpr 
+namespace ColorConstants {
+    constexpr frc::Color PurpleTarget = frc::Color(0.180, 0.339, 0.479);
+    constexpr frc::Color YellowTarget = frc::Color(0.361, 0.524, 0.113);
+
+    constexpr uint32_t ProximityTarget = 0;
+}

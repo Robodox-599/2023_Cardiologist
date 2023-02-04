@@ -14,10 +14,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class cGroup_OuttakeCone
-    : public frc2::CommandHelper<frc2::CommandBase, cGroup_OuttakeCone> {
+class cGroup_Outtake
+    : public frc2::CommandHelper<frc2::CommandBase, cGroup_Outtake> {
  public:
-  cGroup_OuttakeCone();
+  cGroup_Outtake();
 
   void Initialize() override;
 
