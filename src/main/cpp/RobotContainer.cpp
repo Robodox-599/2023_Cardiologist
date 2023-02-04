@@ -8,19 +8,23 @@
 #include "commands/Autos.h"
 #include "commands/ExampleCommand.h"
 
-RobotContainer::RobotContainer() : m_IntakeRun(&m_Intake, [=]{return 0.0;}) , m_IntakeClamp(&m_Intake)
-{
+RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
-  m_Intake.SetDefaultCommand(command_IntakeRun(&m_Intake, [this] {return xbox.GetRawAxis(ControllerConstants::XboxLTAxis) - xbox.GetRawAxis(ControllerConstants::XboxRTAxis);}));
   // Configure the button bindings
   ConfigureBindings();
 }
 
 void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
-  frc2::JoystickButton(&xbox, 
-                       frc::XboxController::Button::kA)
+  frc2::JoystickButton(&xbox,
+                       frc::XboxController::Button::kY)
                        .OnTrue(command_IntakeClamp(&m_Intake).ToPtr());
+  frc2::JoystickButton(&xbox,
+                       frc::XboxController::Button::kA)
+                       .OnTrue(command_IntakeObject(&m_Intake).ToPtr());
+  frc2::JoystickButton(&xbox,
+                       frc::XboxController::Button::kB)
+                       .OnTrue(command_OuttakeObject(&m_Intake).ToPtr());
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

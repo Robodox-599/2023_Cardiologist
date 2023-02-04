@@ -31,5 +31,4 @@ class command_IntakeClamp
 
   private:
     subsystem_Intake* m_Intake;
-    bool finish = false;
 };

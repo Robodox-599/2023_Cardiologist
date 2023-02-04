@@ -12,6 +12,8 @@ command_IntakeObject::command_IntakeObject(subsystem_Intake* intake) : m_Intake{
 // Called when the command is initially scheduled.
 void command_IntakeObject::Initialize() {
   m_Intake->IntakeOpen();
+  m_Intake->SetIntakeWheelsOn(true);
+  printf("(command_IntakeObject) Setting intake wheels on");
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -20,9 +22,10 @@ void command_IntakeObject::Execute() {}
 // Called once the command ends or is interrupted.
 void command_IntakeObject::End(bool interrupted) {
   m_Intake->IntakeClose();
+  m_Intake->SetIntakeWheelsOff();
 }
 
 // Returns true when the command should end.
 bool command_IntakeObject::IsFinished() {
-  return finish;
+  return ((m_Intake->GetCurrentProximity() >= ColorConstants::ProximityTarget) && (m_Intake->GetCurrentState() != "Empty"));
 }

@@ -23,11 +23,11 @@ constexpr int kDriverControllerPort = 0;
 
 namespace IntakeConstants {
     constexpr int IntakeMotorID = 4;
+    constexpr double OutputPower = -0.4;
+    constexpr units::second_t TimerConstant {0.2};
     
-    constexpr int IntakePistonLA = 1;
-    constexpr int IntakePistonLB = 0;
-    constexpr int IntakePistonRA = 2;
-    constexpr int IntakePistonRB = 3;
+    constexpr int IntakePistonA = 5;
+    constexpr int IntakePistonB = 4;
 }
 
 namespace ControllerConstants {
@@ -40,5 +40,5 @@ namespace ColorConstants {
     constexpr frc::Color PurpleTarget = frc::Color(0.180, 0.339, 0.479);
     constexpr frc::Color YellowTarget = frc::Color(0.361, 0.524, 0.113);
 
-    constexpr uint32_t ProximityTarget = 0;
+    constexpr uint32_t ProximityTarget = 100;
 }

@@ -11,16 +11,13 @@ command_IntakeClamp::command_IntakeClamp(subsystem_Intake* intake) : m_Intake{in
 
 // Called when the command is initially scheduled.
 void command_IntakeClamp::Initialize() {
-  finish = false;
-  printf("Clamp command started");
+  printf("(command_IntakeClamp) Clamp command started");
   if(m_Intake->IsIntakeOpen()) {
     m_Intake->IntakeClose();
-    printf("Intake close");
-    finish = true;
+    printf("(command_IntakeClamp) Intake close");
   } else {
     m_Intake->IntakeOpen();
-    printf("Intake open");
-    finish = true;
+    printf("(command_IntakeClamp) Intake open");
   }
 }
 
@@ -32,5 +29,5 @@ void command_IntakeClamp::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool command_IntakeClamp::IsFinished() {
-  return finish;
+  return true;
 }

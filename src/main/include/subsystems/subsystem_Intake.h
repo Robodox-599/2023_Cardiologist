@@ -19,10 +19,12 @@ class subsystem_Intake : public frc2::SubsystemBase {
   
   void IntakeClose();
   void IntakeOpen();
-  void SetIntakeWheelsOn(double speed);
+  void SetIntakeWheelsOn(bool IsForward);
+  void SetIntakeWheelsOff();
   bool IsIntakeOpen();
+  void OuttakeCube();
 
-  frc::Color GetCurrentColor();
+  std::string GetCurrentState();
   uint32_t GetCurrentProximity();
 
   /**
@@ -36,9 +38,8 @@ class subsystem_Intake : public frc2::SubsystemBase {
   
   // Wheels for intaking objects
   rev::CANSparkMax m_IntakeMotor;
-  frc::DoubleSolenoid m_LeftSolenoid;
   // Pistons for clamping
-  frc::DoubleSolenoid m_RightSolenoid;
+  frc::DoubleSolenoid m_Solenoid;
 
   bool m_IsOpen = true;
 

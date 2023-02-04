@@ -9,6 +9,8 @@
 
 #include "subsystems/subsystem_Intake.h"
 
+#include <frc/Timer.h>
+
 /**
  * An example command.
  *
@@ -16,10 +18,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class command_IntakeRun
-    : public frc2::CommandHelper<frc2::CommandBase, command_IntakeRun> {
+class command_OuttakeObject
+    : public frc2::CommandHelper<frc2::CommandBase, command_OuttakeObject> {
  public:
-  command_IntakeRun(subsystem_Intake* intake, std::function<double()> outputPower);
+  command_OuttakeObject(subsystem_Intake* intake);
 
   void Initialize() override;
 
@@ -31,5 +33,5 @@ class command_IntakeRun
 
   private:
     subsystem_Intake* m_Intake;
-    std::function<double()> m_OutputPower;
+    frc::Timer m_Timer;
 };

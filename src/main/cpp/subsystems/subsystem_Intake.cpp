@@ -5,8 +5,7 @@
 #include "subsystems/subsystem_Intake.h"
 
 subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMotorID, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
-                                       m_LeftSolenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonLA, IntakeConstants::IntakePistonLB},
-                                       m_RightSolenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonRA, IntakeConstants::IntakePistonRB},
+                                       m_Solenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonA, IntakeConstants::IntakePistonB},
                                        m_ColorSensor{frc::I2C::Port::kOnboard},
                                        m_ColorMatcher{} {
     m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
@@ -14,27 +13,38 @@ subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMoto
 }
 
 void subsystem_Intake::IntakeClose() {
-    m_LeftSolenoid.Set(frc::DoubleSolenoid::kReverse);
-    m_RightSolenoid.Set(frc::DoubleSolenoid::kReverse);
+    m_Solenoid.Set(frc::DoubleSolenoid::kReverse);
     m_IsOpen = false;
 }
 
 void subsystem_Intake::IntakeOpen() {
-    m_LeftSolenoid.Set(frc::DoubleSolenoid::kForward);
-    m_RightSolenoid.Set(frc::DoubleSolenoid::kForward);
+    m_Solenoid.Set(frc::DoubleSolenoid::kForward);
     m_IsOpen = true;
 }
 
-void subsystem_Intake::SetIntakeWheelsOn(double outputPower) {
-    m_IntakeMotor.Set(outputPower);
+void subsystem_Intake::SetIntakeWheelsOn(bool IsForward) {
+    if(IsForward) {
+        m_IntakeMotor.Set(IntakeConstants::OutputPower);
+    } else {
+        m_IntakeMotor.Set(-IntakeConstants::OutputPower);
+    }
+}
+
+void subsystem_Intake::SetIntakeWheelsOff() {
+    m_IntakeMotor.Set(0.0);
 }
 
 bool subsystem_Intake::IsIntakeOpen() {
     return m_IsOpen;
 }
 
-frc::Color subsystem_Intake::GetCurrentColor() {
-    return m_CurrentColor;
+void subsystem_Intake::OuttakeCube() {
+    SetIntakeWheelsOn(false);
+    IntakeOpen();
+}
+
+std::string subsystem_Intake::GetCurrentState() {
+    return m_CurrentState;
 }
 
 uint32_t subsystem_Intake::GetCurrentProximity() {
@@ -57,7 +67,7 @@ void subsystem_Intake::Periodic() {
     // Checking Instantaneous State (sets instant state to whatever it detects at the moment)
     std::string InstStateStr;
 
-    if(m_CurrentProximity >= 200) {
+    if(m_CurrentProximity >= ColorConstants::ProximityTarget) {
         if(MatchedColor == ColorConstants::PurpleTarget) {
             InstStateStr = "Purple";
         } else if(MatchedColor == ColorConstants::YellowTarget) {
@@ -72,7 +82,7 @@ void subsystem_Intake::Periodic() {
         m_ColorChangeCount = 0;
     }
     
-    if(m_ColorChangeCount >= 5) {
+    if(m_ColorChangeCount >= 3) {
         m_CurrentState = InstStateStr;
     }
 

@@ -11,8 +11,10 @@
 #include "subsystems/ExampleSubsystem.h"
 
 #include "subsystems/subsystem_Intake.h"
+
+#include "commands/command_OuttakeObject.h"
 #include "commands/command_IntakeClamp.h"
-#include "commands/command_IntakeRun.h"
+#include "commands/command_IntakeObject.h"
 
 #include "frc2/command/button/JoystickButton.h"
 #include "frc/XboxController.h"
@@ -42,8 +44,6 @@ class RobotContainer {
   void ConfigureBindings();
 
   subsystem_Intake m_Intake;
-  command_IntakeClamp m_IntakeClamp;
-  command_IntakeRun m_IntakeRun;
 
   frc::XboxController xbox{ControllerConstants::XboxPort};
 };
