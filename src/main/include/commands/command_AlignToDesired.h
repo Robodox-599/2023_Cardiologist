@@ -43,7 +43,7 @@ class command_AlignToDesired
   std::function<double()>  m_Theta;
 
   
-  frc::PIDController XPID {0.01, 0, 0};
-  frc::PIDController YPID {0.01, 0, 0};
-  frc::PIDController ThetaPID {0.01, 0, 0};
+  frc::PIDController XPID {0.5, 0, 0};
+  frc::PIDController YPID {0.5, 0, 0};
+  frc::PIDController ThetaPID {0.5, 0, 0};
 };

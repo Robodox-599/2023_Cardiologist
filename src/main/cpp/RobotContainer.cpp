@@ -9,7 +9,8 @@
 
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
-  m_PoseTracker.SetDefaultCommand(command_VisionPose(&m_PoseTracker));
+  //std::function<double()> XDesired, std::function<double()> YDesired, std::function<double()> ThetaDesired
+  // m_PoseTracker.SetDefaultCommand(command_AlignToDesired(&m_Drive, &m_PoseTracker, [this]{return 1;}, [this]{return 1;}, [this]{return 0;}));
   m_Drive.SetDefaultCommand( command_DriveTeleop(&m_Drive, &m_PoseTracker,
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLYAxis);},
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLXAxis);},
@@ -29,6 +30,12 @@ void RobotContainer::ConfigureBindings() {
                         frc::XboxController::Button::kY)
       .OnTrue(command_ZeroGyro(&m_Drive).ToPtr());
 
+  frc2::JoystickButton(&XboxDrive, 
+                        frc::XboxController::Button::kA)
+      .WhileTrue(command_AlignToDesired(&m_Drive, &m_PoseTracker,
+                                      [this]{return 2.0;},
+                                      [this]{return 0.0;},
+                                      [this]{return 180.0;}).ToPtr());
 
 
 }

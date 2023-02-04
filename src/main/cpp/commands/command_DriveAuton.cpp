@@ -12,7 +12,7 @@ m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_ToReset{ToReset}, m_Driv
   AddRequirements({m_DriveTrain});
   // m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
   m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );  
-  pathplanner::PathPlannerTrajectory::transformTrajectoryForAlliance(m_Trajectory, AllianceColor);
+  pathplanner::PathPlannerTrajectory::transformTrajectoryForAlliance(m_Trajectory, m_PoseTracker->GetAlliance());
   }
 
 
@@ -29,7 +29,7 @@ void command_DriveAuton::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void command_DriveAuton::Execute() {
-  if(m_PoseTracker->hasTarget()){
+  if(m_PoseTracker->HasAcceptableTargets()){
     m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());    
   }
   pathplanner::PathPlannerTrajectory::PathPlannerState state = m_Trajectory.sample(m_Timer.Get()); 
@@ -42,15 +42,7 @@ void command_DriveAuton::Execute() {
   SwerveConstants::m_kinematics.DesaturateWheelSpeeds(&ModuleStates, AutoConstants::MaxSpeed);
   m_DriveTrain->SetModuleStates(ModuleStates);
   
-  frc::SmartDashboard::SmartDashboard::PutNumber("Velocity_X: ", chassisSpeeds.vx.value());
-  frc::SmartDashboard::SmartDashboard::PutNumber("Velocity_Y: ", chassisSpeeds.vy.value());
-  frc::SmartDashboard::SmartDashboard::PutNumber("Pose_x: ", m_DriveTrain->GetPose().X().value());
-  frc::SmartDashboard::SmartDashboard::PutNumber("Pose_Y: ", m_DriveTrain->GetPose().Y().value());
-  // frc::SmartDashboard::SmartDashboard::PutNumber("Angular Vel (Real): ", m_DriveTrain->);
-  frc::SmartDashboard::SmartDashboard::PutNumber("Angular Vel: ", state.angularVelocity.value());
-  frc::SmartDashboard::SmartDashboard::PutNumber("Acceleration: ", state.acceleration.value());
-  frc::SmartDashboard::SmartDashboard::PutNumber("Holonomic Rotation: ", state.holonomicRotation.Degrees().value());
-  frc::SmartDashboard::SmartDashboard::PutNumber("chassis angular velocity: ", chassisSpeeds.omega());
+
 }
 
 // Called once the command ends or is interrupted.

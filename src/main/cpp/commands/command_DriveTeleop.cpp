@@ -25,8 +25,7 @@ void command_DriveTeleop::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void command_DriveTeleop::Execute() {
-frc::SmartDashboard::SmartDashboard::PutBoolean("HasTarget", m_PoseTracker ->hasTarget());
-  if(m_PoseTracker->hasTarget()){
+  if(m_PoseTracker->HasAcceptableTargets()){
     m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());
   }
   
@@ -37,8 +36,6 @@ frc::SmartDashboard::SmartDashboard::PutBoolean("HasTarget", m_PoseTracker ->has
                                 m_OpenLoop());
 
 
-  frc::SmartDashboard::SmartDashboard::PutNumber("YInputBefore",  frc::ApplyDeadband(m_ySpeed(), 0.1) );
-  frc::SmartDashboard::SmartDashboard::PutNumber("YInput", m_DriveTrain->SetThrottle(frc::ApplyDeadband(m_ySpeed(), 0.1)) );
 
   
   

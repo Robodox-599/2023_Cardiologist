@@ -9,10 +9,10 @@ command_AlignToDesired::command_AlignToDesired(subsystem_DriveTrain* DriveTrain,
   AddRequirements({m_DriveTrain});
   AddRequirements({m_PoseTracker});
 
-  XPID.SetSetpoint(XDesired);
-  YPID.SetSetpoint(YDesired);
-  ThetaPID.SetSetpoint(ThetaDesired);
-
+  XPID.SetSetpoint(XDesired());
+  YPID.SetSetpoint(YDesired());
+  ThetaPID.SetSetpoint(ThetaDesired());
+  ThetaPID.EnableContinuousInput(-180, 180);
   
 
 }
@@ -23,7 +23,7 @@ void command_AlignToDesired::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void command_AlignToDesired::Execute() {
 
-  if(m_PoseTracker->hasTarget()){
+  if(m_PoseTracker->HasAcceptableTargets()){
     m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());    
   }
 
@@ -35,7 +35,7 @@ void command_AlignToDesired::Execute() {
   units::degrees_per_second_t BaseAngularSpeed { 0 };
 
 
-  m_DriveTrain->SwerveDrive(BaseSpeed + SupplementX, BaseSpeed + SupplementY, (BaseAngularSpeed + SupplementTheta), true, false);
+  m_DriveTrain->SwerveDrive(BaseSpeed + SupplementX, BaseSpeed + SupplementY, BaseAngularSpeed + SupplementTheta, true, false);
 
 }
 

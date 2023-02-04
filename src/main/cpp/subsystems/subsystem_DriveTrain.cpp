@@ -167,16 +167,16 @@ void subsystem_DriveTrain::Periodic() {
     double velBR = m_BackRightModule.GetState().speed.value();
     double average = velFL + velFR + velBL + velBR;
     
-    frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarFL", fabs(average - velFL)/average);
-    frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarFR", fabs(average - velFR)/average);
-    frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarBL", fabs(average - velBL)/average);
-    frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarBR", fabs(average - velBR)/average);   
+    // frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarFL", fabs(average - velFL)/average);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarFR", fabs(average - velFR)/average);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarBL", fabs(average - velBL)/average);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarBR", fabs(average - velBR)/average);   
 
 
-    frc::SmartDashboard::SmartDashboard::PutNumber("FrontLeftSpeed", velFL);   
-    frc::SmartDashboard::SmartDashboard::PutNumber("FrontRightSpeed", velFR);   
-    frc::SmartDashboard::SmartDashboard::PutNumber("BackLeftSpeed", velBL);   
-    frc::SmartDashboard::SmartDashboard::PutNumber("BackRightSpeed", velBR);
+    // frc::SmartDashboard::SmartDashboard::PutNumber("FrontLeftSpeed", velFL);   
+    // frc::SmartDashboard::SmartDashboard::PutNumber("FrontRightSpeed", velFR);   
+    // frc::SmartDashboard::SmartDashboard::PutNumber("BackLeftSpeed", velBL);   
+    // frc::SmartDashboard::SmartDashboard::PutNumber("BackRightSpeed", velBR);
 
     // frc::SmartDashboard::SmartDashboard::PutNumber("FL - FR", velFL - velFR);
     // frc::SmartDashboard::SmartDashboard::PutNumber("FL - BL", velFL - velBL);
