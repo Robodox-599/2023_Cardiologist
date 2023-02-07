@@ -4,7 +4,7 @@
 
 #include "commands/command_IntakeClamp.h"
 
-command_IntakeClamp::command_IntakeClamp(subsystem_Intake* intake) : m_Intake{intake} {
+command_IntakeClamp::command_IntakeClamp(subsystem_Intake* intake) : m_Intake{intake}, m_Timer{} {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({m_Intake});
 }
@@ -16,8 +16,11 @@ void command_IntakeClamp::Initialize() {
     m_Intake->IntakeClose();
     printf("(command_IntakeClamp) Intake close");
   } else {
+    m_Timer.Reset();
+    m_Timer.Start();
     m_Intake->IntakeOpen();
     printf("(command_IntakeClamp) Intake open");
+    m_Intake->SetIntakeWheelsOn(false);
   }
 }
 
@@ -25,9 +28,11 @@ void command_IntakeClamp::Initialize() {
 void command_IntakeClamp::Execute() {}
 
 // Called once the command ends or is interrupted.
-void command_IntakeClamp::End(bool interrupted) {}
+void command_IntakeClamp::End(bool interrupted) {
+  m_Intake->SetIntakeWheelsOff();
+}
 
 // Returns true when the command should end.
 bool command_IntakeClamp::IsFinished() {
-  return true;
+  return m_Timer.Get() >= IntakeConstants::TimerConstant;
 }

@@ -9,6 +9,8 @@
 
 #include "subsystems/subsystem_Intake.h"
 
+#include <frc/Timer.h>
+
 /**
  * An example command.
  *
@@ -31,4 +33,5 @@ class command_IntakeClamp
 
   private:
     subsystem_Intake* m_Intake;
+    frc::Timer m_Timer;
 };

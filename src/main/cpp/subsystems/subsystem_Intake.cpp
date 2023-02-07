@@ -5,9 +5,14 @@
 #include "subsystems/subsystem_Intake.h"
 
 subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMotorID, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
+                                       m_IntakeMotorPID{m_IntakeMotor.GetPIDController()},
+                                       m_IntakeEncoder{m_IntakeMotor.GetEncoder()},
                                        m_Solenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonA, IntakeConstants::IntakePistonB},
                                        m_ColorSensor{frc::I2C::Port::kOnboard},
                                        m_ColorMatcher{} {
+    //m_IntakeMotorPID.SetP(IntakeConstants::kIntakeP);
+    //m_IntakeMotorPID.SetD(IntakeConstants::kIntakeD);
+    //m_IntakeMotorPID.SetFF(IntakeConstants::kIntakeFF);
     m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
     m_ColorMatcher.AddColorMatch(ColorConstants::YellowTarget);
 }
@@ -22,11 +27,13 @@ void subsystem_Intake::IntakeOpen() {
     m_IsOpen = true;
 }
 
-void subsystem_Intake::SetIntakeWheelsOn(bool IsForward) {
-    if(IsForward) {
-        m_IntakeMotor.Set(IntakeConstants::OutputPower);
+void subsystem_Intake::SetIntakeWheelsOn(bool IsIntakeDirection) {
+    if(IsIntakeDirection) {
+        m_IntakeMotorPID.SetReference(IntakeConstants::IntakeOutputPower / m_CurrentProximity * IntakeConstants::ProxToVelocity, rev::ControlType::kSmartVelocity);
+        //m_IntakeMotor.Set(IntakeConstants::IntakeOutputPower / m_CurrentProximity * IntakeConstants::ProxToVelocity);
     } else {
-        m_IntakeMotor.Set(-IntakeConstants::OutputPower);
+        m_IntakeMotorPID.SetReference(-IntakeConstants::OuttakeOutputPower, rev::ControlType::kSmartVelocity);
+        //m_IntakeMotor.Set(-IntakeConstants::OuttakeOutputPower);
     }
 }
 
@@ -77,7 +84,7 @@ void subsystem_Intake::Periodic() {
         InstStateStr = "Empty";
     }
 
-    // Experiment Area/Field
+    // Enum stuff
     if(m_PreviousColor != m_CurrentColor) {
         m_ColorChangeCount = 0;
     }
@@ -88,6 +95,9 @@ void subsystem_Intake::Periodic() {
 
     m_PreviousColor = m_CurrentColor;
     m_ColorChangeCount++;
+
+    // Display encoder info
+    frc::SmartDashboard::PutNumber("Velocity", m_IntakeEncoder.GetVelocity());
 
     // Display Color Sensor info to SmartDashboard
     frc::SmartDashboard::PutNumber("Confidence", Confidence);

@@ -22,12 +22,22 @@ constexpr int kDriverControllerPort = 0;
 }  // namespace OperatorConstants
 
 namespace IntakeConstants {
+    // Intake Motor
     constexpr int IntakeMotorID = 4;
-    constexpr double OutputPower = -0.4;
+    constexpr double OuttakeOutputPower = -0.3;
+    constexpr double IntakeOutputPower = -0.5;
+    // PID stuff
+    constexpr double kIntakeP = 0.0;
+    constexpr double kIntakeD = 0.0;
+    constexpr double kIntakeFF = 0.01;
+    // Constant for amount of time in transitioning between wheels on and toggle clamp
     constexpr units::second_t TimerConstant {0.2};
     
     constexpr int IntakePistonA = 5;
     constexpr int IntakePistonB = 4;
+
+    // Conversion rate for velocity based on proximity
+    constexpr double ProxToVelocity = 50.0;
 }
 
 namespace ControllerConstants {
@@ -40,5 +50,5 @@ namespace ColorConstants {
     constexpr frc::Color PurpleTarget = frc::Color(0.180, 0.339, 0.479);
     constexpr frc::Color YellowTarget = frc::Color(0.361, 0.524, 0.113);
 
-    constexpr uint32_t ProximityTarget = 100;
+    constexpr uint32_t ProximityTarget = 1000;
 }

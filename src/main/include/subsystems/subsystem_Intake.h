@@ -19,7 +19,7 @@ class subsystem_Intake : public frc2::SubsystemBase {
   
   void IntakeClose();
   void IntakeOpen();
-  void SetIntakeWheelsOn(bool IsForward);
+  void SetIntakeWheelsOn(bool IsIntakeDirection);
   void SetIntakeWheelsOff();
   bool IsIntakeOpen();
   void OuttakeCube();
@@ -38,6 +38,8 @@ class subsystem_Intake : public frc2::SubsystemBase {
   
   // Wheels for intaking objects
   rev::CANSparkMax m_IntakeMotor;
+  rev::SparkMaxPIDController m_IntakeMotorPID;
+  rev::SparkMaxRelativeEncoder m_IntakeEncoder;
   // Pistons for clamping
   frc::DoubleSolenoid m_Solenoid;
 
