@@ -13,7 +13,7 @@
 #include "subsystems/subsystem_Intake.h"
 
 #include "commands/command_OuttakeObject.h"
-#include "commands/command_IntakeClamp.h"
+#include "commands/command_ToggleClamp.h"
 #include "commands/command_IntakeObject.h"
 
 #include "frc2/command/button/JoystickButton.h"

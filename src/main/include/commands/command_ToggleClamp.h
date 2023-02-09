@@ -18,10 +18,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class command_IntakeClamp
-    : public frc2::CommandHelper<frc2::CommandBase, command_IntakeClamp> {
+class command_ToggleClamp
+    : public frc2::CommandHelper<frc2::CommandBase, command_ToggleClamp> {
  public:
-  command_IntakeClamp(subsystem_Intake* intake);
+  command_ToggleClamp(subsystem_Intake* intake);
 
   void Initialize() override;
 

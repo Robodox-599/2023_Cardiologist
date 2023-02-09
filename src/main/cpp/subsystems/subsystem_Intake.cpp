@@ -9,12 +9,16 @@ subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMoto
                                        m_IntakeEncoder{m_IntakeMotor.GetEncoder()},
                                        m_Solenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonA, IntakeConstants::IntakePistonB},
                                        m_ColorSensor{frc::I2C::Port::kOnboard},
-                                       m_ColorMatcher{} {
-    //m_IntakeMotorPID.SetP(IntakeConstants::kIntakeP);
-    //m_IntakeMotorPID.SetD(IntakeConstants::kIntakeD);
-    //m_IntakeMotorPID.SetFF(IntakeConstants::kIntakeFF);
+                                       m_ColorMatcher{},
+                                       m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD} {
+    m_IntakeMotor.SetSmartCurrentLimit(IntakeConstants::CurrentLimit);
+    m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
+    m_IntakeMotorPID.SetP(IntakeConstants::kIntakeP);
+    m_IntakeMotorPID.SetD(IntakeConstants::kIntakeD);
+    m_IntakeMotorPID.SetFF(IntakeConstants::kIntakeFF);
     m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
     m_ColorMatcher.AddColorMatch(ColorConstants::YellowTarget);
+    m_ProximityPID.SetSetpoint(ColorConstants::ProximityTarget);
 }
 
 void subsystem_Intake::IntakeClose() {
@@ -27,27 +31,26 @@ void subsystem_Intake::IntakeOpen() {
     m_IsOpen = true;
 }
 
+bool subsystem_Intake::IsIntakeOpen() {
+    return m_IsOpen;
+}
+
 void subsystem_Intake::SetIntakeWheelsOn(bool IsIntakeDirection) {
     if(IsIntakeDirection) {
-        m_IntakeMotorPID.SetReference(IntakeConstants::IntakeOutputPower / m_CurrentProximity * IntakeConstants::ProxToVelocity, rev::ControlType::kSmartVelocity);
-        //m_IntakeMotor.Set(IntakeConstants::IntakeOutputPower / m_CurrentProximity * IntakeConstants::ProxToVelocity);
+        m_DesiredVelocity = m_ProximityPID.Calculate(m_CurrentProximity);
+        // m_DesiredVelocity = IntakeConstants::IntakePower / m_CurrentProximity * IntakeConstants::ProxToVelocity;
+        // Power / Current Proximity (so that speed of wheels decrease as object is closer)
+        m_IntakeMotor.Set(-m_DesiredVelocity);
+        //m_IntakeMotorPID.SetReference(-m_DesiredVelocity, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
     } else {
-        m_IntakeMotorPID.SetReference(-IntakeConstants::OuttakeOutputPower, rev::ControlType::kSmartVelocity);
-        //m_IntakeMotor.Set(-IntakeConstants::OuttakeOutputPower);
+        m_DesiredVelocity = IntakeConstants::OuttakePower;
+        m_IntakeMotor.Set(m_DesiredVelocity);
+        //m_IntakeMotorPID.SetReference(m_DesiredVelocity, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
     }
 }
 
 void subsystem_Intake::SetIntakeWheelsOff() {
     m_IntakeMotor.Set(0.0);
-}
-
-bool subsystem_Intake::IsIntakeOpen() {
-    return m_IsOpen;
-}
-
-void subsystem_Intake::OuttakeCube() {
-    SetIntakeWheelsOn(false);
-    IntakeOpen();
 }
 
 std::string subsystem_Intake::GetCurrentState() {
@@ -97,7 +100,8 @@ void subsystem_Intake::Periodic() {
     m_ColorChangeCount++;
 
     // Display encoder info
-    frc::SmartDashboard::PutNumber("Velocity", m_IntakeEncoder.GetVelocity());
+    frc::SmartDashboard::PutNumber("Output Velocity", m_DesiredVelocity);
+    frc::SmartDashboard::PutNumber("Actual Velocity", m_IntakeEncoder.GetVelocity());
 
     // Display Color Sensor info to SmartDashboard
     frc::SmartDashboard::PutNumber("Confidence", Confidence);

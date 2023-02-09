@@ -17,7 +17,7 @@ void command_IntakeObject::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void command_IntakeObject::Execute() {
   m_Intake->SetIntakeWheelsOn(true);
-  printf("(command_IntakeObject) Setting intake wheels on");
+  printf("Setting Intake wheels on");
 }
 
 // Called once the command ends or is interrupted.
@@ -28,5 +28,5 @@ void command_IntakeObject::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool command_IntakeObject::IsFinished() {
-  return ((m_Intake->GetCurrentProximity() >= ColorConstants::ProximityTarget) && (m_Intake->GetCurrentState() != "Empty"));
+  return (m_Intake->GetCurrentState() != "Empty");
 }

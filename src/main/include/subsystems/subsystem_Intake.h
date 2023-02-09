@@ -6,6 +6,7 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include "Constants.h"
+
 #include "rev/CANSparkMax.h"
 #include "frc/DoubleSolenoid.h"
 #include <frc/util/Color.h>
@@ -13,16 +14,17 @@
 #include <rev/ColorMatch.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include <frc/controller/PIDController.h>
+
 class subsystem_Intake : public frc2::SubsystemBase {
  public:
   subsystem_Intake();
   
   void IntakeClose();
   void IntakeOpen();
+  bool IsIntakeOpen();
   void SetIntakeWheelsOn(bool IsIntakeDirection);
   void SetIntakeWheelsOff();
-  bool IsIntakeOpen();
-  void OuttakeCube();
 
   std::string GetCurrentState();
   uint32_t GetCurrentProximity();
@@ -45,6 +47,8 @@ class subsystem_Intake : public frc2::SubsystemBase {
 
   bool m_IsOpen = true;
 
+  double m_DesiredVelocity = 0.0;
+
   // Color Sensor stuff
   rev::ColorSensorV3 m_ColorSensor;
   rev::ColorMatch m_ColorMatcher;
@@ -55,4 +59,5 @@ class subsystem_Intake : public frc2::SubsystemBase {
   uint32_t m_CurrentProximity = 0;
   std::string m_CurrentState = "Nothing";
 
+  frc::PIDController m_ProximityPID;
 };

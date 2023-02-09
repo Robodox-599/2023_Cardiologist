@@ -13,14 +13,8 @@ command_OuttakeObject::command_OuttakeObject(subsystem_Intake* intake) : m_Intak
 void command_OuttakeObject::Initialize() {
   m_Timer.Reset();
   m_Timer.Start();
-  m_Intake->OuttakeCube();
-  /**
-  if(m_Intake->GetCurrentState() == "Yellow") {
-    m_Intake->IntakeOpen();
-  } else if(m_Intake->GetCurrentState() == "Purple") {
-    m_Intake->OuttakeCube();
-  }
-  */
+  m_Intake->SetIntakeWheelsOn(false);
+  m_Intake->IntakeOpen();
 }
 
 // Called repeatedly when this Command is scheduled to run

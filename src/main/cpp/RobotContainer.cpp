@@ -17,14 +17,14 @@ RobotContainer::RobotContainer() {
 void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
   frc2::JoystickButton(&xbox,
-                       frc::XboxController::Button::kY)
-                       .OnTrue(command_IntakeClamp(&m_Intake).ToPtr());
-  frc2::JoystickButton(&xbox,
-                       frc::XboxController::Button::kA)
+                       frc::XboxController::Button::kRightBumper)
                        .OnTrue(command_IntakeObject(&m_Intake).ToPtr());
   frc2::JoystickButton(&xbox,
-                       frc::XboxController::Button::kB)
+                       frc::XboxController::Button::kLeftBumper)
                        .OnTrue(command_OuttakeObject(&m_Intake).ToPtr());
+  frc2::JoystickButton(&xbox,
+                       frc::XboxController::Button::kLeftStick)
+                       .OnTrue(command_ToggleClamp(&m_Intake).ToPtr());
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
