@@ -22,7 +22,9 @@ void command_IntakeObject::Execute() {
 
 // Called once the command ends or is interrupted.
 void command_IntakeObject::End(bool interrupted) {
-  m_Intake->IntakeClose();
+  if(m_Intake->GetCurrentState() == "Yellow") {
+    m_Intake->IntakeClose();
+  }
   m_Intake->SetIntakeWheelsOff();
 }
 

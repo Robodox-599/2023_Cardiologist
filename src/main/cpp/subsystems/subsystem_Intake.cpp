@@ -11,14 +11,15 @@ subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMoto
                                        m_ColorSensor{frc::I2C::Port::kOnboard},
                                        m_ColorMatcher{},
                                        m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD} {
-    m_IntakeMotor.SetSmartCurrentLimit(IntakeConstants::CurrentLimit);
-    m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
+    //m_IntakeMotor.SetSmartCurrentLimit(IntakeConstants::CurrentLimit);
+    //m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
+    m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     m_IntakeMotorPID.SetP(IntakeConstants::kIntakeP);
     m_IntakeMotorPID.SetD(IntakeConstants::kIntakeD);
     m_IntakeMotorPID.SetFF(IntakeConstants::kIntakeFF);
     m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
     m_ColorMatcher.AddColorMatch(ColorConstants::YellowTarget);
-    m_ProximityPID.SetSetpoint(ColorConstants::ProximityTarget);
+    m_ProximityPID.SetSetpoint(ColorConstants::TargetProximity);
 }
 
 void subsystem_Intake::IntakeClose() {
@@ -40,7 +41,7 @@ void subsystem_Intake::SetIntakeWheelsOn(bool IsIntakeDirection) {
         m_DesiredVelocity = m_ProximityPID.Calculate(m_CurrentProximity);
         // m_DesiredVelocity = IntakeConstants::IntakePower / m_CurrentProximity * IntakeConstants::ProxToVelocity;
         // Power / Current Proximity (so that speed of wheels decrease as object is closer)
-        m_IntakeMotor.Set(-m_DesiredVelocity);
+        m_IntakeMotor.Set(m_DesiredVelocity);
         //m_IntakeMotorPID.SetReference(-m_DesiredVelocity, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
     } else {
         m_DesiredVelocity = IntakeConstants::OuttakePower;
@@ -57,7 +58,7 @@ std::string subsystem_Intake::GetCurrentState() {
     return m_CurrentState;
 }
 
-uint32_t subsystem_Intake::GetCurrentProximity() {
+double subsystem_Intake::GetCurrentProximity() {
     return m_CurrentProximity;
 }
 
@@ -65,7 +66,8 @@ uint32_t subsystem_Intake::GetCurrentProximity() {
 void subsystem_Intake::Periodic() {
     
     // Current Proximity (changes member variable curr proximity)
-    m_CurrentProximity = m_ColorSensor.GetProximity();
+    // 10000.0 / 1.2 is the constant that transforms proximity into a number out of 100
+    m_CurrentProximity = (10000.0 / 1.2) / m_ColorSensor.GetProximity();
 
     // Current Color (changes member variable curr color)
     m_CurrentColor = m_ColorSensor.GetColor();
@@ -77,7 +79,7 @@ void subsystem_Intake::Periodic() {
     // Checking Instantaneous State (sets instant state to whatever it detects at the moment)
     std::string InstStateStr;
 
-    if(m_CurrentProximity >= ColorConstants::ProximityTarget) {
+    if(m_CurrentProximity <= ColorConstants::RecognitionProximity) {
         if(MatchedColor == ColorConstants::PurpleTarget) {
             InstStateStr = "Purple";
         } else if(MatchedColor == ColorConstants::YellowTarget) {
@@ -100,7 +102,7 @@ void subsystem_Intake::Periodic() {
     m_ColorChangeCount++;
 
     // Display encoder info
-    frc::SmartDashboard::PutNumber("Output Velocity", m_DesiredVelocity);
+    frc::SmartDashboard::PutNumber("Desired Velocity", m_DesiredVelocity);
     frc::SmartDashboard::PutNumber("Actual Velocity", m_IntakeEncoder.GetVelocity());
 
     // Display Color Sensor info to SmartDashboard

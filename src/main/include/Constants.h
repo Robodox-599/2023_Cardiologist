@@ -25,7 +25,7 @@ namespace IntakeConstants {
     // Intake Motor
     constexpr int IntakeMotorID = 4;
     constexpr double OuttakePower = 0.3;
-    constexpr double IntakePower = -0.5;
+    constexpr double IntakePower = -0.6;
     // PID stuff
     constexpr double kIntakeP = 0.1;
     constexpr double kIntakeD = 1.0;
@@ -41,8 +41,8 @@ namespace IntakeConstants {
 
     constexpr int CurrentLimit = 10;
     constexpr double MaxVelocity = 30.0;
-    constexpr double kProximityP = 0.0002;
-    constexpr double kProximityD = 0.0;
+    constexpr double kProximityP = 0.005;
+    constexpr double kProximityD = 0.0001;
 }
 
 namespace ControllerConstants {
@@ -53,5 +53,6 @@ namespace ColorConstants {
     constexpr frc::Color PurpleTarget = frc::Color(0.202, 0.333, 0.459);
     constexpr frc::Color YellowTarget = frc::Color(0.361, 0.524, 0.113);
 
-    constexpr uint32_t ProximityTarget = 1000;
+    constexpr double RecognitionProximity = 80.0;
+    constexpr double TargetProximity = 20.0;
 }

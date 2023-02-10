@@ -27,7 +27,7 @@ class subsystem_Intake : public frc2::SubsystemBase {
   void SetIntakeWheelsOff();
 
   std::string GetCurrentState();
-  uint32_t GetCurrentProximity();
+  double GetCurrentProximity();
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -56,7 +56,7 @@ class subsystem_Intake : public frc2::SubsystemBase {
   frc::Color m_CurrentColor = frc::Color(0.0, 0.0, 0.0);
   frc::Color m_PreviousColor = frc::Color(0.0, 0.0, 0.0);
   int m_ColorChangeCount = 0;
-  uint32_t m_CurrentProximity = 0;
+  double m_CurrentProximity = 0;
   std::string m_CurrentState = "Nothing";
 
   frc::PIDController m_ProximityPID;
