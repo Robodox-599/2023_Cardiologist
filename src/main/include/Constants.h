@@ -87,8 +87,21 @@ namespace SwerveConstants{
 
 
 
-    constexpr double LinearThrottle = 1;
-    constexpr double NonLinearThrottle = 2;
+    //Change to non-linear throttle for finer tuned movements
+    enum Throttle {
+        LINEAR = 1,
+        NONLINEAR = 2
+    };
+
+    //Tip Correction PID (PITCH)
+    constexpr double PitchKP = 0.0;
+    constexpr double PitchKD = 0.0;
+
+
+    //Tip Correction PID (ROLL) 
+    constexpr double RollKP = 0.0;
+    constexpr double RollKD = 0.0;
+    
 
     /*setting up correct units for the simepleMotorFeedforward KS gain*/
     constexpr units::volt_t DriveKS{0.69719};
@@ -144,6 +157,19 @@ namespace SwerveConstants{
     constexpr units::degrees_per_second_t MaxAngularVelocity{360};
     constexpr bool IsFieldRelative = true;
     constexpr bool IsOpenLoop = false;  
+}
+
+namespace ChargingStation{
+    // const units::meter_t FrontLeft[2] = { 190.08_in,  154.94_in};
+    // const units::meter_t FrontRight[2] = { 190.08_in, 63.43_in};
+    // const units::meter_t BackLeft[2] = {115.22_in, 154.94_in};
+    // const units::meter_t BackRight[2] = {115.22_in, 63.43_in};
+
+    const std::pair<units::meter_t, units::meter_t> FrontLeft = std::make_pair<>(200.08_in, 164.94_in);
+    const std::pair<units::meter_t, units::meter_t> FrontRight = std::make_pair<>(200.08_in, 53.43_in);
+    const std::pair<units::meter_t, units::meter_t> BackLeft = std::make_pair<>(105.22_in, 164.94_in);
+    const std::pair<units::meter_t, units::meter_t> BackRight = std::make_pair<>(105.22_in, 53.43_in);
+    
 }
 
 namespace FrontLeftModule{

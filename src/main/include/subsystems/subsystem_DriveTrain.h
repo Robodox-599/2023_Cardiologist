@@ -35,16 +35,26 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   double SetThrottle(double input);
   void ChangeThrottle();
   void ResetModulesToAbsolute();
+  units::meters_per_second_t AddPitchCorrection();
+  units::meters_per_second_t AddRollCorrection();
+  bool IsOnChargingStation();
+  
+
 
   void ZeroGyro();
   void ResetOdometry(frc::Rotation2d Rotation, frc::Pose2d Pose);
   void ImplementVisionPose(std::pair<frc::Pose2d, units::millisecond_t> pair);
   frc::Pose2d GetPose();
   frc::Rotation2d GetYaw();
+  frc::Rotation2d GetPoseYaw();
 
-  void SetStationBalance();
+
+  void ToggleTiltCorrection();
   units::meters_per_second_t CalculatePitch();
   units::meters_per_second_t CalculateRoll();
+
+  std::pair<units::meter_t, units::meter_t> ReflectAlliance();
+  
   // auto GetChassisSpeed(auto chassisSpeed);
   // void SetAngleToHoloRotation(frc::Rotation2d holo);
 
@@ -65,7 +75,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   SwerveModule m_BackLeftModule;
   SwerveModule m_BackRightModule;
 
-  double DegreeOfThrottle;
+  SwerveConstants::Throttle DegreeOfThrottle;
 
   frc::SwerveDriveKinematics<4> m_kinematics{
       SwerveConstants::m_FrontLeft, SwerveConstants::m_FrontRight, SwerveConstants::m_BackLeft,
@@ -73,17 +83,14 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
 
 
   frc::SwerveDrivePoseEstimator<4> m_PoseEstimator;
-  frc::PIDController m_PID;
 
-
-
-  bool StartBalance;
-  // auto m_chassisSpeed;
+  frc2::PIDController m_PitchCorrectionPID;
+  frc2::PIDController m_RollCorrectionPID;
+  bool m_IsTilting;
 
   
 
   
-  //std::vector<SwerveModule> m_Mods;
                            
   
 };

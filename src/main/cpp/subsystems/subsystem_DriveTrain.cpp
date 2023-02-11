@@ -20,13 +20,23 @@ subsystem_DriveTrain::subsystem_DriveTrain():
       {m_FrontLeftModule.GetPosition(), m_FrontRightModule.GetPosition(),
        m_BackLeftModule.GetPosition(), m_BackRightModule.GetPosition()},
       frc::Pose2d{}}, 
-    m_PID{SwerveConstants::BalancekP, SwerveConstants::BalancekI, SwerveConstants::BalancekD}
+    m_PitchCorrectionPID{SwerveConstants::PitchKP, 0.0, SwerveConstants::RollKD},
+    m_RollCorrectionPID{SwerveConstants::RollKP, 0.0, SwerveConstants::RollKD}
+    
 {
     frc::Wait(1_s);
     ResetModulesToAbsolute();
     m_Gyro.ConfigFactoryDefault();
     ZeroGyro();
-    DegreeOfThrottle = 1;
+    DegreeOfThrottle = SwerveConstants::Throttle::NONLINEAR;
+    m_IsTilting = true;
+
+    m_PitchCorrectionPID.SetSetpoint(0.0);
+    m_PitchCorrectionPID.SetTolerance(5);
+
+
+    m_RollCorrectionPID.SetSetpoint(0.0);
+    m_RollCorrectionPID.SetTolerance(5);
 
 
 }
@@ -37,10 +47,11 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
                                         bool FieldRelative, 
                                         bool IsOpenLoop){
 
-    if(StartBalance){
-        // xSpeed += CalculateRoll();
-        // ySpeed += CalculatePitch();
+    if( !m_IsTilting  && !IsOnChargingStation() ){
+        xSpeed += AddPitchCorrection();
+        ySpeed += AddRollCorrection();
     }
+    
     auto moduleStates = SwerveConstants::m_kinematics.ToSwerveModuleStates(
         FieldRelative ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
                             xSpeed, ySpeed, zRot, GetYaw()
@@ -49,9 +60,9 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
     auto [FrontLeft, FrontRight, BackLeft, BackRight] = moduleStates;
     //auto [FrontRight, RearRight,]
 
-     m_FrontLeftModule.SetDesiredState(FrontLeft, IsOpenLoop);
+    m_FrontLeftModule.SetDesiredState(FrontLeft, IsOpenLoop);
     m_FrontRightModule.SetDesiredState(FrontRight, IsOpenLoop);
-     m_BackLeftModule.SetDesiredState(BackLeft, IsOpenLoop);
+    m_BackLeftModule.SetDesiredState(BackLeft, IsOpenLoop);
     m_BackRightModule.SetDesiredState(BackRight, IsOpenLoop);
 
 }
@@ -79,7 +90,7 @@ double subsystem_DriveTrain::SetThrottle(double input){
     //     return input < 0.0 ? -1 * pow(input, DegreeOfThrottle) : pow(input, DegreeOfThrottle);
     // }
     frc::SmartDashboard::SmartDashboard::PutNumber("DegreeOfThrottle",DegreeOfThrottle);
-    if(DegreeOfThrottle != 2){
+    if(DegreeOfThrottle != SwerveConstants::Throttle::NONLINEAR){
         return input;
     } else {
         if(input < 0.0){
@@ -92,10 +103,10 @@ double subsystem_DriveTrain::SetThrottle(double input){
     }
 
 void subsystem_DriveTrain::ChangeThrottle(){
-    if( DegreeOfThrottle == SwerveConstants::LinearThrottle){
-        DegreeOfThrottle = SwerveConstants::NonLinearThrottle;
+    if( DegreeOfThrottle == SwerveConstants::Throttle::LINEAR){
+        DegreeOfThrottle = SwerveConstants::Throttle::NONLINEAR;
     }else{
-        DegreeOfThrottle = SwerveConstants::LinearThrottle;
+        DegreeOfThrottle = SwerveConstants::Throttle::LINEAR;
     }
 }
 
@@ -120,17 +131,16 @@ frc::Rotation2d subsystem_DriveTrain::GetYaw(){
     return (SwerveConstants::InvertGyro) ? frc::Rotation2d{360_deg - Yaw}: frc::Rotation2d{Yaw}; 
 }
 
-units::meters_per_second_t subsystem_DriveTrain::CalculatePitch(){
-    
-    return units::meters_per_second_t{m_PID.Calculate(m_Gyro.GetPitch())};
+frc::Rotation2d subsystem_DriveTrain::GetPoseYaw(){
+    return m_PoseEstimator.GetEstimatedPosition().Rotation();
 }
 
-units::meters_per_second_t subsystem_DriveTrain::CalculateRoll(){
-    return units::meters_per_second_t{m_PID.Calculate(m_Gyro.GetRoll())};
-}
 
-void subsystem_DriveTrain::SetStationBalance(){
-    StartBalance = !StartBalance;
+
+
+
+void subsystem_DriveTrain::ToggleTiltCorrection(){
+    m_IsTilting = !m_IsTilting;
 }
 
 void subsystem_DriveTrain::ZeroGyro(){
@@ -150,7 +160,22 @@ void subsystem_DriveTrain::ResetModulesToAbsolute(){
     m_BackRightModule.ResetToAbsolute();
 }
 
-// void subsystem_DriveTrain::
+units::meters_per_second_t subsystem_DriveTrain::AddPitchCorrection(){
+    return units::meters_per_second_t{ m_PitchCorrectionPID.Calculate( m_Gyro.GetPitch() )};
+
+}
+
+units::meters_per_second_t subsystem_DriveTrain::AddRollCorrection(){
+    return units::meters_per_second_t{ m_RollCorrectionPID.Calculate( m_Gyro.GetRoll() )};
+
+}
+
+bool subsystem_DriveTrain::IsOnChargingStation(){
+    return (GetPose().X() < ChargingStation::FrontLeft.first && GetPose().X() > ChargingStation::BackRight.first) 
+                && (GetPose().Y() < ChargingStation::FrontLeft.second && GetPose().Y() > ChargingStation::BackRight.second);
+}
+
+
 
 
 
@@ -159,13 +184,16 @@ void subsystem_DriveTrain::Periodic() {
 
     frc::SmartDashboard::SmartDashboard::PutNumber("X Position", m_PoseEstimator.GetEstimatedPosition().X().value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Y Position", m_PoseEstimator.GetEstimatedPosition().Y().value());
-    frc::SmartDashboard::SmartDashboard::PutNumber("Rotation", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value()); 
+    frc::SmartDashboard::SmartDashboard::PutNumber("Pose Yaw", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value()); 
 
-    double velFL = m_FrontLeftModule.GetState().speed.value();
-    double velFR = m_FrontRightModule.GetState().speed.value();
-    double velBL = m_BackLeftModule.GetState().speed.value();
-    double velBR = m_BackRightModule.GetState().speed.value();
-    double average = velFL + velFR + velBL + velBR;
+    frc::SmartDashboard::SmartDashboard::PutNumber("Gyro Yaw (raw)", m_Gyro.GetYaw());
+    frc::SmartDashboard::SmartDashboard::PutNumber("GetYaw()", GetYaw().Degrees().value());
+
+    // double velFL = m_FrontLeftModule.GetState().speed.value();
+    // double velFR = m_FrontRightModule.GetState().speed.value();
+    // double velBL = m_BackLeftModule.GetState().speed.value();
+    // double velBR = m_BackRightModule.GetState().speed.value();
+    // double average = velFL + velFR + velBL + velBR;
     
     // frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarFL", fabs(average - velFL)/average);
     // frc::SmartDashboard::SmartDashboard::PutNumber("IsSimilarFR", fabs(average - velFR)/average);

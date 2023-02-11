@@ -43,7 +43,7 @@
 class command_DriveAuton: 
   public frc2::CommandHelper<frc2::CommandBase, command_DriveAuton> {
     public:
-      command_DriveAuton(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::string TrajFilePath, frc::DriverStation::Alliance AllianceColor, bool ToReset);
+      command_DriveAuton(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::string TrajFilePath, bool ToReset);
 
       void Initialize() override;
 

@@ -18,6 +18,7 @@
 {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({m_DriveTrain});
+  AddRequirements({m_PoseTracker});
 }
 
 // Called when the command is initially scheduled.

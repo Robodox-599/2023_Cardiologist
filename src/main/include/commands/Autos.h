@@ -16,8 +16,15 @@ namespace autos {
 frc2::CommandPtr ExampleAuto(ExampleSubsystem* subsystem);
 
 
-frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, frc::DriverStation::Alliance AllianceColor);
+frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
 
+
+//Two Ball Auto
+frc2::CommandPtr Niemann(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+
+
+//Taxi Auto
+frc2::CommandPtr Kasparov(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
 
 }  // namespace autos
 

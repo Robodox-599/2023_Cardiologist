@@ -8,6 +8,13 @@
 #include "commands/ExampleCommand.h"
 
 RobotContainer::RobotContainer() {
+  m_Chooser.SetDefaultOption( "Taxi", m_TaxiAuto.get() );
+  m_Chooser.AddOption( "Two Ball Auto", m_TwoScoreAuto.get() );
+  // m_Chooser.SetDefaultOption("Test", "result of test");
+  // m_Chooser.AddOption("Test2", "result of test2");
+  frc::SmartDashboard::PutData(&m_Chooser);
+
+  
   // Initialize all of your commands and subsystems here
   //std::function<double()> XDesired, std::function<double()> YDesired, std::function<double()> ThetaDesired
   // m_PoseTracker.SetDefaultCommand(command_AlignToDesired(&m_Drive, &m_PoseTracker, [this]{return 1;}, [this]{return 1;}, [this]{return 0;}));
@@ -42,6 +49,6 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return autos::TestAuto(&m_Drive, &m_PoseTracker, frc::DriverStation::Alliance::kBlue);
+  return autos::Niemann(&m_Drive, &m_PoseTracker);
   // return autos::TestAuto(&m_Drive, "TestPath.wpilib.json", true);
 }

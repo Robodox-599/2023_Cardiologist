@@ -8,7 +8,6 @@
 #include <frc2/command/CommandHelper.h>
 
 #include "subsystems/subsystem_DriveTrain.h"
-
 /**
  * An example command.
  *
@@ -16,19 +15,19 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class command_StartStationBalance: 
-  public frc2::CommandHelper<frc2::CommandBase, command_StartStationBalance> {
-    public:
-      command_StartStationBalance(subsystem_DriveTrain* Drive);
+class command_ToggleTiltCorrection
+    : public frc2::CommandHelper<frc2::CommandBase, command_ToggleTiltCorrection> {
+ public:
+  command_ToggleTiltCorrection(subsystem_DriveTrain* DriveTrain);
 
-      void Initialize() override;
+  void Initialize() override;
 
-      void Execute() override;
+  void Execute() override;
 
-      void End(bool interrupted) override;
+  void End(bool interrupted) override;
 
-      bool IsFinished() override;
-  
+  bool IsFinished() override;
+
   private:
-    subsystem_DriveTrain* m_Drive;
+  subsystem_DriveTrain* m_DriveTrain;
 };

@@ -10,14 +10,16 @@
 #include "Constants.h"
 #include "commands/command_VisionPose.h"
 #include "subsystems/ExampleSubsystem.h"
+#include <frc/smartdashboard/SendableChooser.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 
 #include "subsystems/subsystem_DriveTrain.h"
 #include "commands/command_DriveTeleop.h"
 #include "commands/command_ShiftThrottle.h"
 #include "commands/command_ZeroGyro.h"
-#include "commands/command_StartStationBalance.h"
 #include "commands/command_AlignToDesired.h"
+#include "commands/Autos.h"
 
 #include "frc/XboxController.h"
 #include "frc2/command/button/JoystickButton.h"
@@ -48,5 +50,13 @@ class RobotContainer {
   frc::XboxController XboxDrive{0};
 
 
+  frc::SendableChooser<frc2::Command*> m_Chooser;
+
+  frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
+  frc2::CommandPtr m_TwoScoreAuto = autos::Niemann(&m_Drive, &m_PoseTracker);
+
+
   void ConfigureBindings();
+
+
 };
