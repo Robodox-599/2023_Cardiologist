@@ -2,9 +2,9 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 
 SwerveModule::SwerveModule(const double Module[] ):
-                                                 m_DriveMotor{ (int)Module[0]},
-                                                 m_AngleMotor{ (int)Module[1] },
-                                                 m_AngleEncoder{ (int)Module[2] },
+                                                 m_DriveMotor{ (int)Module[0], "DriveCANivore"},
+                                                 m_AngleMotor{ (int)Module[1], "DriveCANivore" },
+                                                 m_AngleEncoder{ (int)Module[2], "DriveCANivore" },
                                                  m_AngleOffset{ Module[3] },
                                                  m_Feedforward{SwerveConstants::DriveKS, SwerveConstants::DriveKV, SwerveConstants::DriveKA}
 {

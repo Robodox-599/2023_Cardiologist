@@ -9,8 +9,8 @@ command_DriveAuton::command_DriveAuton(subsystem_DriveTrain* DriveTrain, subsyst
 m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_ToReset{ToReset}, m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ThetaPID} {
   // pathplanner::PPHolonomicDriveController m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ZPID};
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements({m_DriveTrain});
-  AddRequirements({m_PoseTracker});
+  AddRequirements({DriveTrain});
+  AddRequirements({PoseTracker});
   // m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
   m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );  
   }

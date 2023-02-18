@@ -42,6 +42,8 @@ class HardwareConfig{
         SwerveAngleFXConfig.slot0.kI = SwerveConstants::AngleKI;
         SwerveAngleFXConfig.slot0.kD = SwerveConstants::AngleKD;
         SwerveAngleFXConfig.supplyCurrLimit = AngleSupplyLimit;
+        // SwerveAngleFXConfig.openloopRamp = SwerveConstants::OpenLoopRamp;
+        // SwerveAngleFXConfig.closedloopRamp = SwerveConstants::closedLoopRamp;
         SwerveAngleFXConfig.initializationStrategy = ctre::phoenix::sensors::SensorInitializationStrategy::BootToZero;
 
         

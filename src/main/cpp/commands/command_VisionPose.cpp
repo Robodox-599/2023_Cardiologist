@@ -7,7 +7,7 @@
 
 command_VisionPose::command_VisionPose(subsystem_PoseTracker* PoseTracker): m_PoseTracker{PoseTracker} {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements({m_PoseTracker});
+  AddRequirements({PoseTracker});
 }
 
 // Called when the command is initially scheduled.

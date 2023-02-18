@@ -5,20 +5,23 @@
 #include "commands/command_DriveTeleop.h"
 #include "frc/smartdashboard/SmartDashboard.h"
  command_DriveTeleop::command_DriveTeleop(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker,
-                                                      std::function<double()> xSpeed,
-                                                      std::function<double()> ySpeed,
-                                                      std::function<double()> zRotation,
-                                                      std::function<bool()> FieldRelative,
-                                                      std::function<bool()> OpenLoop): m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker},
-                                                                                          m_xSpeed{xSpeed},
-                                                                                          m_ySpeed{ySpeed},
-                                                                                          m_zRotation{zRotation},
-                                                                                          m_FieldRelative{FieldRelative},
-                                                                                          m_OpenLoop{OpenLoop}
+                                          std::function<double()> xSpeed,
+                                          std::function<double()> ySpeed,
+                                          std::function<double()> zRotation,
+                                          std::function<int()> Orientation,
+                                          std::function<bool()> FieldRelative,
+                                          std::function<bool()> OpenLoop): m_DriveTrain{DriveTrain}, 
+                                                      m_PoseTracker{PoseTracker},
+                                                      m_xSpeed{xSpeed},
+                                                      m_ySpeed{ySpeed},
+                                                      m_zRotation{zRotation},
+                                                      m_Orientation{Orientation},
+                                                      m_FieldRelative{FieldRelative},
+                                                      m_OpenLoop{OpenLoop}
 {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements({m_DriveTrain});
-  AddRequirements({m_PoseTracker});
+  AddRequirements({DriveTrain});
+  AddRequirements({PoseTracker});
 }
 
 // Called when the command is initially scheduled.
@@ -29,10 +32,13 @@ void command_DriveTeleop::Execute() {
   if(m_PoseTracker->HasAcceptableTargets()){
     m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());
   }
+
   
-  m_DriveTrain -> SwerveDrive( m_DriveTrain-> SetThrottle( frc::ApplyDeadband(m_xSpeed(), 0.1) )* SwerveConstants::MaxSpeed,
-                                m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_ySpeed(), 0.1)) * SwerveConstants::MaxSpeed,
-                                m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_zRotation(), 0.1)) * SwerveConstants::MaxAngularVelocity,
+  
+
+  m_DriveTrain -> SwerveDrive( m_DriveTrain-> SetThrottle( frc::ApplyDeadband(m_xSpeed(), ControllerConstants::Deadband) )* SwerveConstants::MaxSpeed,
+                                m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_ySpeed(), ControllerConstants::Deadband)) * SwerveConstants::MaxSpeed,
+                                m_DriveTrain-> SetThrottle(frc::ApplyDeadband(m_zRotation(), ControllerConstants::Deadband)) * SwerveConstants::MaxAngularVelocity,
                                 m_FieldRelative(),
                                 m_OpenLoop());
 

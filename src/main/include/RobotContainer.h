@@ -55,7 +55,6 @@ class RobotContainer {
   frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
   frc2::CommandPtr m_TwoScoreAuto = autos::Niemann(&m_Drive, &m_PoseTracker);
 
-
   void ConfigureBindings();
 
 

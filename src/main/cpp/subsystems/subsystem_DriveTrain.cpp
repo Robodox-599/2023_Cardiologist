@@ -10,7 +10,7 @@
 
 
 subsystem_DriveTrain::subsystem_DriveTrain():
-    m_Gyro{SwerveConstants::CANCoderID}, 
+    m_Gyro{SwerveConstants::CANCoderID,"DriveCANivore"}, 
     m_FrontLeftModule{FrontLeftModule::Constants},
     m_FrontRightModule{FrontRightModule::Constants},
     m_BackLeftModule{BackLeftModule::Constants},
@@ -30,6 +30,7 @@ subsystem_DriveTrain::subsystem_DriveTrain():
     ZeroGyro();
     DegreeOfThrottle = SwerveConstants::Throttle::NONLINEAR;
     m_IsTilting = true;
+    m_IsAutoOrient = false;
 
     m_PitchCorrectionPID.SetSetpoint(0.0);
     m_PitchCorrectionPID.SetTolerance(5);
@@ -37,6 +38,8 @@ subsystem_DriveTrain::subsystem_DriveTrain():
 
     m_RollCorrectionPID.SetSetpoint(0.0);
     m_RollCorrectionPID.SetTolerance(5);
+
+    m_AutoOrientPID.EnableContinuousInput(units::radian_t{0}, units::radian_t{0});
 
 
 }
@@ -47,10 +50,10 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
                                         bool FieldRelative, 
                                         bool IsOpenLoop){
 
-    if( !m_IsTilting  && !IsOnChargingStation() ){
-        xSpeed += AddPitchCorrection();
-        ySpeed += AddRollCorrection();
-    }
+    // if( !m_IsTilting  && !IsOnChargingStation() ){
+    //     xSpeed += AddPitchCorrection();
+    //     ySpeed += AddRollCorrection();
+    // }
     
     auto moduleStates = SwerveConstants::m_kinematics.ToSwerveModuleStates(
         FieldRelative ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
@@ -175,6 +178,31 @@ bool subsystem_DriveTrain::IsOnChargingStation(){
                 && (GetPose().Y() < ChargingStation::FrontLeft.second && GetPose().Y() > ChargingStation::BackRight.second);
 }
 
+
+void subsystem_DriveTrain::SetAutoOrient(SwerveConstants::Orientation Dpad, double RotVelocity){
+    if( RotVelocity < ControllerConstants::Deadband ){      
+        if(Dpad != SwerveConstants::Orientation::NON_ORIENTED){
+            m_IsAutoOrient = true;
+            m_Dpad = Dpad;
+        }
+    }else {
+        m_Dpad = SwerveConstants::Orientation::NON_ORIENTED;
+        m_IsAutoOrient = false;
+    }
+}
+
+units::radians_per_second_t subsystem_DriveTrain::GetAngleVelocity(SwerveConstants::Orientation Dpad){
+    units::radian_t GoalAngle;
+    if(Dpad == SwerveConstants::Orientation::FRONT){
+        GoalAngle = units::radian_t{ 0 };
+        m_AutoOrientPID.SetGoal(GoalAngle);
+        
+    }else if(Dpad == SwerveConstants::Orientation::DOWN){
+        GoalAngle = units::radian_t{ 2 * 3.14 };
+    }
+
+    return 0_rad_per_s;
+}
 
 
 

@@ -6,7 +6,7 @@
 
 command_ZeroGyro::command_ZeroGyro(subsystem_DriveTrain* DriveTrain): m_DriveTrain{DriveTrain} {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements({m_DriveTrain});
+  AddRequirements({DriveTrain});
 }
 
 // Called when the command is initially scheduled.

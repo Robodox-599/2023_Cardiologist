@@ -6,8 +6,8 @@
 
 command_AlignToDesired::command_AlignToDesired(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::function<double()> XDesired, std::function<double()> YDesired, std::function<double()> ThetaDesired): m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_X{XDesired}, m_Y{YDesired}, m_Theta{ThetaDesired}{
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements({m_DriveTrain});
-  AddRequirements({m_PoseTracker});
+  AddRequirements({DriveTrain});
+  AddRequirements({PoseTracker});
 
   XPID.SetSetpoint(XDesired());
   YPID.SetSetpoint(YDesired());

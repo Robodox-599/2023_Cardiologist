@@ -18,7 +18,10 @@
 #include <frc/geometry/Rotation2d.h>
 #include <frc/geometry/Translation2d.h>
 #include <frc/controller/PIDController.h>
+#include <frc/controller/ProfiledPIDController.h>
 #include <ctre/phoenix/sensors/WPI_Pigeon2.h>
+
+
 
 
 
@@ -54,6 +57,9 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   units::meters_per_second_t CalculateRoll();
 
   std::pair<units::meter_t, units::meter_t> ReflectAlliance();
+
+  void SetAutoOrient(SwerveConstants::Orientation Dpad, double RotVelocity);
+  units::radians_per_second_t GetAngleVelocity(SwerveConstants::Orientation Dpad);
   
   // auto GetChassisSpeed(auto chassisSpeed);
   // void SetAngleToHoloRotation(frc::Rotation2d holo);
@@ -87,6 +93,16 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   frc2::PIDController m_PitchCorrectionPID;
   frc2::PIDController m_RollCorrectionPID;
   bool m_IsTilting;
+
+  bool m_IsAutoOrient;
+  SwerveConstants::Orientation m_Dpad = SwerveConstants::Orientation::NON_ORIENTED;
+  
+  frc::ProfiledPIDController<units::angle::radian> m_AutoOrientPID{AutoConstants::AngleKP, 
+                                              0.0, 
+                                              AutoConstants::AngleKD, 
+                                              frc::TrapezoidProfile<units::radians>::Constraints{AutoConstants::MaxAngularSpeed,
+                                                                                                 AutoConstants::MaxAngularAccel}};
+  
 
   
 

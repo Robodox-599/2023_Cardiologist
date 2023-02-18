@@ -17,7 +17,6 @@
 
 
 
-
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants.  This should not be used for any other
@@ -28,7 +27,7 @@
  * they are needed.
  */
 namespace ControllerConstants{
-    constexpr double Deadband = 0.2;
+    constexpr double Deadband = 0.1;
     
     constexpr int XboxDriveID = 0;
     constexpr int XboxYaperatorID = 1;
@@ -66,7 +65,7 @@ namespace SwerveConstants{
 
     /*Drivetrain constants*/
     constexpr double OpenLoopRamp = 0.25;
-    constexpr double closedLoopRamp = 0.4;
+    constexpr double closedLoopRamp = 0.2;
 
     constexpr double DriveGearRatio = 6.75;
     constexpr double AngleGearRatio = 150.0 / 7.0;
@@ -74,10 +73,10 @@ namespace SwerveConstants{
     
     constexpr units::meter_t WheelCircumference{ 4.0_in * M_PI  };
 
-    const frc::Translation2d m_FrontLeft{14.0_in, 14.0_in};
-    const frc::Translation2d m_FrontRight{14.0_in, -14.0_in};
-    const frc::Translation2d m_BackLeft{-14.0_in, 14.0_in};
-    const frc::Translation2d m_BackRight{-14.0_in, -14.0_in};
+    const frc::Translation2d m_FrontLeft{11.375_in, 11.375_in};
+    const frc::Translation2d m_FrontRight{11.375_in, -11.375_in};
+    const frc::Translation2d m_BackLeft{-11.375_in, 11.375_in};
+    const frc::Translation2d m_BackRight{-11.375_in, -11.375_in};
 
     const frc::SwerveDriveKinematics<4> m_kinematics{m_FrontLeft,
                                                m_FrontRight,
@@ -93,6 +92,18 @@ namespace SwerveConstants{
         NONLINEAR = 2
     };
 
+    enum Orientation{
+        FRONT = 0,
+        FRONT_RIGHT = 45,
+        RIGHT = 90,
+        DOWN_RIGHT = 135,
+        DOWN = 180,
+        DOWN_LEFT = 225,
+        LEFT = 270,
+        FRONT_LEFT = 315,
+        NON_ORIENTED = -1
+    };
+
     //Tip Correction PID (PITCH)
     constexpr double PitchKP = 0.0;
     constexpr double PitchKD = 0.0;
@@ -104,9 +115,9 @@ namespace SwerveConstants{
     
 
     /*setting up correct units for the simepleMotorFeedforward KS gain*/
-    constexpr units::volt_t DriveKS{0.69719};
+    constexpr units::volt_t DriveKS{0.1646};
 
-    constexpr units::volt_t VoltageKV{2.2575};
+    constexpr units::volt_t VoltageKV{2.239};
     constexpr units::foot_t FeetKV{1.0};
     constexpr units::second_t TimeKV{1.0};
     /*Setting up correct units for the simpleMotorFeedforward KV gain
@@ -114,7 +125,7 @@ namespace SwerveConstants{
     the KV gain*/
     constexpr auto DriveKV = VoltageKV * TimeKV / FeetKV;
 
-    constexpr units::volt_t VoltageKA{0.35831};
+    constexpr units::volt_t VoltageKA{0.73308};
     constexpr units::foot_t FeetKA{1.0};
     constexpr units::second_t TimeKA{1.0};
     /*Setting up correct units for the simpleMotorFeedforward KA gain
@@ -125,21 +136,21 @@ namespace SwerveConstants{
     constexpr bool CanCoderInvert = false;
 
     /*Swerve Angle Motor PID gains*/
-    constexpr double AngleKP = 0.2;
+    constexpr double AngleKP = 0.15;
     constexpr double AngleKI = 0.0;
-    constexpr double AngleKD = 0.004;
+    constexpr double AngleKD = 0.00;
     constexpr double AngleKF = 0.0;
 
     /*Swerve Angle Current Limit Config*/
     constexpr bool AngleEnableCurrentLimit = true;
-    constexpr int AngleContinuousCurrentLimit = 20;
-    constexpr int AnglePeakCurrentLimit = 40;
+    constexpr int AngleContinuousCurrentLimit = 10;
+    constexpr int AnglePeakCurrentLimit = 20;
     constexpr double AnglePeakCurrentDuration = 0.1;
     
     /*Swerve Drive Motor PID gains*/
     constexpr double DriveKP = 0.1;
     constexpr double DriveKI = 0.0;
-    constexpr double DriveKD = 0.002;
+    constexpr double DriveKD = 0.00;
     constexpr double DriveKF = 0.0;
 
     /*Swerve Drive Current Limit Config*/
@@ -153,13 +164,14 @@ namespace SwerveConstants{
     constexpr bool DriveMotorInvert = false;
 
     /* Swerve Profiling values */
-    constexpr units::meters_per_second_t MaxSpeed{3};
+    constexpr units::meters_per_second_t MaxSpeed{4.2};
     constexpr units::degrees_per_second_t MaxAngularVelocity{360};
     constexpr bool IsFieldRelative = true;
     constexpr bool IsOpenLoop = false;  
 }
 
 namespace ChargingStation{
+    
     // const units::meter_t FrontLeft[2] = { 190.08_in,  154.94_in};
     // const units::meter_t FrontRight[2] = { 190.08_in, 63.43_in};
     // const units::meter_t BackLeft[2] = {115.22_in, 154.94_in};
@@ -191,7 +203,8 @@ namespace BackLeftModule{
     constexpr int DriveMotorID = 6;
     constexpr int AngleMotorID = 7;
     constexpr int CanCoderID = 8;
-    constexpr auto AngleOffset = 266.045;
+    // constexpr auto AngleOffset = 266.045;
+    constexpr double AngleOffset = 97.91;
     constexpr double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackRightModule{
@@ -205,28 +218,28 @@ namespace BackRightModule{
 namespace AutoConstants{
     constexpr units::meters_per_second_t MaxSpeed{ 1 };
     constexpr units::meters_per_second_squared_t MaxAccel{ 1 };
-    constexpr units::radians_per_second_t MaxAngularSpeed{ 30 };
-    constexpr units::radians_per_second_squared_t MaxAngularAccel{ 30 };
+    constexpr units::radians_per_second_t MaxAngularSpeed{ 6 };
+    constexpr units::radians_per_second_squared_t MaxAngularAccel{ 3 };
 
     /*Auto Swerve Drive Motor PID gains*/
-    constexpr double XDriveKP = 1;
-    constexpr double XDriveKD = 0;
+    constexpr double XDriveKP = 0.0;
+    constexpr double XDriveKD = 0.0;
 
-    const frc2::PIDController XPID{ XDriveKP, 0, XDriveKD };
+    const frc2::PIDController XPID{ XDriveKP, 0.0, XDriveKD };
     
-    constexpr double YDriveKP = 1;
-    constexpr double YDriveKD = 0;
+    constexpr double YDriveKP = 0.0;
+    constexpr double YDriveKD = 0.0;
     
-    const frc2::PIDController YPID{ YDriveKP, 0, YDriveKD };
+    const frc2::PIDController YPID{ YDriveKP, 0.0, YDriveKD };
 
     /* Auto Swerve Angle Motor PID gains*/  
     constexpr double AngleKP = 1;
     constexpr double AngleKD = 0.0;
 
-    const frc2::PIDController ZPID{ YDriveKP, 0, AngleKD };
+    const frc2::PIDController ZPID{ YDriveKP, 0.0, AngleKD };
 
     const frc::ProfiledPIDController<units::angle::radian> ThetaPID{AngleKP, 
-                                              0, 
+                                              0.0, 
                                               AngleKD, 
                                               frc::TrapezoidProfile<units::radians>::Constraints{MaxAngularSpeed,
                                                                                                  MaxAngularAccel}};

@@ -22,6 +22,7 @@ RobotContainer::RobotContainer() {
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLYAxis);},
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLXAxis);},
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxRXAxis);},
+                                                       [this]{return XboxDrive.GetPOV();},
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
   // Configure the button bindings
