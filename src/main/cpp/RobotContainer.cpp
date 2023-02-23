@@ -10,24 +10,15 @@
 #include "commands/ExampleCommand.h"
 
 RobotContainer::RobotContainer(){
+  m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
+                        [this]{return controller.GetRawAxis(ControllerConstants::xboxLYAxis);},
+                        [this]{return controller.GetRawAxis(ControllerConstants::xboxRYAxis);}));
   ConfigureBindings();
 }
 
 //hellllllloooooooooooooooooooooooooo
 
 void RobotContainer::ConfigureBindings() {
-  frc2::JoystickButton(&controller, 
-                        frc::XboxController::Button::kLeftStick)
-                        .OnTrue(command_MoveArmManually(&m_Arm,
-                        [this]{return controller.GetRawAxis(ControllerConstants::xboxLYAxis);},
-                        [this]{return controller.GetRawAxis(ControllerConstants::xboxRYAxis);}).ToPtr());
-
-  frc2::JoystickButton(&controller, 
-                        frc::XboxController::Button::kRightStick)
-                        .OnTrue(command_MoveArmManually(&m_Arm,
-                        [this]{return controller.GetRawAxis(ControllerConstants::xboxLYAxis);},
-                        [this]{return controller.GetRawAxis(ControllerConstants::xboxRYAxis);}).ToPtr());
-
   frc2::JoystickButton(&controller, 
                         frc::XboxController::Button::kA)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::MidCubeX;}, [=]{return ArmConstants::MidCubeY;}).ToPtr());
