@@ -58,8 +58,8 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
 
   std::pair<units::meter_t, units::meter_t> ReflectAlliance();
 
-  void SetAutoOrient(SwerveConstants::Orientation Dpad, double RotVelocity);
-  units::radians_per_second_t GetAngleVelocity(SwerveConstants::Orientation Dpad);
+  void SetAutoOrient(int Dpad, double RotVelocity);
+  units::radians_per_second_t GetAngularVelocity();
   
   // auto GetChassisSpeed(auto chassisSpeed);
   // void SetAngleToHoloRotation(frc::Rotation2d holo);
@@ -95,13 +95,11 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   bool m_IsTilting;
 
   bool m_IsAutoOrient;
-  SwerveConstants::Orientation m_Dpad = SwerveConstants::Orientation::NON_ORIENTED;
+  int m_Dpad = Orientation::NON_ORIENTED;
   
-  frc::ProfiledPIDController<units::angle::radian> m_AutoOrientPID{AutoConstants::AngleKP, 
+  frc::PIDController m_AutoOrientPID{AutoConstants::AngleKP, 
                                               0.0, 
-                                              AutoConstants::AngleKD, 
-                                              frc::TrapezoidProfile<units::radians>::Constraints{AutoConstants::MaxAngularSpeed,
-                                                                                                 AutoConstants::MaxAngularAccel}};
+                                              AutoConstants::AngleKD};
   
 
   

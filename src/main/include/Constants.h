@@ -65,7 +65,7 @@ namespace SwerveConstants{
 
     /*Drivetrain constants*/
     constexpr double OpenLoopRamp = 0.25;
-    constexpr double closedLoopRamp = 0.2;
+    constexpr double closedLoopRamp = 0.375;
 
     constexpr double DriveGearRatio = 6.75;
     constexpr double AngleGearRatio = 150.0 / 7.0;
@@ -92,17 +92,7 @@ namespace SwerveConstants{
         NONLINEAR = 2
     };
 
-    enum Orientation{
-        FRONT = 0,
-        FRONT_RIGHT = 45,
-        RIGHT = 90,
-        DOWN_RIGHT = 135,
-        DOWN = 180,
-        DOWN_LEFT = 225,
-        LEFT = 270,
-        FRONT_LEFT = 315,
-        NON_ORIENTED = -1
-    };
+
 
     //Tip Correction PID (PITCH)
     constexpr double PitchKP = 0.0;
@@ -165,10 +155,24 @@ namespace SwerveConstants{
 
     /* Swerve Profiling values */
     constexpr units::meters_per_second_t MaxSpeed{4.2};
-    constexpr units::degrees_per_second_t MaxAngularVelocity{360};
+    constexpr units::degrees_per_second_t MaxAngularVelocity{360 * 1.25};
     constexpr bool IsFieldRelative = true;
     constexpr bool IsOpenLoop = false;  
 }
+
+namespace Orientation{
+
+
+    constexpr int FRONT = 0;
+    constexpr int FRONT_RIGHT = 45;
+    constexpr int RIGHT = 90;
+    constexpr int DOWN_RIGHT = 135;
+    constexpr int DOWN = 180;
+    constexpr int DOWN_LEFT = 225;
+    constexpr int LEFT = 270;
+    constexpr int FRONT_LEFT = 315;
+    constexpr int NON_ORIENTED = -1;
+};
 
 namespace ChargingStation{
     
@@ -188,7 +192,7 @@ namespace FrontLeftModule{
     constexpr int DriveMotorID = 0;
     constexpr int AngleMotorID = 1;
     constexpr int CanCoderID = 2;
-    constexpr double AngleOffset = 353.232;
+    constexpr double AngleOffset = 352.617;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset };
 }
 
@@ -196,7 +200,7 @@ namespace FrontRightModule{
     constexpr int DriveMotorID = 3;
     constexpr int AngleMotorID = 4;
     constexpr int CanCoderID = 5;
-    constexpr double AngleOffset = 321.064;
+    constexpr double AngleOffset = 321.855;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackLeftModule{
@@ -204,36 +208,36 @@ namespace BackLeftModule{
     constexpr int AngleMotorID = 7;
     constexpr int CanCoderID = 8;
     // constexpr auto AngleOffset = 266.045;
-    constexpr double AngleOffset = 97.91;
+    constexpr double AngleOffset = 97.822;
     constexpr double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackRightModule{
     constexpr int DriveMotorID = 9;
     constexpr int AngleMotorID = 10;
     constexpr int CanCoderID = 11;
-    constexpr double AngleOffset = 70.664;
+    constexpr double AngleOffset = 71.104;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 
 namespace AutoConstants{
-    constexpr units::meters_per_second_t MaxSpeed{ 1 };
-    constexpr units::meters_per_second_squared_t MaxAccel{ 1 };
+    constexpr units::meters_per_second_t MaxSpeed{ 4 };
+    constexpr units::meters_per_second_squared_t MaxAccel{ 3 };
     constexpr units::radians_per_second_t MaxAngularSpeed{ 6 };
     constexpr units::radians_per_second_squared_t MaxAngularAccel{ 3 };
 
     /*Auto Swerve Drive Motor PID gains*/
-    constexpr double XDriveKP = 0.0;
+    constexpr double XDriveKP = 5.0;
     constexpr double XDriveKD = 0.0;
 
     const frc2::PIDController XPID{ XDriveKP, 0.0, XDriveKD };
     
-    constexpr double YDriveKP = 0.0;
+    constexpr double YDriveKP = 5.0;
     constexpr double YDriveKD = 0.0;
     
     const frc2::PIDController YPID{ YDriveKP, 0.0, YDriveKD };
 
     /* Auto Swerve Angle Motor PID gains*/  
-    constexpr double AngleKP = 1;
+    constexpr double AngleKP = 5.5;
     constexpr double AngleKD = 0.0;
 
     const frc2::PIDController ZPID{ YDriveKP, 0.0, AngleKD };

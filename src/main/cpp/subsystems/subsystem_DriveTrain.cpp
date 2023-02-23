@@ -39,7 +39,8 @@ subsystem_DriveTrain::subsystem_DriveTrain():
     m_RollCorrectionPID.SetSetpoint(0.0);
     m_RollCorrectionPID.SetTolerance(5);
 
-    m_AutoOrientPID.EnableContinuousInput(units::radian_t{0}, units::radian_t{0});
+    m_AutoOrientPID.EnableContinuousInput(-180, 180);
+    m_AutoOrientPID.SetTolerance(4);
 
 
 }
@@ -54,6 +55,9 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
     //     xSpeed += AddPitchCorrection();
     //     ySpeed += AddRollCorrection();
     // }
+
+
+    zRot = m_IsAutoOrient ? GetAngularVelocity() :  zRot;
     
     auto moduleStates = SwerveConstants::m_kinematics.ToSwerveModuleStates(
         FieldRelative ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
@@ -179,29 +183,28 @@ bool subsystem_DriveTrain::IsOnChargingStation(){
 }
 
 
-void subsystem_DriveTrain::SetAutoOrient(SwerveConstants::Orientation Dpad, double RotVelocity){
+void subsystem_DriveTrain::SetAutoOrient(int Dpad, double RotVelocity){
     if( RotVelocity < ControllerConstants::Deadband ){      
-        if(Dpad != SwerveConstants::Orientation::NON_ORIENTED){
+        if(Dpad == Orientation::DOWN || Dpad == Orientation::FRONT){
             m_IsAutoOrient = true;
             m_Dpad = Dpad;
         }
     }else {
-        m_Dpad = SwerveConstants::Orientation::NON_ORIENTED;
         m_IsAutoOrient = false;
+        m_Dpad = Orientation::NON_ORIENTED;
     }
 }
 
-units::radians_per_second_t subsystem_DriveTrain::GetAngleVelocity(SwerveConstants::Orientation Dpad){
-    units::radian_t GoalAngle;
-    if(Dpad == SwerveConstants::Orientation::FRONT){
-        GoalAngle = units::radian_t{ 0 };
-        m_AutoOrientPID.SetGoal(GoalAngle);
-        
-    }else if(Dpad == SwerveConstants::Orientation::DOWN){
-        GoalAngle = units::radian_t{ 2 * 3.14 };
-    }
+units::radians_per_second_t subsystem_DriveTrain::GetAngularVelocity(){
+    m_AutoOrientPID.SetSetpoint(m_Dpad);
+    if(m_AutoOrientPID.AtSetpoint()){
+        m_IsAutoOrient = false;
+        m_Dpad = Orientation::NON_ORIENTED;
+        return 0_rad_per_s;
+    }else{
+        return units::radians_per_second_t{m_AutoOrientPID.Calculate( GetYaw().Degrees().value() )};
 
-    return 0_rad_per_s;
+    }
 }
 
 

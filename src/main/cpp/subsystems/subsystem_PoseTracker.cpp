@@ -7,6 +7,7 @@
 
 subsystem_PoseTracker::subsystem_PoseTracker()
 {
+
   cameras.push_back(std::make_pair(cameraOne, robotToCam));
 
   SetAllianceOrigin(m_Alliance);

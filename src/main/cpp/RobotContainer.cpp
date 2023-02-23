@@ -9,7 +9,7 @@
 
 RobotContainer::RobotContainer() {
   m_Chooser.SetDefaultOption( "Taxi", m_TaxiAuto.get() );
-  m_Chooser.AddOption( "Two Ball Auto", m_TwoScoreAuto.get() );
+  m_Chooser.AddOption( "Two Score Auto", m_TwoScoreAuto.get() );
   // m_Chooser.SetDefaultOption("Test", "result of test");
   // m_Chooser.AddOption("Test2", "result of test2");
   frc::SmartDashboard::PutData(&m_Chooser);
