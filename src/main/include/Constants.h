@@ -15,10 +15,10 @@
  */
 namespace ArmConstants {
     const int bottomArmMotorID = 30;
-    const int bottomFollowerID = 20;
-    const int topArmMotorID = 9;
-    const int topFollowerID = 3;
-    const int intakeTiltMotorID = 14;
+    const int bottomFollowerID = 31;
+    const int topArmMotorID = 32;
+    const int topFollowerID = 33;
+    const int intakeTiltMotorID = 34;
 
     const double kBottomGoingUpP = 0.0; // change this
     const double kBottomGoingUpD = 0.0; // change this
@@ -30,23 +30,24 @@ namespace ArmConstants {
 
     const double kTopGoingUpP = 0.0; // change this
     const double kTopGoingUpD = 0.0;  // change this
-    const double kTopGoingUpF = 0.01; // change this
+    const double kTopGoingUpF = 0.0; // change this
 
     const double kTopGoingDownP = 0.0; // change this
     const double kTopGoingDownD = 0.0; // change this
     const double kTopGoingDownF = 0.0; // change this
 
     const double kTopMaxA = 25.0; // change this
-    const double kBottomMaxA = 25.0;// change this
-    
+    const double kBottomMaxA = 25.0;// change this 
     const double kTopMaxV = 25.0; // change this
     const double kTopMinV = 0.0;
     const double kBottomMaxV = 25.0; // change this
     const double kBottomMinV = 0.0; 
+    const int ArmCurrentLimit = 0;
 
     const double intakeAngleConversion = 0.0;  // change this
-    const double radiansToEncoder = 0.8912678; // change this
-    const double AbsToRel = 0.0; // change this
+    const double DegreesToEncoder = 0.0; // change this
+    // const double radiansToEncoder = 0.0; // change this
+    const double AbsToRel = 1.0; // change this
     const double JoystickToArm = 0.0; // change this
 
     const double totalArmLength = 71.5;
@@ -83,6 +84,9 @@ namespace ArmConstants {
 
     constexpr double GroundX = 0.0;
     constexpr double GroundY = 0.0;
+
+    constexpr double ArmBackLimit = 0.0;
+    constexpr double ArmFrontLimit = 0.0;
 }
 
 namespace ControllerConstants{

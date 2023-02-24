@@ -22,7 +22,8 @@ void command_MoveArmManually::Execute()
   if (fabs(m_LeftJoystickInput()) > ControllerConstants::Deadband || fabs(m_RightJoystickInput()) > ControllerConstants::Deadband)
   {
     m_arm->UnlockArm();
-    m_arm->MoveArmManually(m_LeftJoystickInput(), m_RightJoystickInput());
+    m_arm->MoveArmManually(frc::ApplyDeadband(m_LeftJoystickInput(), ControllerConstants::Deadband), 
+                           frc::ApplyDeadband(m_RightJoystickInput(), ControllerConstants::Deadband));
     m_Timer.Reset();
   }
   if (fabs(m_LeftJoystickInput()) < ControllerConstants::Deadband && fabs(m_RightJoystickInput()) < ControllerConstants::Deadband && m_Timer.Get() >= ArmConstants::ManualTimer)

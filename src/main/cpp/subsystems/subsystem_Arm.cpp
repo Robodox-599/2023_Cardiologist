@@ -21,19 +21,31 @@ subsystem_Arm::subsystem_Arm() : m_BottomArmMotor{ArmConstants::bottomArmMotorID
 {
     m_BottomArmMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     m_TopArmMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-
     m_BottomFollower.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     m_TopFollower.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+
+    m_BottomArmMotor.SetSmartCurrentLimit(ArmConstants::ArmCurrentLimit);
+    m_BottomFollower.SetSmartCurrentLimit(ArmConstants::ArmCurrentLimit);
+
+    m_TopArmMotor.SetSmartCurrentLimit(ArmConstants::ArmCurrentLimit);
+    m_TopFollower.SetSmartCurrentLimit(ArmConstants::ArmCurrentLimit);
 
     m_BottomFollower.Follow(m_BottomArmMotor);
     m_TopFollower.Follow(m_TopArmMotor);
 
-    m_BottomArmPID.SetP(ArmConstants::kBottomGoingUpP);
-    m_BottomArmPID.SetD(ArmConstants::kBottomGoingUpD);
-    m_BottomArmPID.SetFF(ArmConstants::kBottomGoingUpF);
-    m_TopArmPID.SetP(ArmConstants::kTopGoingUpP);
-    m_TopArmPID.SetD(ArmConstants::kTopGoingUpD);
-    m_TopArmPID.SetFF(ArmConstants::kTopGoingUpF);
+    m_BottomArmPID.SetP(ArmConstants::kBottomGoingUpP, 0);
+    m_BottomArmPID.SetD(ArmConstants::kBottomGoingUpD, 0);
+    m_BottomArmPID.SetFF(ArmConstants::kBottomGoingUpF, 0);
+    m_TopArmPID.SetP(ArmConstants::kTopGoingUpP, 0);
+    m_TopArmPID.SetD(ArmConstants::kTopGoingUpD, 0);
+    m_TopArmPID.SetFF(ArmConstants::kTopGoingUpF, 0);
+
+    m_BottomArmPID.SetP(ArmConstants::kBottomGoingDownP, 1);
+    m_BottomArmPID.SetD(ArmConstants::kBottomGoingDownD, 1);
+    m_BottomArmPID.SetFF(ArmConstants::kBottomGoingDownF, 1);
+    m_TopArmPID.SetP(ArmConstants::kTopGoingDownP, 1);
+    m_TopArmPID.SetD(ArmConstants::kTopGoingDownD, 1);
+    m_TopArmPID.SetFF(ArmConstants::kTopGoingDownF, 1);
 
     m_BottomArmPID.SetSmartMotionMaxAccel(ArmConstants::kBottomMaxA);
     m_BottomArmPID.SetSmartMotionMaxVelocity(ArmConstants::kBottomMaxV);
@@ -50,19 +62,18 @@ subsystem_Arm::subsystem_Arm() : m_BottomArmMotor{ArmConstants::bottomArmMotorID
 double subsystem_Arm::CalculateBottomArmAngle(double x, double y)
 {
     double topAngle = CalculateTopArmAngle(x, y);
-    return (atan(y / x) - atan((ArmConstants::topJointLength * sin(topAngle)) 
-            / (ArmConstants::bottomJointLength + (ArmConstants::topJointLength * cos(topAngle)))));
+    return (atan(y / x) - atan((ArmConstants::topJointLength * sin(topAngle)) / (ArmConstants::bottomJointLength + (ArmConstants::topJointLength * cos(topAngle)))));
 }
+
 double subsystem_Arm::CalculateTopArmAngle(double x, double y)
 {
-    return (-acos((pow(x, 2) + pow(y, 2) - pow(ArmConstants::topJointLength, 2) - pow(ArmConstants::bottomJointLength, 2)) 
-            / (2 * ArmConstants::topJointLength * ArmConstants::bottomJointLength)));
+    return (-acos((pow(x, 2) + pow(y, 2) - pow(ArmConstants::topJointLength, 2) - pow(ArmConstants::bottomJointLength, 2)) / (2 * ArmConstants::topJointLength * ArmConstants::bottomJointLength)));
 }
 
 void subsystem_Arm::MoveArm(double x, double y)
 {
     armX = x;
-    armY = y; 
+    armY = y;
     adjustedX = x + ArmConstants::xOriginAdjustment;
     adjustedY = y + ArmConstants::yOriginAdjustment;
 
@@ -71,11 +82,11 @@ void subsystem_Arm::MoveArm(double x, double y)
     if (adjustedX <= ArmConstants::totalArmLength && adjustedY <= ArmConstants::totalArmLength)
     {
         double bottom = CalculateBottomArmAngle(adjustedX, adjustedY);
-        convertedTop = (CalculateTopArmAngle(adjustedX, adjustedY)) * (180 / 3.14159265358979) /* ArmConstants::radiansToEncoder*/;
-        convertedBottom = bottom * (180 / 3.14159265358979) /* ArmConstants::radiansToEncoder*/;
+        convertedTop = (CalculateTopArmAngle(adjustedX, adjustedY)) * ArmConstants::DegreesToEncoder;
+        convertedBottom = bottom * ArmConstants::DegreesToEncoder;
 
-        m_BottomArmPID.SetReference(convertedBottom, rev::ControlType::kSmartMotion, 0);
-        m_TopArmPID.SetReference(convertedTop, rev::ControlType::kSmartMotion, 0);
+        m_BottomArmPID.SetReference(convertedBottom, rev::ControlType::kSmartMotion, m_BottomArmSlot);
+        m_TopArmPID.SetReference(convertedTop, rev::ControlType::kSmartMotion, m_TopArmSlot);
     }
     else
     {
@@ -103,39 +114,34 @@ void subsystem_Arm::SetIntakeAngle(double angle)
     m_IntakeTiltPID.SetReference(adjustedAngle, rev::ControlType::kPosition, 0);
 }
 
-void subsystem_Arm::SetArmPIDByDirection(double x, double y){
+void subsystem_Arm::SetArmPIDByDirection(double x, double y)
+{
     if (IsBottomArmDirectionGoingUp(x, y))
     {
-        m_BottomArmPID.SetP(ArmConstants::kBottomGoingUpP);
-        m_BottomArmPID.SetD(ArmConstants::kBottomGoingUpD);
-        m_BottomArmPID.SetD(ArmConstants::kBottomGoingUpF);
+        m_BottomArmSlot = 0;
     }
     else
     {
-        m_BottomArmPID.SetP(ArmConstants::kBottomGoingDownP);
-        m_BottomArmPID.SetD(ArmConstants::kBottomGoingDownD);
-        m_BottomArmPID.SetD(ArmConstants::kBottomGoingDownF);
+        m_BottomArmSlot = 1;
     }
     if (IsTopArmDirectionGoingUp(x, y))
     {
-        m_TopArmPID.SetP(ArmConstants::kTopGoingUpP);
-        m_TopArmPID.SetD(ArmConstants::kTopGoingUpD);
-        m_TopArmPID.SetD(ArmConstants::kTopGoingUpF);
+        m_TopArmSlot = 0;
     }
     else
     {
-        m_TopArmPID.SetP(ArmConstants::kTopGoingDownP);
-        m_TopArmPID.SetD(ArmConstants::kTopGoingDownD);
-        m_TopArmPID.SetD(ArmConstants::kTopGoingDownF);
+        m_TopArmSlot = 1;
     }
 }
 
-void subsystem_Arm::UnlockArm(){
+void subsystem_Arm::UnlockArm()
+{
     m_TopSolenoid.Set(frc::DoubleSolenoid::kReverse);
     m_BottomSolenoid.Set(frc::DoubleSolenoid::kReverse);
 }
 
-void subsystem_Arm::LockArm(){
+void subsystem_Arm::LockArm()
+{
     m_TopSolenoid.Set(frc::DoubleSolenoid::kForward);
     m_BottomSolenoid.Set(frc::DoubleSolenoid::kForward);
 }
@@ -145,11 +151,11 @@ bool subsystem_Arm::IsTopArmDirectionGoingUp(double x, double y)
     double adjustedX = x + ArmConstants::xOriginAdjustment;
     double adjustedY = y + ArmConstants::yOriginAdjustment;
 
-    if (m_TopAbsEncoder.GetPosition() < (CalculateTopArmAngle(adjustedX, adjustedY) * ArmConstants::radiansToEncoder))
+    if (topPosition < (CalculateTopArmAngle(adjustedX, adjustedY) * ArmConstants::DegreesToEncoder))
     {
         return true;
     }
-    else if (m_TopAbsEncoder.GetPosition() > (CalculateTopArmAngle(adjustedX, adjustedY) * ArmConstants::radiansToEncoder))
+    else if (topPosition > (CalculateTopArmAngle(adjustedX, adjustedY) * ArmConstants::DegreesToEncoder))
     {
         return false;
     }
@@ -161,15 +167,15 @@ bool subsystem_Arm::IsBottomArmDirectionGoingUp(double x, double y)
     double adjustedX = x + ArmConstants::xOriginAdjustment;
     double adjustedY = y + ArmConstants::yOriginAdjustment;
 
-    if (m_BottomAbsEncoder.GetPosition() < (CalculateBottomArmAngle(adjustedX, adjustedY) * ArmConstants::radiansToEncoder)) // Positive direction
+    if (bottomPosition < (CalculateBottomArmAngle(adjustedX, adjustedY) * ArmConstants::DegreesToEncoder)) // Positive direction
     {
         return true;
     }
-    else if (m_BottomAbsEncoder.GetPosition() > (CalculateTopArmAngle(adjustedX, adjustedY) * ArmConstants::radiansToEncoder)) // Negative Direction
+    else if (bottomPosition > (CalculateTopArmAngle(adjustedX, adjustedY) * ArmConstants::DegreesToEncoder)) // Negative Direction
     {
         return false;
     }
-    return true; 
+    return true;
 }
 
 bool subsystem_Arm::IsAtDesiredPosition()
@@ -203,4 +209,15 @@ void subsystem_Arm::Periodic()
 
     frc::SmartDashboard::PutNumber("Bottom Pos:", m_BottomRelEncoder.GetPosition());
     frc::SmartDashboard::PutNumber("Top Pos", m_TopRelEncoder.GetPosition());
+
+    if (!m_BackLimitSwitch.Get())
+    {
+        m_BottomArmPID.SetReference(0, rev::ControlType::kVoltage);
+        m_BottomArmPID.SetReference(ArmConstants::ArmBackLimit, rev::ControlType::kPosition);
+    }
+    if (!m_FrontLimitSwitch.Get())
+    {
+        m_BottomArmPID.SetReference(0, rev::ControlType::kVoltage);
+        m_BottomArmPID.SetReference(ArmConstants::ArmFrontLimit, rev::ControlType::kPosition);
+    }
 }

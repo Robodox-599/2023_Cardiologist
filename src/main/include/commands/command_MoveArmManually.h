@@ -8,6 +8,7 @@
 #include <frc2/command/CommandHelper.h>
 #include "subsystems/subsystem_Arm.h"
 #include <frc/Timer.h>
+#include <frc/controller/ProfiledPIDController.h>
 
 class command_MoveArmManually
     : public frc2::CommandHelper<frc2::CommandBase, command_MoveArmManually> {

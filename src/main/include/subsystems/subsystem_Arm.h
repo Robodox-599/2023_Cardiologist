@@ -11,6 +11,8 @@
 #include "frc/DoubleSolenoid.h"
 #include <frc/DigitalInput.h>
 #include <frc/Timer.h>
+#include <units/length.h>
+#include <units/angle.h>
 #include "Constants.h"
 
 
@@ -70,6 +72,9 @@ class subsystem_Arm : public frc2::SubsystemBase {
   double bottomAngle;
   double topAngle; 
 
+  int m_TopArmSlot = 0;
+  int m_BottomArmSlot = 0;
+
   rev::CANSparkMax m_BottomArmMotor;
   rev::CANSparkMax m_BottomFollower; 
   rev::CANSparkMax m_TopArmMotor;
@@ -88,6 +93,8 @@ class subsystem_Arm : public frc2::SubsystemBase {
 
   rev::SparkMaxRelativeEncoder m_BottomRelEncoder;
   rev::SparkMaxRelativeEncoder m_TopRelEncoder; 
-  // Components (e.g. motor controllers and sensors) should generally be
-  // declared private and exposed only through public methods.
+
+  frc::DigitalInput m_BackLimitSwitch{0};
+  frc::DigitalInput m_FrontLimitSwitch{0};
+
 };
