@@ -42,12 +42,12 @@ namespace ArmConstants {
     const double kTopMinV = 0.0;
     const double kBottomMaxV = 25.0; // change this
     const double kBottomMinV = 0.0; 
-    const int ArmCurrentLimit = 0;
+    const int ArmCurrentLimit = 5;
 
     const double intakeAngleConversion = 0.0;  // change this
     const double DegreesToEncoder = 0.0; // change this
     // const double radiansToEncoder = 0.0; // change this
-    const double AbsToRel = 1.0; // change this
+    const double AbsToRel = 16384/507 /*32.3156*/; 
     const double JoystickToArm = 0.0; // change this
 
     const double totalArmLength = 71.5;
