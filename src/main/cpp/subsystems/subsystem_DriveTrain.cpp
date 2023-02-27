@@ -40,7 +40,7 @@ subsystem_DriveTrain::subsystem_DriveTrain():
     m_RollCorrectionPID.SetTolerance(5);
 
     m_AutoOrientPID.EnableContinuousInput(-180, 180);
-    m_AutoOrientPID.SetTolerance(4);
+    m_AutoOrientPID.SetTolerance(1);
 
 
 }
@@ -183,12 +183,17 @@ bool subsystem_DriveTrain::IsOnChargingStation(){
 }
 
 
-void subsystem_DriveTrain::SetAutoOrient(int Dpad, double RotVelocity){
-    if( RotVelocity < ControllerConstants::Deadband ){      
-        if(Dpad == Orientation::DOWN || Dpad == Orientation::FRONT){
+void subsystem_DriveTrain::SetAutoOrient(bool IsOrientFront, bool IsOrientBack, double RotVelocity){
+    if( fabs(RotVelocity) <= ControllerConstants::Deadband ){      
+
+        if( IsOrientFront ){
+            m_Dpad = Orientation::FRONT;
             m_IsAutoOrient = true;
-            m_Dpad = Dpad;
+        }else if( IsOrientBack ){
+            m_Dpad = Orientation::DOWN;
+            m_IsAutoOrient = true;
         }
+        
     }else {
         m_IsAutoOrient = false;
         m_Dpad = Orientation::NON_ORIENTED;
@@ -196,15 +201,22 @@ void subsystem_DriveTrain::SetAutoOrient(int Dpad, double RotVelocity){
 }
 
 units::radians_per_second_t subsystem_DriveTrain::GetAngularVelocity(){
+    
     m_AutoOrientPID.SetSetpoint(m_Dpad);
     if(m_AutoOrientPID.AtSetpoint()){
-        m_IsAutoOrient = false;
-        m_Dpad = Orientation::NON_ORIENTED;
-        return 0_rad_per_s;
-    }else{
-        return units::radians_per_second_t{m_AutoOrientPID.Calculate( GetYaw().Degrees().value() )};
-
+        m_OrientCounter++;
+        if(m_OrientCounter >= 4 ){
+            m_IsAutoOrient = false;
+            m_Dpad = Orientation::NON_ORIENTED;
+            m_OrientCounter = 0;
+            return 0_rad_per_s;
+        }
     }
+    return units::radians_per_second_t{m_AutoOrientPID.Calculate(m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value() )};
+
+
+
+    
 }
 
 
@@ -213,6 +225,8 @@ units::radians_per_second_t subsystem_DriveTrain::GetAngularVelocity(){
 // This method will be called once per scheduler run
 void subsystem_DriveTrain::Periodic() {
 
+    frc::SmartDashboard::PutBoolean("AutoOrient", m_IsAutoOrient);
+    frc::SmartDashboard::PutNumber("m_DPAD", m_Dpad);
     frc::SmartDashboard::SmartDashboard::PutNumber("X Position", m_PoseEstimator.GetEstimatedPosition().X().value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Y Position", m_PoseEstimator.GetEstimatedPosition().Y().value());
     frc::SmartDashboard::SmartDashboard::PutNumber("Pose Yaw", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value()); 

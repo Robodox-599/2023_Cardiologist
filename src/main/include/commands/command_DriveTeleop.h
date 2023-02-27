@@ -22,12 +22,13 @@ class command_DriveTeleop
     : public frc2::CommandHelper<frc2::CommandBase, command_DriveTeleop> {
  public:
   command_DriveTeleop(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker,
-                            std::function<double()> xSpeed,
-                            std::function<double()> ySpeed,
-                            std::function<double()> zRotation,
-                            std::function<int()> Orientation,
-                            std::function<bool()> FieldRelative,
-                            std::function<bool()> OpenLoop);
+                                          std::function<double()> xSpeed,
+                                          std::function<double()> ySpeed,
+                                          std::function<double()> zRotation,
+                                          std::function<double()> IsOrientFront,
+                                          std::function<double()> IsOrientBack,
+                                          std::function<bool()> FieldRelative,
+                                          std::function<bool()> OpenLoop);
 
   void Initialize() override;
 
@@ -43,7 +44,8 @@ class command_DriveTeleop
   std::function<double()> m_xSpeed;
   std::function<double()> m_ySpeed;
   std::function<double()> m_zRotation;
-  std::function<int()> m_Orientation;
+  std::function<bool()> m_IsOrientBack;
+  std::function<bool()> m_IsOrientFront;
   std::function<bool()> m_FieldRelative;
   std::function<bool()> m_OpenLoop;
 };

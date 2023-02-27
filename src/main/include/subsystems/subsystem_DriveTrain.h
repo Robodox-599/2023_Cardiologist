@@ -58,7 +58,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
 
   std::pair<units::meter_t, units::meter_t> ReflectAlliance();
 
-  void SetAutoOrient(int Dpad, double RotVelocity);
+  void SetAutoOrient(bool IsOrientFront, bool IsOrientBack, double RotVelocity);
   units::radians_per_second_t GetAngularVelocity();
   
   // auto GetChassisSpeed(auto chassisSpeed);
@@ -96,10 +96,11 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
 
   bool m_IsAutoOrient;
   int m_Dpad = Orientation::NON_ORIENTED;
+  int m_OrientCounter = 0;
   
-  frc::PIDController m_AutoOrientPID{AutoConstants::AngleKP, 
-                                              0.0, 
-                                              AutoConstants::AngleKD};
+  frc::PIDController m_AutoOrientPID{0.05, 
+                                        0.0, 
+                                        0.001};
   
 
   

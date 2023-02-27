@@ -8,14 +8,16 @@
                                           std::function<double()> xSpeed,
                                           std::function<double()> ySpeed,
                                           std::function<double()> zRotation,
-                                          std::function<int()> Orientation,
+                                          std::function<double()> IsOrientFront,
+                                          std::function<double()> IsOrientBack,
                                           std::function<bool()> FieldRelative,
                                           std::function<bool()> OpenLoop): m_DriveTrain{DriveTrain}, 
                                                       m_PoseTracker{PoseTracker},
                                                       m_xSpeed{xSpeed},
                                                       m_ySpeed{ySpeed},
                                                       m_zRotation{zRotation},
-                                                      m_Orientation{Orientation},
+                                                      m_IsOrientFront{IsOrientFront},
+                                                      m_IsOrientBack{IsOrientBack},
                                                       m_FieldRelative{FieldRelative},
                                                       m_OpenLoop{OpenLoop}
 {
@@ -33,7 +35,7 @@ void command_DriveTeleop::Execute() {
     m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());
   }
 
-  m_DriveTrain->SetAutoOrient(m_Orientation(), m_zRotation());
+  m_DriveTrain->SetAutoOrient(m_IsOrientFront(), m_IsOrientBack(), m_zRotation());
   
   
   m_DriveTrain -> SwerveDrive( m_DriveTrain-> SetThrottle( frc::ApplyDeadband(m_xSpeed(), ControllerConstants::Deadband) )* SwerveConstants::MaxSpeed,

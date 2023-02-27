@@ -22,7 +22,8 @@ RobotContainer::RobotContainer() {
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLYAxis);},
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxLXAxis);},
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxRXAxis);},
-                                                       [this]{return XboxDrive.GetPOV();},
+                                                       [this]{return XboxDrive.GetLeftBumperPressed();},
+                                                       [this]{return XboxDrive.GetRightBumperPressed();},
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
   // Configure the button bindings
@@ -33,6 +34,7 @@ void RobotContainer::ConfigureBindings() {
   frc2::JoystickButton(&XboxDrive,
                        frc::XboxController::Button::kX)
       .OnTrue(command_ShiftThrottle(&m_Drive).ToPtr());
+
 
   frc2::JoystickButton(&XboxDrive,
                         frc::XboxController::Button::kY)
