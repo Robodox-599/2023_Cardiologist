@@ -33,6 +33,10 @@ namespace ArmConstants {
     const int topArmMotorID = 30;
     const int topFollowerID = 31;
     const int intakeTiltMotorID = 34;
+    const int TopBrake1 = 0;
+    const int TopBrake2 = 0;
+    const int BottomBrake1 = 0;
+    const int BottomBrake2 = 0;
 
     const double kBottomGoingUpP = 8; // change this
     const double kBottomGoingUpD = 000.0; // change this
