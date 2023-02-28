@@ -14,9 +14,10 @@ command_MoveArm::command_MoveArm(subsystem_Arm *arm, std::function<double()> X, 
 
 // Called when the command is initially scheduled.
 void command_MoveArm::Initialize() {
-  m_arm->UnlockArm();
-  printf("ARM MOVING");
-  m_arm->MoveArm(m_X(), m_Y());
+  // m_arm->UnlockArm();
+  // printf("ARM MOVING");
+  // m_arm->MoveArm(m_X(), m_Y());
+  m_arm->RunBottomArmTest();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -24,12 +25,13 @@ void command_MoveArm::Execute() {}
 
 // Called once the command ends or is interrupted.
 void command_MoveArm::End(bool interrupted) {
-  if(m_arm->IsAtDesiredPosition()){
-    m_arm->LockArm();
-  }
+  // if(m_arm->IsAtDesiredPosition()){
+  //   m_arm->LockArm();
+  // }
 }
 
 // Returns true when the command should end.
 bool command_MoveArm::IsFinished() {
-  return m_arm->IsAtDesiredPosition();
+  // return m_arm->IsAtDesiredPosition();
+  return true;
 }

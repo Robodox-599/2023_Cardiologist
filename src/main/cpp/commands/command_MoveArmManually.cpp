@@ -19,24 +19,25 @@ void command_MoveArmManually::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void command_MoveArmManually::Execute()
 {
-  if (fabs(m_LeftJoystickInput()) > ControllerConstants::Deadband || fabs(m_RightJoystickInput()) > ControllerConstants::Deadband)
+  if (m_arm->IsManual())
   {
-    m_arm->UnlockArm();
-    m_arm->MoveArmManually(frc::ApplyDeadband(m_LeftJoystickInput(), ControllerConstants::Deadband), 
-                           frc::ApplyDeadband(m_RightJoystickInput(), ControllerConstants::Deadband));
-    m_Timer.Reset();
-  }
-  if (fabs(m_LeftJoystickInput()) < ControllerConstants::Deadband && fabs(m_RightJoystickInput()) < ControllerConstants::Deadband && m_Timer.Get() >= ArmConstants::ManualTimer)
-  {
-    m_arm->LockArm();
-    m_Timer.Reset();
+    if (fabs(m_LeftJoystickInput()) > ControllerConstants::Deadband || fabs(m_RightJoystickInput()) > ControllerConstants::Deadband)
+    {
+      m_arm->UnlockArm();
+      m_arm->MoveArmManually(frc::ApplyDeadband(m_LeftJoystickInput(), ControllerConstants::Deadband),
+                             frc::ApplyDeadband(m_RightJoystickInput(), ControllerConstants::Deadband));
+      m_Timer.Reset();
+    }
+    if (fabs(m_LeftJoystickInput()) < ControllerConstants::Deadband && fabs(m_RightJoystickInput()) < ControllerConstants::Deadband && m_Timer.Get() >= ArmConstants::ManualTimer)
+    {
+      m_arm->LockArm();
+      m_Timer.Reset();
+    }
   }
 }
 
 // Called once the command ends or is interrupted.
-void command_MoveArmManually::End(bool interrupted)
-{
-}
+void command_MoveArmManually::End(bool interrupted){}
 
 // Returns true when the command should end.
 bool command_MoveArmManually::IsFinished()

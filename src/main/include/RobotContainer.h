@@ -8,7 +8,6 @@
 #include <frc2/command/button/CommandXboxController.h>
 #include "Constants.h"
 #include "subsystems/subsystem_Arm.h"
-#include "commands/command_SetToZero.h"
 #include "commands/command_MoveArm.h"
 #include "commands/command_MoveArmManually.h"
 #include "subsystems/ExampleSubsystem.h"

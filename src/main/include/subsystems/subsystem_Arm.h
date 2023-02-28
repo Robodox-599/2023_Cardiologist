@@ -15,16 +15,15 @@
 #include <units/angle.h>
 #include "Constants.h"
 
-
-class subsystem_Arm : public frc2::SubsystemBase {
- public:
+class subsystem_Arm : public frc2::SubsystemBase
+{
+public:
   subsystem_Arm();
 
   double CalculateBottomArmAngle(double x, double y);
   double CalculateTopArmAngle(double x, double y);
 
   double EncoderToDegrees(double ticks);
-  double DegreesToSmartMotion(double degrees);
 
   void MoveArm(double x, double y);
   void MoveArmManually(double leftAxis, double rightAxis);
@@ -33,7 +32,10 @@ class subsystem_Arm : public frc2::SubsystemBase {
   void LockArm();
   void UnlockArm();
 
-  void SetToZero();
+  void RunBottomArmTest();
+
+  void ManualMacroSwitch();
+  bool IsManual();
 
   void SetArmPIDByDirection(double x, double y);
   void SetArmPIDByDirection(bool leftJoy, bool rightJoy);
@@ -50,7 +52,10 @@ class subsystem_Arm : public frc2::SubsystemBase {
    */
   void Periodic() override;
 
- private:
+private:
+  // double m_DesiredPos = -14.0;
+  bool m_IsManual = false;
+
   double armX = 0.0;
   double armY = 0.0;
   double adjustedX = 0.0;
@@ -65,36 +70,37 @@ class subsystem_Arm : public frc2::SubsystemBase {
   double convertedBottom;
 
   double bottomStartPos;
-  double topStartPos; 
+  double topStartPos;
 
-  double intakeAngleOffset; 
+  double intakeAngleOffset;
 
   double bottomAngle;
-  double topAngle; 
+  double topAngle;
 
   int m_TopArmSlot = 0;
   int m_BottomArmSlot = 0;
 
   rev::CANSparkMax m_BottomArmMotor;
-  rev::CANSparkMax m_BottomFollower; 
+  rev::CANSparkMax m_BottomFollower;
   rev::CANSparkMax m_TopArmMotor;
-  rev::CANSparkMax m_TopFollower; 
-  rev::CANSparkMax m_IntakeTiltMotor; 
+  rev::CANSparkMax m_TopFollower;
+  rev::CANSparkMax m_IntakeTiltMotor;
 
   rev::SparkMaxPIDController m_BottomArmPID;
   rev::SparkMaxPIDController m_TopArmPID;
-  rev::SparkMaxPIDController m_IntakeTiltPID; 
-  
+  rev::SparkMaxPIDController m_BottomFollowerPID;
+  rev::SparkMaxPIDController m_TopFollowerPID;
+  rev::SparkMaxPIDController m_IntakeTiltPID;
+
   frc::DoubleSolenoid m_TopSolenoid;
   frc::DoubleSolenoid m_BottomSolenoid;
 
-  rev::SparkMaxAbsoluteEncoder m_TopAbsEncoder;
-  rev::SparkMaxAbsoluteEncoder m_BottomAbsEncoder;
-
   rev::SparkMaxRelativeEncoder m_BottomRelEncoder;
-  rev::SparkMaxRelativeEncoder m_TopRelEncoder; 
+  rev::SparkMaxRelativeEncoder m_TopRelEncoder;
 
-  frc::DigitalInput m_BackLimitSwitch{0};
-  frc::DigitalInput m_FrontLimitSwitch{0};
+  rev::SparkMaxLimitSwitch m_BackLimit;
+  rev::SparkMaxLimitSwitch m_FrontLimit;
 
+  rev::SparkMaxRelativeEncoder m_BottomRelFollowerEncoder;
+  rev::SparkMaxRelativeEncoder m_TopRelFollowerEncoder;
 };

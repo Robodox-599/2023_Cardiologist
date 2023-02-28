@@ -14,39 +14,41 @@
  * they are needed.
  */
 namespace ArmConstants {
-    const int bottomArmMotorID = 30;
-    const int bottomFollowerID = 31;
-    const int topArmMotorID = 32;
-    const int topFollowerID = 33;
+    const int bottomArmMotorID = 32;
+    const int bottomFollowerID = 33;
+    const int topArmMotorID = 30;
+    const int topFollowerID = 31;
     const int intakeTiltMotorID = 34;
 
-    const double kBottomGoingUpP = 0.0; // change this
-    const double kBottomGoingUpD = 0.0; // change this
-    const double kBottomGoingUpF = 0.01; // change this
+    const double kBottomGoingUpP = 8; // change this
+    const double kBottomGoingUpD = 000.0; // change this
+    //  const double kBottomGoingUpF = 0.0000; // change this
 
-    const double kBottomGoingDownP = 0.0; // change this
-    const double kBottomGoingDownD = 0.0; // change this
-    const double kBottomGoingDownF = 0.0; // change this
+    const double kBottomGoingDownP = 8; // change this
+    const double kBottomGoingDownD = 000.0; // change this
+    // const double kBottomGoingDownF = 0.0000
+    ; // change this
 
-    const double kTopGoingUpP = 0.0; // change this
+    const double kTopGoingUpP = 0.01; // change this
     const double kTopGoingUpD = 0.0;  // change this
-    const double kTopGoingUpF = 0.0; // change this
+    // const double kTopGoingUpF = 0.1; // change this
 
-    const double kTopGoingDownP = 0.0; // change this
-    const double kTopGoingDownD = 0.0; // change this
-    const double kTopGoingDownF = 0.0; // change this
+    // const double kTopGoingDownP = 0.01; // change this
+    // const double kTopGoingDownD = 0.0; // change this
+    // const double kTopGoingDownF = 0.1; // change this
 
-    const double kTopMaxA = 25.0; // change this
-    const double kBottomMaxA = 25.0;// change this 
-    const double kTopMaxV = 25.0; // change this
-    const double kTopMinV = 0.0;
-    const double kBottomMaxV = 25.0; // change this
-    const double kBottomMinV = 0.0; 
-    const int ArmCurrentLimit = 5;
+    //SmartMotion constants
+    // const double kTopMaxA = 25.0; // change this
+    // const double kBottomMaxA = 25.0;// change this 
+    // const double kTopMaxV = 2500.0; // change this
+    // const double kTopMinV = 0.0;
+    // const double kBottomMaxV = 2500.0; // change this
+    // const double kBottomMinV = 0.0; 
+    const int ArmCurrentLimit = 15;
 
     const double intakeAngleConversion = 0.0;  // change this
-    const double DegreesToEncoder = 0.0; // change this
-    // const double radiansToEncoder = 0.0; // change this
+    const double DegreesToRotations = 0.4423; // change this
+    const double radiansToEncoder = 0.0; // change this
     const double AbsToRel = 16384/507 /*32.3156*/; 
     const double JoystickToArm = 0.0; // change this
 
@@ -60,7 +62,6 @@ namespace ArmConstants {
     const double bufferZone = 0.0; // change this
     constexpr units::time::second_t ManualTimer{1.0};
 
-    constexpr double DegreesToSmartMotion = (1000 / 90);
     constexpr double TicksOffset = 0.0;  // change this
     constexpr double TicksToDegrees = (0.0 / 90);  // change this
 
