@@ -26,6 +26,12 @@ RobotContainer::RobotContainer() {
                                                        [this]{return XboxDrive.GetRightBumperPressed();},
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
+
+  m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
+                        [this]{return controller.GetRawAxis(ControllerConstants::xboxLYAxis);},
+                        [this]{return controller.GetRawAxis(ControllerConstants::xboxRYAxis);}));
+  ConfigureBindings();
+
   // Configure the button bindings
   ConfigureBindings();
 }
@@ -47,11 +53,37 @@ void RobotContainer::ConfigureBindings() {
                                       [this]{return 0.0;},
                                       [this]{return 180.0;}).ToPtr());
 
+  frc2::JoystickButton(&controller, 
+                        frc::XboxController::Button::kA)
+                        .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::MidCubeX;}, [=]{return ArmConstants::MidCubeY;}).ToPtr());
 
+  frc2::JoystickButton(&controller, 
+                        frc::XboxController::Button::kX)
+                        .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::HighCubeX;}, [=]{return ArmConstants::HighCubeY;}).ToPtr());
+
+  frc2::JoystickButton(&controller, 
+                        frc::XboxController::Button::kY)
+                        .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::HighConeX;}, [=]{return ArmConstants::HighConeY;}).ToPtr());
+
+  frc2::JoystickButton(&controller, 
+                        frc::XboxController::Button::kB)
+                        .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::MidConeX;}, [=]{return ArmConstants::MidConeY;}).ToPtr());
+
+  frc2::JoystickButton(&controller, 
+                        frc::XboxController::Button::kStart)
+                        .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::SubstationX;}, [=]{return ArmConstants::SubstationY;}).ToPtr());
+
+  frc2::JoystickButton(&controller, 
+                        frc::XboxController::Button::kBack)
+                        .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::RestX;}, [=]{return ArmConstants::RestY;}).ToPtr());
+
+  frc2::JoystickButton(&controller, 
+                        frc::XboxController::Button::kRightStick)
+                        .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::GroundX;}, [=]{return ArmConstants::GroundY;}).ToPtr());
+                      
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return autos::Niemann(&m_Drive, &m_PoseTracker);
-  // return autos::TestAuto(&m_Drive, "TestPath.wpilib.json", true);
+  return autos::ExampleAuto(&m_subsystem);
 }

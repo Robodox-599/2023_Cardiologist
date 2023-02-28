@@ -20,7 +20,9 @@
 #include "commands/command_ZeroGyro.h"
 #include "commands/command_AlignToDesired.h"
 #include "commands/Autos.h"
-
+#include "subsystems/subsystem_Arm.h"
+#include "commands/command_MoveArm.h"
+#include "commands/command_MoveArmManually.h"
 #include "frc/XboxController.h"
 #include "frc2/command/button/JoystickButton.h"
 #include <frc/Joystick.h>
@@ -46,6 +48,7 @@ class RobotContainer {
   ExampleSubsystem m_subsystem;
   subsystem_DriveTrain m_Drive;
   subsystem_PoseTracker m_PoseTracker;
+  subsystem_Arm m_Arm;
 
   frc::XboxController XboxDrive{0};
 
