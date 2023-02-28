@@ -58,7 +58,7 @@ class RobotContainer {
 
 
   frc::XboxController XboxDrive{ControllerConstants::XboxDriveID};
-  frc::XboxController xboxYaperator{ControllerConstants::XboxYaperatorID};
+  frc::XboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
 
 
   frc::SendableChooser<frc2::Command*> m_Chooser;

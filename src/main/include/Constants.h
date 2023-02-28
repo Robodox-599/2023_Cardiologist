@@ -327,3 +327,38 @@ namespace AutoConstants{
                                                                                                  MaxAngularAccel}};
 }
 
+
+
+namespace IntakeConstants {
+    // Intake Motor
+    constexpr int IntakeMotorID = 4;
+    constexpr double OuttakePower = 0.3;
+    constexpr double IntakePower = -0.6;
+    // PID stuff
+    constexpr double kIntakeP = 0.1;
+    constexpr double kIntakeD = 1.0;
+    constexpr double kIntakeFF = 0.00025 / 1.6;
+    // Constant for amount of time in transitioning between wheels on and toggle clamp
+    constexpr units::second_t TimerConstant {0.2};
+    
+    constexpr int IntakePistonA = 5;
+    constexpr int IntakePistonB = 4;
+
+    // Conversion rate for velocity based on proximity
+    constexpr double ProxToVelocity = 50.0;
+
+    constexpr int CurrentLimit = 10;
+    constexpr double MaxVelocity = 30.0;
+    constexpr double kProximityP = 0.005;
+    constexpr double kProximityD = 0.0001;
+}
+
+
+
+namespace ColorConstants {
+    constexpr frc::Color PurpleTarget = frc::Color(0.202, 0.333, 0.459);
+    constexpr frc::Color YellowTarget = frc::Color(0.361, 0.524, 0.113);
+
+    constexpr double RecognitionProximity = 80.0;
+    constexpr double TargetProximity = 20.0;
+}

@@ -28,8 +28,8 @@ RobotContainer::RobotContainer() {
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
 
   m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
-                        [this]{return controller.GetRawAxis(ControllerConstants::xboxLYAxis);},
-                        [this]{return controller.GetRawAxis(ControllerConstants::xboxRYAxis);}));
+                        [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxLYAxis);},
+                        [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxRYAxis);}));
   ConfigureBindings();
 
   // Configure the button bindings
@@ -53,41 +53,41 @@ void RobotContainer::ConfigureBindings() {
                                       [this]{return 0.0;},
                                       [this]{return 180.0;}).ToPtr());
 
-  frc2::JoystickButton(&controller, 
+  frc2::JoystickButton(&XboxYaperator, 
                         frc::XboxController::Button::kA)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::MidCubeX;}, [=]{return ArmConstants::MidCubeY;}).ToPtr());
 
-  frc2::JoystickButton(&controller, 
+  frc2::JoystickButton(&XboxYaperator, 
                         frc::XboxController::Button::kX)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::HighCubeX;}, [=]{return ArmConstants::HighCubeY;}).ToPtr());
 
-  frc2::JoystickButton(&controller, 
+  frc2::JoystickButton(&XboxYaperator, 
                         frc::XboxController::Button::kY)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::HighConeX;}, [=]{return ArmConstants::HighConeY;}).ToPtr());
 
-  frc2::JoystickButton(&controller, 
+  frc2::JoystickButton(&XboxYaperator, 
                         frc::XboxController::Button::kB)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::MidConeX;}, [=]{return ArmConstants::MidConeY;}).ToPtr());
 
-  frc2::JoystickButton(&controller, 
+  frc2::JoystickButton(&XboxYaperator, 
                         frc::XboxController::Button::kStart)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::SubstationX;}, [=]{return ArmConstants::SubstationY;}).ToPtr());
 
-  frc2::JoystickButton(&controller, 
+  frc2::JoystickButton(&XboxYaperator, 
                         frc::XboxController::Button::kBack)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::RestX;}, [=]{return ArmConstants::RestY;}).ToPtr());
 
-  frc2::JoystickButton(&controller, 
+  frc2::JoystickButton(&XboxYaperator, 
                         frc::XboxController::Button::kRightStick)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::GroundX;}, [=]{return ArmConstants::GroundY;}).ToPtr());
                       
-  frc2::JoystickButton(&xbox,
+  frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kRightBumper)
                        .OnTrue(command_IntakeObject(&m_Intake).ToPtr());
-  frc2::JoystickButton(&xbox,
+  frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kLeftBumper)
                        .OnTrue(command_OuttakeObject(&m_Intake).ToPtr());
-  frc2::JoystickButton(&xbox,
+  frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kLeftStick)
                        .OnTrue(command_ToggleClamp(&m_Intake).ToPtr());
 }
