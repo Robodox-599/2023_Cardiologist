@@ -16,6 +16,7 @@
 #include <frc/trajectory/TrapezoidProfile.h>
 
 
+#include <frc/util/Color.h>
 
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
@@ -325,12 +326,4 @@ namespace AutoConstants{
                                               frc::TrapezoidProfile<units::radians>::Constraints{MaxAngularSpeed,
                                                                                                  MaxAngularAccel}};
 }
-namespace IntakeConstants {
 
-constexpr int kDriverControllerPort = 0;
-constexpr int IntakePistonLA = 0;
-constexpr int IntakePistonLB = 0;
-constexpr int IntakePistonRA = 0;
-constexpr int IntakePistonRB = 0;
-
-}  // namespace OperatorConstants

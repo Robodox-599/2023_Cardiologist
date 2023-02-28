@@ -81,9 +81,18 @@ void RobotContainer::ConfigureBindings() {
                         frc::XboxController::Button::kRightStick)
                         .OnTrue(command_MoveArm(&m_Arm, [=]{return ArmConstants::GroundX;}, [=]{return ArmConstants::GroundY;}).ToPtr());
                       
+  frc2::JoystickButton(&xbox,
+                       frc::XboxController::Button::kRightBumper)
+                       .OnTrue(command_IntakeObject(&m_Intake).ToPtr());
+  frc2::JoystickButton(&xbox,
+                       frc::XboxController::Button::kLeftBumper)
+                       .OnTrue(command_OuttakeObject(&m_Intake).ToPtr());
+  frc2::JoystickButton(&xbox,
+                       frc::XboxController::Button::kLeftStick)
+                       .OnTrue(command_ToggleClamp(&m_Intake).ToPtr());
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return autos::ExampleAuto(&m_subsystem);
+  return autos::TestAuto(&m_Drive, &m_PoseTracker);
 }

@@ -26,6 +26,12 @@
 #include "frc/XboxController.h"
 #include "frc2/command/button/JoystickButton.h"
 #include <frc/Joystick.h>
+
+#include "subsystems/subsystem_Intake.h"
+
+#include "commands/command_OuttakeObject.h"
+#include "commands/command_ToggleClamp.h"
+#include "commands/command_IntakeObject.h"
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -42,15 +48,17 @@ class RobotContainer {
 
  private:
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  frc2::CommandXboxController m_driverController{0};
 
   // The robot's subsystems are defined here...
   ExampleSubsystem m_subsystem;
   subsystem_DriveTrain m_Drive;
   subsystem_PoseTracker m_PoseTracker;
   subsystem_Arm m_Arm;
+  subsystem_Intake m_Intake;
 
-  frc::XboxController XboxDrive{0};
+
+  frc::XboxController XboxDrive{ControllerConstants::XboxDriveID};
+  frc::XboxController xboxYaperator{ControllerConstants::XboxYaperatorID};
 
 
   frc::SendableChooser<frc2::Command*> m_Chooser;

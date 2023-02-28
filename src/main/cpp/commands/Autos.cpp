@@ -8,10 +8,7 @@
 
 #include "commands/ExampleCommand.h"
 
-frc2::CommandPtr autos::ExampleAuto(ExampleSubsystem* subsystem) {
-  return frc2::cmd::Sequence(subsystem->ExampleMethodCommand(),
-                             ExampleCommand(subsystem).ToPtr());
-}
+
 
 frc2::CommandPtr autos::TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker){
   return command_DriveAuton(DriveTrain, PoseTracker, "4TC",  true).ToPtr();
