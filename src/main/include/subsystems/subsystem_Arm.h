@@ -32,7 +32,7 @@ public:
   void LockArm();
   void UnlockArm();
 
-  void RunBottomArmTest();
+  void RunBottomArmTest(double leftStick, double rightStick);
 
   void ManualMacroSwitch();
   bool IsManual();
@@ -66,6 +66,9 @@ private:
   double topPosition;
   double bottomPosition;
 
+  double skippitydooda;
+  double blippityjit;
+
   double convertedTop;
   double convertedBottom;
 
@@ -92,8 +95,8 @@ private:
   rev::SparkMaxPIDController m_TopFollowerPID;
   rev::SparkMaxPIDController m_IntakeTiltPID;
 
-  frc::DoubleSolenoid m_TopSolenoid;
-  frc::DoubleSolenoid m_BottomSolenoid;
+  // frc::DoubleSolenoid m_TopSolenoid;
+  // frc::DoubleSolenoid m_BottomSolenoid;
 
   rev::SparkMaxRelativeEncoder m_BottomRelEncoder;
   rev::SparkMaxRelativeEncoder m_TopRelEncoder;

@@ -17,7 +17,7 @@ void command_MoveArm::Initialize() {
   // m_arm->UnlockArm();
   // printf("ARM MOVING");
   // m_arm->MoveArm(m_X(), m_Y());
-  m_arm->RunBottomArmTest();
+  m_arm->RunBottomArmTest(0, 0);
 }
 
 // Called repeatedly when this Command is scheduled to run

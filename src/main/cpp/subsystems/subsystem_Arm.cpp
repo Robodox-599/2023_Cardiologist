@@ -19,9 +19,9 @@ subsystem_Arm::subsystem_Arm() : m_BottomArmMotor{ArmConstants::bottomArmMotorID
                                  m_BottomRelFollowerEncoder{m_BottomFollower.GetEncoder()},
                                  m_TopRelFollowerEncoder{m_TopFollower.GetEncoder()},
                                  m_BackLimit{m_BottomArmMotor.GetReverseLimitSwitch(rev::CANDigitalInput::LimitSwitchPolarity::kNormallyOpen)},
-                                 m_FrontLimit{m_BottomArmMotor.GetForwardLimitSwitch(rev::CANDigitalInput::LimitSwitchPolarity::kNormallyOpen)},
-                                 m_TopSolenoid{frc::PneumaticsModuleType::CTREPCM, ArmConstants::TopBrake1, ArmConstants::TopBrake2},
-                                 m_BottomSolenoid{frc::PneumaticsModuleType::CTREPCM, ArmConstants::BottomBrake1, ArmConstants::BottomBrake2}
+                                 m_FrontLimit{m_BottomArmMotor.GetForwardLimitSwitch(rev::CANDigitalInput::LimitSwitchPolarity::kNormallyOpen)}
+                                //  m_TopSolenoid{frc::PneumaticsModuleType::CTREPCM, ArmConstants::TopBrake1, ArmConstants::TopBrake2},
+                                //  m_BottomSolenoid{frc::PneumaticsModuleType::CTREPCM, ArmConstants::BottomBrake1, ArmConstants::BottomBrake2}
 {
     m_BottomArmMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     m_TopArmMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
@@ -68,6 +68,9 @@ subsystem_Arm::subsystem_Arm() : m_BottomArmMotor{ArmConstants::bottomArmMotorID
 
     // topStartPos = m_TopAbsEncoder.GetPosition();
     // bottomStartPos = m_BottomAbsEncoder.GetPosition();
+
+    m_BottomRelEncoder.SetPosition(0);
+    m_TopRelEncoder.SetPosition(0);
 }
 
 double subsystem_Arm::CalculateBottomArmAngle(double x, double y)
@@ -107,9 +110,15 @@ void subsystem_Arm::MoveArm(double x, double y)
     }
 }
 
-void subsystem_Arm::RunBottomArmTest()
+void subsystem_Arm::RunBottomArmTest(double leftStick, double rightStick)
 {
-    m_BottomArmPID.SetReference(-14.0, rev::ControlType::kSmartMotion);
+    // m_TopArmPID.SetReference(skippitydooda, rev::ControlType::kPosition, 0);
+    // m_BottomArmPID.SetReference(blippityjit, rev::ControlType::kPosition, 0);
+        m_TopArmPID.SetReference(24.5, rev::ControlType::kPosition, 0);
+    m_BottomArmPID.SetReference(-11.5, rev::ControlType::kPosition, 0);
+
+    // m_BottomArmPID.SetReference(40.0, rev::ControlType::kPosition);
+    // m_BottomArmMotor.Set(0.2);
 }
 
 void subsystem_Arm::MoveArmManually(double leftAxis, double rightAxis)
@@ -238,8 +247,17 @@ void subsystem_Arm::Periodic()
     //     m_BottomArmPID.SetReference(ArmConstants::ArmFrontLimit, rev::ControlType::kPosition);
     // }
 
+    // frc::SmartDashboard::PutNumber("Bottom Arm Degrees", 0);
+    // frc::SmartDashboard::PutNumber("Top Arm Degrees", 0);
+    skippitydooda = frc::SmartDashboard::GetNumber("Top Arm Degrees", 0);
+    blippityjit = frc::SmartDashboard::GetNumber("Bottom Arm Degrees", 0);
+
     frc::SmartDashboard::PutNumber("Bottom Arm Encoder", bottomPosition);
     frc::SmartDashboard::PutNumber("Top Arm Encoder", topPosition);
+
+    frc::SmartDashboard::PutNumber("Bottom Arm Current", m_BottomArmMotor.GetOutputCurrent());
+    frc::SmartDashboard::PutNumber("Top Arm Current", m_TopArmMotor.GetOutputCurrent());
+
 
     // frc::SmartDashboard::PutNumber("Bottom Arm Moving Up P", 0);
     // frc::SmartDashboard::PutNumber("Bottom Arm Moving Up D", 0);

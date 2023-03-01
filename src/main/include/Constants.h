@@ -24,16 +24,16 @@ namespace ArmConstants {
     const int BottomBrake1 = 0;
     const int BottomBrake2 = 0;
 
-    const double kBottomGoingUpP = 8; // change this
+    const double kBottomGoingUpP = 8.0; // change this
     const double kBottomGoingUpD = 000.0; // change this
     //  const double kBottomGoingUpF = 0.0000; // change this
 
-    const double kBottomGoingDownP = 8; // change this
+    const double kBottomGoingDownP = 8.0; // change this
     const double kBottomGoingDownD = 000.0; // change this
     // const double kBottomGoingDownF = 0.0000
     ; // change this
 
-    const double kTopGoingUpP = 0.01; // change this
+    const double kTopGoingUpP = 0.25; // change this
     const double kTopGoingUpD = 0.0;  // change this
     // const double kTopGoingUpF = 0.1; // change this
 
@@ -48,13 +48,13 @@ namespace ArmConstants {
     // const double kTopMinV = 0.0;
     // const double kBottomMaxV = 2500.0; // change this
     // const double kBottomMinV = 0.0; 
-    const int ArmCurrentLimit = 15;
+    const int ArmCurrentLimit = 12;
 
     const double intakeAngleConversion = 0.0;  // change this
     const double DegreesToRotations = 0.4423; // change this
     const double radiansToEncoder = 0.0; // change this
     const double AbsToRel = 16384/507 /*32.3156*/; 
-    const double JoystickToArm = 0.0; // change this
+    const double JoystickToArm = 1.0; // change this
 
     const double totalArmLength = 71.5;
     const double bottomJointLength = 38.0;
