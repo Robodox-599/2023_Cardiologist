@@ -1,2 +1,2 @@
-# 2023_Pathologist
-Prometheus The Pathologist-- Team 599's 2023 FRC Robot
+# 2023_Cardiologist
+Carter the Cardiologist -- Team 599's 2023 FRC Robot
