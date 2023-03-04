@@ -8,8 +8,8 @@
 #include <frc2/command/button/CommandXboxController.h>
 #include "Constants.h"
 #include "subsystems/subsystem_Arm.h"
-#include "commands/command_MoveArm.h"
 #include "commands/command_MoveArmManually.h"
+#include "commands/command_ArmInputSwitch.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "frc/XboxController.h"
 #include "frc2/command/button/JoystickButton.h"

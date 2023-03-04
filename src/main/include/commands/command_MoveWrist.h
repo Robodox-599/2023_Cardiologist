@@ -15,10 +15,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class command_MoveArm
-    : public frc2::CommandHelper<frc2::CommandBase, command_MoveArm> {
+class command_MoveWrist
+    : public frc2::CommandHelper<frc2::CommandBase, command_MoveWrist> {
  public:
-  command_MoveArm(subsystem_Arm *arm, std::function<double()> X, std::function<double()> Y);
+  command_MoveWrist(subsystem_Arm *Arm, std::function<double()> EncPosition, std::function<bool()> IsWait);
 
   void Initialize() override;
 
@@ -29,7 +29,7 @@ class command_MoveArm
   bool IsFinished() override;
 
  private:
-  subsystem_Arm *m_arm;
-  std::function<double()> m_X;
-  std::function<double()> m_Y;
+  subsystem_Arm *m_Arm;
+  std::function<double()> m_EncPosition;
+  std::function<bool()> m_IsWait;
 };

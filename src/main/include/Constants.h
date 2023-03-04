@@ -14,81 +14,120 @@
  * they are needed.
  */
 namespace ArmConstants {
-    const int bottomArmMotorID = 32;
-    const int bottomFollowerID = 33;
-    const int topArmMotorID = 30;
-    const int topFollowerID = 31;
-    const int intakeTiltMotorID = 34;
-    const int TopBrake1 = 0;
-    const int TopBrake2 = 0;
-    const int BottomBrake1 = 0;
-    const int BottomBrake2 = 0;
 
-    const double kBottomGoingUpP = 8.0; // change this
-    const double kBottomGoingUpD = 000.0; // change this
-    //  const double kBottomGoingUpF = 0.0000; // change this
+    const int PDH_ID  = 0;
 
-    const double kBottomGoingDownP = 8.0; // change this
-    const double kBottomGoingDownD = 000.0; // change this
-    // const double kBottomGoingDownF = 0.0000
-    ; // change this
+    const int ShoulderMotorID = 32;
+    const int ShoulderFollowerID = 33;
+    const int ElbowMotorID = 30;
+    const int ElbowFollowerID = 31;
+    const int WristMotorID = 34;
+    const int ElbowBrake1 = 0;
+    const int ElbowBrake2 = 0;
+    const int ShoulderBrake1 = 0;
+    const int ShoulderBrake2 = 0;
 
-    const double kTopGoingUpP = 0.25; // change this
-    const double kTopGoingUpD = 0.0;  // change this
-    // const double kTopGoingUpF = 0.1; // change this
+    const double kShoulderP = 8.0; 
+    const double kShoulderI = 0.0;
+    const double kShoulderD = 0.0; 
+    const int kShoulderSlot = 0;
+    const double kShoulderIZone = 1.0;
 
-    // const double kTopGoingDownP = 0.01; // change this
-    // const double kTopGoingDownD = 0.0; // change this
-    // const double kTopGoingDownF = 0.1; // change this
+    const double kElbowUpP = 0.04; 
+    const double kElbowUpI = 0.0005;
+    const double kElbowUpD = 0.0; 
+    const int kElbowUpSlot = 0;
 
-    //SmartMotion constants
-    // const double kTopMaxA = 25.0; // change this
-    // const double kBottomMaxA = 25.0;// change this 
-    // const double kTopMaxV = 2500.0; // change this
-    // const double kTopMinV = 0.0;
-    // const double kBottomMaxV = 2500.0; // change this
-    // const double kBottomMinV = 0.0; 
+    const double kElbowDownP = 0.05;
+    const double kElbowDownI = 0.0;
+    const double kElbowDownD = 0.0; 
+    const int kElbowDownSlot = 1;
+    const double kElbowIZone = 1.0;
+
+    const double kWristP = 1.0;
+    const double kWristI = 0.0;
+    const double kWristD = 0.0;
+
+    // SmartMotion constants
+    const double kElbowSmartMotionP = 0.0001;
+    const double kElbowSmartMotionD = 0.0;
+    const double kElbowSmartMotionFF = 0.03;
+    const double kElbowMaxA = 80.0; 
+    const double kElbowMaxV = 80.0; 
+    const double kElbowMinV = 0.0;
+    const double kShoulderMaxA = 25.0; 
+    const double kShoulderMaxV = 2500.0; 
+    const double kShoulderMinV = 0.0; 
     const int ArmCurrentLimit = 12;
+    const int DownwardElbowCurrentLimit = 3;
 
-    const double intakeAngleConversion = 0.0;  // change this
-    const double DegreesToRotations = 0.4423; // change this
-    const double radiansToEncoder = 0.0; // change this
-    const double AbsToRel = 16384/507 /*32.3156*/; 
-    const double JoystickToArm = 1.0; // change this
+    const double intakeAngleConversion = 0.0;  
+    const double DegreesToRotations = 0.4423; 
+    const double radiansToEncoder = 0.0; 
+    const double AbsToRel = 16384/507; 
+    const double JoystickToArm = 1.0; 
 
+    //units are in meters
     const double totalArmLength = 71.5;
-    const double bottomJointLength = 38.0;
-    const double topJointLength = 33.5;
+    const double ShoulderJointLength = 0.965;
+    const double ElbowJointLength = 0.838;
+    const double IntakeJointLength = 0.371;
 
-    const double xOriginAdjustment = 0.0; // change this
-    const double yOriginAdjustment = 0.0; // change this
+    //units are in kg
+    const double ShoulderJointMass = 3.896;
+    const double ElbowJointMass = 2.22;
+    const double IntakeJointMass = 3.18;
 
-    const double bufferZone = 0.0; // change this
+    const double xOriginAdjustment = 0.0; 
+    const double yOriginAdjustment = 0.0; 
+
+    const double bufferZone = 0.1; 
     constexpr units::time::second_t ManualTimer{1.0};
 
-    constexpr double TicksOffset = 0.0;  // change this
-    constexpr double TicksToDegrees = (0.0 / 90);  // change this
+    constexpr double TicksOffset = 0.0;  
+    constexpr double TicksToDegrees = (0.0 / 90);  
 
     constexpr double HighConeX = 0.0;
     constexpr double HighConeY = 0.0;
+    constexpr double HighConeShoulder = -16.0;
+    constexpr double HighConeElbow = 33.2;
+    constexpr double HighConeTilt = 2.0;
 
     constexpr double MidConeX = 0.0;
     constexpr double MidConeY = 0.0;
+    constexpr double MidConeShoulder = -8.1;
+    constexpr double MidConeElbow = 21.5;
+    constexpr double MidConeTilt = 2.0;
 
     constexpr double HighCubeX = 0.0;
     constexpr double HighCubeY = 0.0;
+    constexpr double HighCubeShoulder = -11.5;
+    constexpr double HighCubeElbow = 24.5;
+    constexpr double HighCubeTilt = 0.0;
 
     constexpr double MidCubeX = 0.0;
     constexpr double MidCubeY = 0.0;
+    constexpr double MidCubeShoulder = -3.0;
+    constexpr double MidCubeElbow = 14.0;
+    constexpr double MidCubeTilt = 0.0;
 
     constexpr double RestX = 0.0;
     constexpr double RestY = 0.0;
+    constexpr double StowShoulder = -1.0;
+    constexpr double StowElbow = 1.0;
+    constexpr double StowTilt = 0.0;
 
     constexpr double SubstationX = 0.0;
     constexpr double SubstationY = 0.0;
+    constexpr double SubstationShoulder = 0.0;
+    constexpr double SubstationElbow = 25.5;
+    constexpr double SubstationTilt = 0.0;
 
     constexpr double GroundX = 0.0;
     constexpr double GroundY = 0.0;
+    constexpr double GroundShoulder = -26.8;
+    constexpr double GroundElbow = -14.5; 
+    constexpr double GroundTilt = 0.0; 
 
     constexpr double ArmBackLimit = 0.0;
     constexpr double ArmFrontLimit = 0.0;
