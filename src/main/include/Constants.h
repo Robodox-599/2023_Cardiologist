@@ -68,7 +68,7 @@ namespace ArmConstants {
     const double JoystickToArm = 1.0; 
 
     //units are in meters
-    const double totalArmLength = 71.5;
+    // const double totalArmLength = 71.5;
     const double ShoulderJointLength = 0.965;
     const double ElbowJointLength = 0.838;
     const double IntakeJointLength = 0.371;

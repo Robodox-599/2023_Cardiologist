@@ -10,11 +10,12 @@
 
 namespace ArmMovements
 {
-  frc2::CommandPtr StowToHighCone(subsystem_Arm *Arm);
-  frc2::CommandPtr StowToMidCone(subsystem_Arm *Arm);
-  frc2::CommandPtr StowToHighCube(subsystem_Arm *Arm);
-  frc2::CommandPtr StowToMidCube(subsystem_Arm *Arm);
-  frc2::CommandPtr StowToSubstation(subsystem_Arm *Arm);
+  frc2::CommandPtr ToHighCone(subsystem_Arm *Arm);
+  frc2::CommandPtr ToMidCone(subsystem_Arm *Arm);
+  frc2::CommandPtr ToHighCube(subsystem_Arm *Arm);
+  frc2::CommandPtr ToMidCube(subsystem_Arm *Arm);
+  frc2::CommandPtr ToSubstation(subsystem_Arm *Arm);
   frc2::CommandPtr ToStow(subsystem_Arm *Arm);
+  frc2::CommandPtr ToGround(subsystem_Arm *Arm);
 
 }

@@ -19,18 +19,44 @@ RobotContainer::RobotContainer(){
   ConfigureBindings();
 }
 
-//hellllllloooooooooooooooooooooooooo
-
 void RobotContainer::ConfigureBindings() {
-//   frc2::JoystickButton(&controller, 
-//                         frc::XboxController::Button::kA)
-//                         .OnTrue(command_MoveArm(&m_Arm, 
-//                         [=]{return ArmConstants::MidCubeShoulder;}, 
-//                         [=]{return ArmConstants::MidCubeElbow;},
-//                         [=]{return ArmConstants::MidCubeTilt;}).ToPtr());
+
+  frc2::JoystickButton(&controller, 
+                       frc::XboxController::Button::kA)
+                       .OnTrue(ArmMovements::ToMidCube(&m_Arm));
+
+  frc2::JoystickButton(&controller, 
+                       frc::XboxController::Button::kX)
+                       .OnTrue(ArmMovements::ToHighCube(&m_Arm));
+                  
+  frc2::JoystickButton(&controller, 
+                       frc::XboxController::Button::kY)
+                       .OnTrue(ArmMovements::ToHighCone(&m_Arm));
+
+  frc2::JoystickButton(&controller, 
+                       frc::XboxController::Button::kB)
+                       .OnTrue(ArmMovements::ToMidCone(&m_Arm));
+
+  frc2::JoystickButton(&controller, 
+                       frc::XboxController::Button::kStart)
+                       .OnTrue(ArmMovements::ToSubstation(&m_Arm));
+
+  frc2::JoystickButton(&controller, 
+                       frc::XboxController::Button::kBack)
+                       .OnTrue(ArmMovements::ToStow(&m_Arm));
+
+  frc2::JoystickButton(&controller, 
+                       frc::XboxController::Button::kRightStick)
+                       .OnTrue(ArmMovements::ToGround(&m_Arm));
+
+  // frc2::JoystickButton(&controller, 
+  //                       frc::XboxController::Button::kA)
+  //                       .OnTrue(command_MoveArm(&m_Arm, 
+  //                       [=]{return ArmConstants::MidCubeShoulder;}, 
+  //                       [=]{return ArmConstants::MidCubeElbow;},
+  //                       [=]{return ArmConstants::MidCubeTilt;}).ToPtr());
 
 //   frc2::JoystickButton(&controller, 
-                
 //                         frc::XboxController::Button::kX)
 //                         .OnTrue(command_MoveArm(&m_Arm, 
 //                         [=]{return ArmConstants::HighCubeShoulder;}, 
@@ -85,8 +111,3 @@ void RobotContainer::ConfigureBindings() {
 //                         .OnTrue(command_ArmInputSwitch(&m_Arm).ToPtr());
             
  }
-
-frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return autos::ExampleAuto(&m_subsystem);
-}

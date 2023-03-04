@@ -10,6 +10,7 @@
 #include "subsystems/subsystem_Arm.h"
 #include "commands/command_MoveArmManually.h"
 #include "commands/command_ArmInputSwitch.h"
+#include "commands/cGroup_Arm.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "frc/XboxController.h"
 #include "frc2/command/button/JoystickButton.h"
@@ -34,7 +35,5 @@ class RobotContainer {
   subsystem_Arm m_Arm;
 
   // The robot's subsystems are defined here...
-  ExampleSubsystem m_subsystem;
-
   void ConfigureBindings();
 };
