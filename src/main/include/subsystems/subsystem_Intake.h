@@ -47,7 +47,7 @@ class subsystem_Intake : public frc2::SubsystemBase {
 
   bool m_IsOpen = true;
 
-  double m_DesiredVelocity = 0.0;
+  double m_DesiredOutput = 0.0;
 
   // Color Sensor stuff
   rev::ColorSensorV3 m_ColorSensor;

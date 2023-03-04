@@ -4,9 +4,13 @@
 
 #include "commands/command_MoveArmManually.h"
 
-command_MoveArmManually::command_MoveArmManually(subsystem_Arm *arm, std::function<double()> leftJoystick, std::function<double()> rightJoystick) : m_arm{arm},
-                                                                                                                                                    m_LeftJoystickInput{leftJoystick},
-                                                                                                                                                    m_RightJoystickInput{rightJoystick}
+command_MoveArmManually::command_MoveArmManually(subsystem_Arm *arm,
+                                                 std::function<double()> leftJoystick,
+                                                 std::function<double()> rightJoystick,
+                                                 std::function<double()> triggers) : m_arm{arm},
+                                                                                     m_LeftJoystickInput{leftJoystick},
+                                                                                     m_RightJoystickInput{rightJoystick},
+                                                                                     m_TriggerInput{triggers}
 {
   AddRequirements({m_arm});
 }
@@ -14,33 +18,41 @@ command_MoveArmManually::command_MoveArmManually(subsystem_Arm *arm, std::functi
 // Called when the command is initially scheduled.
 void command_MoveArmManually::Initialize()
 {
-  m_Timer.Start();
+  // m_Timer.Start();
 }
 // Called repeatedly when this Command is scheduled to run
 void command_MoveArmManually::Execute()
 {
-  if (m_arm->IsManual())
+  isDone = false;
+  if (fabs(m_TriggerInput()) > ControllerConstants::Deadband)
   {
-    if (fabs(m_LeftJoystickInput()) > ControllerConstants::Deadband || fabs(m_RightJoystickInput()) > ControllerConstants::Deadband)
-    {
-      // m_arm->UnlockArm();
-      m_arm->MoveArmManually(frc::ApplyDeadband(m_LeftJoystickInput(), ControllerConstants::Deadband),
-                             frc::ApplyDeadband(m_RightJoystickInput(), ControllerConstants::Deadband));
-      m_Timer.Reset();
-    }
-    if (fabs(m_LeftJoystickInput()) < ControllerConstants::Deadband && fabs(m_RightJoystickInput()) < ControllerConstants::Deadband && m_Timer.Get() >= ArmConstants::ManualTimer)
-    {
-      // m_arm->LockArm();
-      m_Timer.Reset();
-    }
+    m_arm->TiltWristManually(m_TriggerInput());
+  }
+  if (fabs(m_LeftJoystickInput()) > ControllerConstants::Deadband)
+  {
+    // m_arm->UnlockArm();
+    m_arm->RunArmManualTest(m_LeftJoystickInput(), 0.0);
+    m_Timer.Reset();
+  }
+  if (fabs(m_RightJoystickInput()) > ControllerConstants::Deadband)
+  {
+    // m_arm->UnlockArm();
+    m_arm->RunArmManualTest(0.0, m_RightJoystickInput());
+    m_Timer.Reset();
+  }
+  if (fabs(m_LeftJoystickInput()) < ControllerConstants::Deadband && fabs(m_RightJoystickInput()) < ControllerConstants::Deadband && m_Timer.Get() >= ArmConstants::ManualTimer)
+  {
+    // m_arm->LockArm();
+    isDone = true;
+    m_Timer.Reset();
   }
 }
 
 // Called once the command ends or is interrupted.
-void command_MoveArmManually::End(bool interrupted){}
+void command_MoveArmManually::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool command_MoveArmManually::IsFinished()
 {
-  return false;
+  return isDone;
 }

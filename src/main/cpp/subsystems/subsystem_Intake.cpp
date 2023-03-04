@@ -36,17 +36,18 @@ bool subsystem_Intake::IsIntakeOpen() {
     return m_IsOpen;
 }
 
+
 void subsystem_Intake::SetIntakeWheelsOn(bool IsIntakeDirection) {
     if(IsIntakeDirection) {
-        m_DesiredVelocity = m_ProximityPID.Calculate(m_CurrentProximity);
-        // m_DesiredVelocity = IntakeConstants::IntakePower / m_CurrentProximity * IntakeConstants::ProxToVelocity;
+        m_DesiredOutput = m_ProximityPID.Calculate(m_CurrentProximity);
+        // m_DesiredOutput = IntakeConstants::IntakePower / m_CurrentProximity * IntakeConstants::ProxToVelocity;
         // Power / Current Proximity (so that speed of wheels decrease as object is closer)
-        m_IntakeMotor.Set(m_DesiredVelocity);
-        //m_IntakeMotorPID.SetReference(-m_DesiredVelocity, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+        m_IntakeMotor.Set(m_DesiredOutput);
+        //m_IntakeMotorPID.SetReference(-m_DesiredOutput, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
     } else {
-        m_DesiredVelocity = IntakeConstants::OuttakePower;
-        m_IntakeMotor.Set(m_DesiredVelocity);
-        //m_IntakeMotorPID.SetReference(m_DesiredVelocity, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+        m_DesiredOutput = IntakeConstants::OuttakePower;
+        m_IntakeMotor.Set(m_DesiredOutput);
+        //m_IntakeMotorPID.SetReference(m_DesiredOutput, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
     }
 }
 
@@ -61,7 +62,6 @@ std::string subsystem_Intake::GetCurrentState() {
 double subsystem_Intake::GetCurrentProximity() {
     return m_CurrentProximity;
 }
-
 // This method will be called once per scheduler run
 void subsystem_Intake::Periodic() {
     
@@ -88,6 +88,7 @@ void subsystem_Intake::Periodic() {
     } else {
         InstStateStr = "Empty";
     }
+    
 
     // Enum stuff
     if(m_PreviousColor != m_CurrentColor) {
@@ -102,7 +103,7 @@ void subsystem_Intake::Periodic() {
     m_ColorChangeCount++;
 
     // Display encoder info
-    frc::SmartDashboard::PutNumber("Desired Velocity", m_DesiredVelocity);
+    frc::SmartDashboard::PutNumber("Desired Output", m_DesiredOutput);
     frc::SmartDashboard::PutNumber("Actual Velocity", m_IntakeEncoder.GetVelocity());
 
     // Display Color Sensor info to SmartDashboard

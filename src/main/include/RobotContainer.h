@@ -13,6 +13,7 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
+ 
 
 #include "subsystems/subsystem_DriveTrain.h"
 #include "commands/command_DriveTeleop.h"
@@ -21,8 +22,10 @@
 #include "commands/command_AlignToDesired.h"
 #include "commands/Autos.h"
 #include "subsystems/subsystem_Arm.h"
-#include "commands/command_MoveArm.h"
 #include "commands/command_MoveArmManually.h"
+#include "commands/command_ArmInputSwitch.h"
+#include "commands/cGroup_Arm.h"
+#include "subsystems/ExampleSubsystem.h"
 #include "frc/XboxController.h"
 #include "frc2/command/button/JoystickButton.h"
 #include <frc/Joystick.h>
