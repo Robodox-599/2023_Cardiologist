@@ -37,8 +37,8 @@ bool subsystem_Intake::IsIntakeOpen() {
 }
 
 
-void subsystem_Intake::SetIntakeWheelsOn(bool IsIntakeDirection) {
-    if(IsIntakeDirection) {
+void subsystem_Intake::SetIntakeWheelsOutput(bool IsIntaking) {
+    if(IsIntaking) {
         m_DesiredOutput = m_ProximityPID.Calculate(m_CurrentProximity);
         // m_DesiredOutput = IntakeConstants::IntakePower / m_CurrentProximity * IntakeConstants::ProxToVelocity;
         // Power / Current Proximity (so that speed of wheels decrease as object is closer)
@@ -55,7 +55,7 @@ void subsystem_Intake::SetIntakeWheelsOff() {
     m_IntakeMotor.Set(0.0);
 }
 
-std::string subsystem_Intake::GetCurrentState() {
+IntakeConstants::State subsystem_Intake::GetCurrentState() {
     return m_CurrentState;
 }
 
@@ -77,16 +77,16 @@ void subsystem_Intake::Periodic() {
     frc::Color MatchedColor = m_ColorMatcher.MatchClosestColor(m_CurrentColor, Confidence);
 
     // Checking Instantaneous State (sets instant state to whatever it detects at the moment)
-    std::string InstStateStr;
+    IntakeConstants::State InstStateStr;
 
     if(m_CurrentProximity <= ColorConstants::RecognitionProximity) {
         if(MatchedColor == ColorConstants::PurpleTarget) {
-            InstStateStr = "Purple";
+            InstStateStr = IntakeConstants::State::Purple;
         } else if(MatchedColor == ColorConstants::YellowTarget) {
-            InstStateStr = "Yellow";
+            InstStateStr = IntakeConstants::State::Yellow;
         }
     } else {
-        InstStateStr = "Empty";
+        InstStateStr = IntakeConstants::State::Nothing;
     }
     
 
@@ -112,5 +112,5 @@ void subsystem_Intake::Periodic() {
     frc::SmartDashboard::PutNumber("Red", m_CurrentColor.red);
     frc::SmartDashboard::PutNumber("Green", m_CurrentColor.green);
     frc::SmartDashboard::PutNumber("Blue", m_CurrentColor.blue);
-    frc::SmartDashboard::PutString("Current State", m_CurrentState);
+    frc::SmartDashboard::PutNumber("Current State", m_CurrentState);
 }

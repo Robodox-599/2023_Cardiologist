@@ -23,10 +23,10 @@ class subsystem_Intake : public frc2::SubsystemBase {
   void IntakeClose();
   void IntakeOpen();
   bool IsIntakeOpen();
-  void SetIntakeWheelsOn(bool IsIntakeDirection);
+  void SetIntakeWheelsOutput(bool IsIntaking);
   void SetIntakeWheelsOff();
 
-  std::string GetCurrentState();
+  IntakeConstants::State GetCurrentState();
   double GetCurrentProximity();
 
   /**
@@ -57,7 +57,9 @@ class subsystem_Intake : public frc2::SubsystemBase {
   frc::Color m_PreviousColor = frc::Color(0.0, 0.0, 0.0);
   int m_ColorChangeCount = 0;
   double m_CurrentProximity = 0;
-  std::string m_CurrentState = "Nothing";
+  IntakeConstants::State m_CurrentState = IntakeConstants::State::Nothing;
+
+
 
   frc::PIDController m_ProximityPID;
 };

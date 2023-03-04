@@ -13,15 +13,15 @@ command_OuttakeObject::command_OuttakeObject(subsystem_Intake* intake) : m_Intak
 void command_OuttakeObject::Initialize() {
   m_Timer.Reset();
   m_Timer.Start();
-  if(m_Intake->GetCurrentState() == "Purple"){
-    m_Intake->SetIntakeWheelsOn(false);
+  if(m_Intake->GetCurrentState() == IntakeConstants::State::Purple){
+    m_Intake->SetIntakeWheelsOutput(false);
   }
   m_Intake->IntakeOpen();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void command_OuttakeObject::Execute() {
-  if(m_Intake->GetCurrentState() != "Empty") {
+  if(m_Intake->GetCurrentState() != IntakeConstants::State::Nothing) {
     m_Timer.Reset();
     m_Timer.Start();
   }

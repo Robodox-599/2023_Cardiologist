@@ -394,6 +394,12 @@ namespace IntakeConstants {
     constexpr double MaxVelocity = 30.0;
     constexpr double kProximityP = 0.005;
     constexpr double kProximityD = 0.0001;
+
+    enum State{
+        Purple = 0,
+        Yellow =1,
+        Nothing = 2
+    };
 }
 
 
