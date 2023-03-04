@@ -25,6 +25,7 @@ class command_MoveArmManually
  private:
   subsystem_Arm *m_arm;
   frc::Timer m_Timer;
+  bool isDone = false;
   std::function<double()> m_LeftJoystickInput;
   std::function<double()> m_RightJoystickInput;
   std::function<double()> m_TriggerInput;
