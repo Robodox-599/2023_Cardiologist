@@ -26,13 +26,13 @@ frc2::CommandPtr ArmMovements::ToMidCube(subsystem_Arm *Arm){
 }
 frc2::CommandPtr ArmMovements::ToSubstation(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return ArmConstants::SubstationElbow;}, [=]{return true;}).ToPtr(),
-                             command_MoveShoulder(Arm, [=]{return ArmConstants::SubstationShoulder;}, [=]{return true;}).ToPtr(),
+                             command_MoveShoulder(Arm, [=]{return ArmConstants::SubstationShoulder;}, [=]{return false;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::SubstationTilt;}, [=]{return false;}).ToPtr());
 }
 
-frc2::CommandPtr ArmMovements::ToSubstation(subsystem_Arm *Arm){
-  return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return ArmConstants::StowElbow;}, [=]{return true;}).ToPtr(),
-                             command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return false;}).ToPtr(),
+frc2::CommandPtr ArmMovements::ToStow(subsystem_Arm *Arm){
+  return frc2::cmd::Sequence(command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return true;}).ToPtr(),
+                             command_MoveElbow(Arm, [=]{return ArmConstants::StowElbow;}, [=]{return false;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::StowTilt;}, [=]{return false;}).ToPtr());
 }
 

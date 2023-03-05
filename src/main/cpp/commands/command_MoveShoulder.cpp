@@ -17,26 +17,31 @@ command_MoveShoulder::command_MoveShoulder(subsystem_Arm *Arm, std::function<dou
 void command_MoveShoulder::Initialize() {
   // m_arm->UnlockArm();
   // m_arm->MoveArm(m_X(), m_Y());
+  m_Timer.Start();
   m_Arm->SetShoulderByPosition(m_EncPosition());
 }
 
 // Called repeatedly when this Command is scheduled to run
 void command_MoveShoulder::Execute() {
+  if(!m_Arm->IsShoulderAtDesiredPosition()){
+    m_Timer.Reset();
+  }
+
 }
 
 // Called once the command ends or is interrupted.
 void command_MoveShoulder::End(bool interrupted) {
-  // if(m_arm->IsAtDesiredPosition()){
-  //   m_arm->LockArm();
-  // }
+
 }
 
 // Returns true when the command should end.
 bool command_MoveShoulder::IsFinished() {
   // return m_arm->IsAtDesiredPosition();
-  if(m_IsWait()){
-    return m_Arm->IsShoulderAtDesiredPosition();
+  if(m_IsWait() && m_Timer.Get() < ArmConstants::ManualTimer){
+    return false; 
   }else{
     return true;
   }
+
+  
 }

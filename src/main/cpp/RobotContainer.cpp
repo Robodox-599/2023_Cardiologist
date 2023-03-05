@@ -10,8 +10,6 @@
 #include "commands/ExampleCommand.h"
 
 RobotContainer::RobotContainer(){
-
-  
   m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
                         [this]{return controller.GetRawAxis(ControllerConstants::xboxLYAxis);},
                         [this]{return controller.GetRawAxis(ControllerConstants::xboxRYAxis);},

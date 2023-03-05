@@ -79,9 +79,9 @@ private:
   double ShoulderPosition;
   double WristPosition; 
 
-  double DesiredElbowPosition;
-  double DesiredShoulderPosition;
-  double DesiredWristPostion;
+  double DesiredElbowPosition = 3.5;
+  double DesiredShoulderPosition = 0.0;
+  double DesiredWristPostion = -20.925;
 
   double convertedElbow;
   double convertedShoulder;

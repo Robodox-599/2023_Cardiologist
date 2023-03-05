@@ -27,14 +27,14 @@ namespace ArmConstants {
     const int ShoulderBrake1 = 0;
     const int ShoulderBrake2 = 0;
 
-    const double kShoulderP = 8.0; 
-    const double kShoulderI = 0.0;
+    const double kShoulderP = 1.5; 
+    const double kShoulderI = 0.008;
     const double kShoulderD = 0.0; 
     const int kShoulderSlot = 0;
     const double kShoulderIZone = 1.0;
 
-    const double kElbowUpP = 0.04; 
-    const double kElbowUpI = 0.0005;
+    const double kElbowUpP = 0.08; 
+    const double kElbowUpI = 0.0001;
     const double kElbowUpD = 0.0; 
     const int kElbowUpSlot = 0;
 
@@ -70,7 +70,7 @@ namespace ArmConstants {
     //units are in meters
     // const double totalArmLength = 71.5;
     const double ShoulderJointLength = 0.965;
-    const double ElbowJointLength = 0.838;
+    const double ElbowJointLength = 0.8507;
     const double IntakeJointLength = 0.371;
 
     //units are in kg
@@ -81,8 +81,8 @@ namespace ArmConstants {
     const double xOriginAdjustment = 0.0; 
     const double yOriginAdjustment = 0.0; 
 
-    const double bufferZone = 0.1; 
-    constexpr units::time::second_t ManualTimer{1.0};
+    const double bufferZone = 1; 
+    constexpr units::time::second_t ManualTimer{0.1};
 
     constexpr double TicksOffset = 0.0;  
     constexpr double TicksToDegrees = (0.0 / 90);  
@@ -115,11 +115,11 @@ namespace ArmConstants {
     constexpr double RestY = 0.0;
     constexpr double StowShoulder = -1.0;
     constexpr double StowElbow = 1.0;
-    constexpr double StowTilt = 0.0;
+    constexpr double StowTilt = 10.5;
 
     constexpr double SubstationX = 0.0;
     constexpr double SubstationY = 0.0;
-    constexpr double SubstationShoulder = 0.0;
+    constexpr double SubstationShoulder = 1.3;
     constexpr double SubstationElbow = 25.5;
     constexpr double SubstationTilt = 0.0;
 

@@ -17,11 +17,15 @@ command_MoveElbow::command_MoveElbow(subsystem_Arm *Arm,  std::function<double()
 void command_MoveElbow::Initialize() {
   // m_arm->UnlockArm();
   // m_arm->MoveArm(m_X(), m_Y());
+  m_Timer.Start();
+  m_Arm->SetElbowByPosition(m_EncPosition());
 }
 
 // Called repeatedly when this Command is scheduled to run
 void command_MoveElbow::Execute() {
-  // m_arm->RunArmTest(m_X(), m_Y(), m_Tilt());
+  if(!m_Arm->IsElbowAtDesiredPosition()){
+    m_Timer.Reset();
+  }
 }
 
 // Called once the command ends or is interrupted.
@@ -34,5 +38,9 @@ void command_MoveElbow::End(bool interrupted) {
 // Returns true when the command should end.
 bool command_MoveElbow::IsFinished() {
   // return m_arm->IsAtDesiredPosition();
-  return false;
+  if(m_IsWait() && m_Timer.Get() < ArmConstants::ManualTimer){
+    return false; 
+  }else{
+    return true;
+  }
 }
