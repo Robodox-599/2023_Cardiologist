@@ -44,8 +44,8 @@ class command_DriveTeleop
   std::function<double()> m_xSpeed;
   std::function<double()> m_ySpeed;
   std::function<double()> m_zRotation;
-  std::function<bool()> m_IsOrientBack;
   std::function<bool()> m_IsOrientFront;
+  std::function<bool()> m_IsOrientBack;
   std::function<bool()> m_FieldRelative;
   std::function<bool()> m_OpenLoop;
 };

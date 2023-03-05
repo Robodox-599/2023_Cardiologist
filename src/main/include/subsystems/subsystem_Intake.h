@@ -13,6 +13,7 @@
 #include <rev/ColorSensorV3.h>
 #include <rev/ColorMatch.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/DriverStation.h>
 
 #include <frc/controller/PIDController.h>
 
@@ -25,9 +26,14 @@ class subsystem_Intake : public frc2::SubsystemBase {
   bool IsIntakeOpen();
   void SetIntakeWheelsOutput(bool IsIntaking);
   void SetIntakeWheelsOff();
+  void SetHighCubeDynamicVelocity(units::meter_t Distance);
+  void SetMidCubeDynamicVelocity(units::meter_t Distance);
 
   IntakeConstants::State GetCurrentState();
+
   double GetCurrentProximity();
+
+  void SetVelocity(double velocity);
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -59,7 +65,8 @@ class subsystem_Intake : public frc2::SubsystemBase {
   double m_CurrentProximity = 0;
   IntakeConstants::State m_CurrentState = IntakeConstants::State::Nothing;
 
-
-
   frc::PIDController m_ProximityPID;
+
+
+
 };

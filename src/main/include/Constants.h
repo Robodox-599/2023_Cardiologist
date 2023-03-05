@@ -149,6 +149,7 @@ namespace ArmConstants {
 
 namespace ControllerConstants{
     constexpr double Deadband = 0.1;
+    constexpr double TriggerActivate = 0.8;
     
     constexpr int XboxDriveID = 0;
     constexpr int XboxYaperatorID = 1;
@@ -379,13 +380,14 @@ namespace IntakeConstants {
     constexpr double IntakePower = -0.6;
     // PID stuff
     constexpr double kIntakeP = 0.1;
+    constexpr double kIntakeI = 0.0; 
     constexpr double kIntakeD = 1.0;
     constexpr double kIntakeFF = 0.00025 / 1.6;
     // Constant for amount of time in transitioning between wheels on and toggle clamp
     constexpr units::second_t TimerConstant {0.2};
     
-    constexpr int IntakePistonA = 5;
-    constexpr int IntakePistonB = 4;
+    constexpr int IntakePistonA = 0;
+    constexpr int IntakePistonB = 1;
 
     // Conversion rate for velocity based on proximity
     constexpr double ProxToVelocity = 50.0;
@@ -394,6 +396,10 @@ namespace IntakeConstants {
     constexpr double MaxVelocity = 30.0;
     constexpr double kProximityP = 0.005;
     constexpr double kProximityD = 0.0001;
+
+    constexpr units::meter_t CenterToStowedIntake{0.0};
+    constexpr units::meter_t DistanceToMidCube{30.45_in};
+    constexpr units::meter_t DistanceToHighCube{13.76_in};
 
     enum State{
         Purple = 0,
