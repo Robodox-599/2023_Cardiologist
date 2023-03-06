@@ -37,7 +37,10 @@ frc2::CommandPtr ArmMovements::ToStow(subsystem_Arm *Arm){
 }
 
 frc2::CommandPtr ArmMovements::ToGround(subsystem_Arm *Arm){
-  return frc2::cmd::Sequence(command_MoveShoulder(Arm, [=]{return ArmConstants::GroundShoulder;}, [=]{return false;}).ToPtr(),
-                             command_MoveElbow(Arm, [=]{return ArmConstants::GroundElbow;}, [=]{return false;}).ToPtr(),
-                             command_MoveWrist(Arm, [=]{return ArmConstants::GroundTilt;}, [=]{return false;}).ToPtr());
+  return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return ArmConstants::TempElbow;}, [=]{return true;}).ToPtr(),
+                             command_MoveShoulder(Arm, [=]{return ArmConstants::GroundShoulder;}, [=]{return false;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return ArmConstants::GroundTilt;}, [=]{return false;}).ToPtr(),
+                             command_MoveElbow(Arm, [=]{return ArmConstants::GroundElbow;}, [=]{return false;}).ToPtr());
 }
+
+

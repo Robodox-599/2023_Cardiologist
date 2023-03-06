@@ -14,7 +14,7 @@ subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMoto
 {
     // m_IntakeMotor.SetSmartCurrentLimit(IntakeConstants::CurrentLimit);
     // m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
-    m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
     // m_IntakeMotorPID.SetP(IntakeConstants::kIntakeP);
     // m_IntakeMotorPID.SetI(IntakeConstants::kIntakeI);
     // m_IntakeMotorPID.SetD(IntakeConstants::kIntakeD);
@@ -48,13 +48,13 @@ void subsystem_Intake::SetIntakeWheelsOutput(bool IsIntaking)
         m_DesiredOutput = m_ProximityPID.Calculate(m_CurrentProximity);
         // m_DesiredOutput = IntakeConstants::IntakePower / m_CurrentProximity * IntakeConstants::ProxToVelocity;
         // Power / Current Proximity (so that speed of wheels decrease as object is closer)
-        m_IntakeMotor.Set(m_DesiredOutput);
+        // m_IntakeMotor.Set(m_DesiredOutput);
         // m_IntakeMotorPID.SetReference(-m_DesiredOutput, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
     }
     else
     {
         m_DesiredOutput = IntakeConstants::OuttakePower;
-        m_IntakeMotor.Set(m_DesiredOutput);
+        // m_IntakeMotor.Set(m_DesiredOutput);
         // m_IntakeMotorPID.SetReference(m_DesiredOutput, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
     }
 }
@@ -65,7 +65,12 @@ IntakeConstants::State subsystem_Intake::GetCurrentState(){
 
 void subsystem_Intake::SetIntakeWheelsOff()
 {
-    m_IntakeMotor.Set(0.0);
+    m_DesiredOutput = 0.0;
+    
+}
+
+void subsystem_Intake::SetIntakeWheelsPassive(){
+    m_DesiredOutput = IntakeConstants::PassivePower;
 }
 
 
@@ -74,31 +79,26 @@ double subsystem_Intake::GetCurrentProximity()
     return m_CurrentProximity;
 }
 
-void subsystem_Intake::SetVelocity(double velocity)
+void subsystem_Intake::SetHighCubeStaticVelocity()
 {
-    m_IntakeMotorPID.SetReference(velocity, rev::ControlType::kVelocity);
+    m_IntakeMotorPID.SetReference(6000, rev::ControlType::kVelocity, 0, 6.0);
+
 }
 
-void subsystem_Intake::SetHighCubeDynamicVelocity(units::meter_t YBotPosition)
+void subsystem_Intake::SetMidCubeStaticVelocity()
 {
-    units::meter_t DistanceFromTarget = YBotPosition - IntakeConstants::CenterToStowedIntake - IntakeConstants::DistanceToHighCube;
+    m_IntakeMotorPID.SetReference(4000, rev::ControlType::kVelocity, 0, 5.0);
 
-    
-    
 }
 
-void subsystem_Intake::SetMidCubeDynamicVelocity(units::meter_t YBotPosition)
-{
-    units::meter_t DistanceFromTarget = YBotPosition - IntakeConstants::CenterToStowedIntake - IntakeConstants::DistanceToMidCube;
 
-    
-}
 
 
 
 // This method will be called once per scheduler run
 void subsystem_Intake::Periodic()
 {
+    m_IntakeMotor.Set(m_DesiredOutput);
 
 
 
@@ -151,17 +151,17 @@ void subsystem_Intake::Periodic()
     m_PreviousColor = m_CurrentColor;
     m_ColorChangeCount++;
 
-    frc::SmartDashboard::PutNumber("Intake P", 0);
-    frc::SmartDashboard::PutNumber("Intake I", 0);
-    frc::SmartDashboard::PutNumber("Intake D", 0);
-    frc::SmartDashboard::PutNumber("Intake FF", 0);
-    frc::SmartDashboard::PutNumber("Desired Intake Vel", 0);
+    // frc::SmartDashboard::PutNumber("Intake P", 0);
+    // frc::SmartDashboard::PutNumber("Intake I", 0);
+    // frc::SmartDashboard::PutNumber("Intake D", 0);
+    // frc::SmartDashboard::PutNumber("Intake FF", 0);
+    // frc::SmartDashboard::PutNumber("Desired Intake Vel", 0);
 
-    m_IntakeMotorPID.SetP(frc::SmartDashboard::GetNumber("Intake P", 0));
-    m_IntakeMotorPID.SetI(frc::SmartDashboard::GetNumber("Intake I", 0));
-    m_IntakeMotorPID.SetD(frc::SmartDashboard::GetNumber("Intake D", 0));
-    m_IntakeMotorPID.SetFF(frc::SmartDashboard::GetNumber("Intake FF", 0));
-    m_IntakeMotorPID.SetReference(frc::SmartDashboard::GetNumber("Desired Intake Vel", 0), rev::ControlType::kVelocity);
+    // m_IntakeMotorPID.SetP(frc::SmartDashboard::GetNumber("Intake P", 0));
+    // m_IntakeMotorPID.SetI(frc::SmartDashboard::GetNumber("Intake I", 0));
+    // m_IntakeMotorPID.SetD(frc::SmartDashboard::GetNumber("Intake D", 0));
+    // m_IntakeMotorPID.SetFF(frc::SmartDashboard::GetNumber("Intake FF", 0));
+    // m_IntakeMotorPID.SetReference(frc::SmartDashboard::GetNumber("Desired Intake Vel", 0), rev::ControlType::kVelocity);
     
     // // Display encoder info
     // frc::SmartDashboard::PutNumber("Desired Output", m_DesiredOutput);

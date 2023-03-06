@@ -4,9 +4,7 @@
 
 #include "commands/command_CubeShooter.h"
 
-command_CubeShooter::command_CubeShooter(subsystem_PoseTracker *poseTracker, subsystem_Arm *arm, subsystem_Intake *intake, std::function<double()> TriggerInput) : 
-m_Arm{arm},
-m_PoseTracker{poseTracker},
+command_CubeShooter::command_CubeShooter(subsystem_Intake *intake, std::function<double()> TriggerInput) : 
 m_Intake{intake},
 m_TriggerInput{TriggerInput} {
     AddRequirements({m_Arm});
@@ -17,28 +15,18 @@ m_TriggerInput{TriggerInput} {
 
 // Called when the command is initially scheduled.
 void command_CubeShooter::Initialize() { 
-    frc::Pose2d CurrentPose = m_PoseTracker->getEstimatedGlobalPose().first;
     
     //Static velocities
     if(m_TriggerInput() > ControllerConstants::TriggerActivate ){
-        m_Arm->SetWristByPosition(0.0);
-        m_Intake->SetVelocity(0.0);
+        m_Intake->SetHighCubeStaticVelocity();
     }else if( m_TriggerInput() < -ControllerConstants::TriggerActivate) {
-        m_Arm->SetWristByPosition(0.0);
-        m_Intake->SetVelocity(0.0);
+        m_Intake->SetMidCubeStaticVelocity();
     }else{
-        m_Intake->SetVelocity(0.0);
+        m_Intake->SetIntakeWheelsOff();
     }
 
 
     //dynamic velocities
-    if(m_TriggerInput() > ControllerConstants::TriggerActivate){
-        m_Arm->SetWristByPosition(0.0);
-        m_Intake->SetHighCubeDynamicVelocity(CurrentPose.Y() );
-    }else if(m_TriggerInput() < ControllerConstants::TriggerActivate){
-        m_Arm->SetWristByPosition(0.0);
-        m_Intake->SetMidCubeDynamicVelocity(CurrentPose.Y() );
-    }
 
 }
 

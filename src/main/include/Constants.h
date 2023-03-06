@@ -52,7 +52,7 @@ namespace ArmConstants {
     const double kElbowUpD = 0.0; 
     const int kElbowUpSlot = 0;
 
-    const double kElbowDownP = 0.04;
+    const double kElbowDownP = 0.02;
     const double kElbowDownI = 0.0005;
     const double kElbowDownD = 0.0; 
     const int kElbowDownSlot = 1;
@@ -129,7 +129,7 @@ namespace ArmConstants {
     constexpr double RestY = 0.0;
     constexpr double StowShoulder = -1.0;
     constexpr double StowElbow = 1.0;
-    constexpr double StowTilt = 0.0;
+    constexpr double StowTilt = 10.5;
 
     constexpr double SubstationX = 0.0;
     constexpr double SubstationY = 0.0;
@@ -141,7 +141,8 @@ namespace ArmConstants {
     constexpr double GroundY = 0.0;
     constexpr double GroundShoulder = -26.8;
     constexpr double GroundElbow = -14.5; 
-    constexpr double GroundTilt = 0.0; 
+    constexpr double TempElbow = 6.0;
+    constexpr double GroundTilt = 2.0; 
 
     constexpr double ArmBackLimit = 0.0;
     constexpr double ArmFrontLimit = 0.0;
@@ -378,6 +379,7 @@ namespace IntakeConstants {
     constexpr int IntakeMotorID = 4;
     constexpr double OuttakePower = 0.3;
     constexpr double IntakePower = -0.6;
+    constexpr double PassivePower = -0.1;
     // PID stuff
     constexpr double kIntakeP = 0.1;
     constexpr double kIntakeI = 0.0; 

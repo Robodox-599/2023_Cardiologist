@@ -89,12 +89,10 @@ double subsystem_Arm::CalculateElbowAngle(double x, double y)
 void subsystem_Arm::SetElbowByPosition(double ElbowPos){
     DesiredElbowPosition = ElbowPos;
     SetShoulderPIDByDirection(DesiredElbowPosition);
-    m_ElbowPID.SetReference(DesiredElbowPosition, rev::ControlType::kPosition, m_ElbowSlot);
 }
 
 void subsystem_Arm::SetShoulderByPosition(double ShoulderPos){
     DesiredShoulderPosition = ShoulderPos;
-    m_ShoulderPID.SetReference(DesiredShoulderPosition, rev::ControlType::kPosition, 0);
 }
 
 void subsystem_Arm::SetWristByPosition(double tiltPos){
@@ -141,14 +139,11 @@ void subsystem_Arm::RunArmManualTest(double leftStick, double rightStick)
     DesiredShoulderPosition = ShoulderPosition + (leftStick * ArmConstants::JoystickToArm);
     DesiredElbowPosition = ElbowPosition + (rightStick * ArmConstants::JoystickToArm);
     SetShoulderPIDByDirection(DesiredShoulderPosition);
-    m_ShoulderPID.SetReference(DesiredShoulderPosition, rev::ControlType::kPosition, m_ShoulderSlot);
-    m_ElbowPID.SetReference(DesiredElbowPosition, rev::ControlType::kPosition, 0);
 }
 
 
 void subsystem_Arm::TiltWristManually(double trigger){
     DesiredWristPostion = WristPosition + trigger;
-    m_WristPID.SetReference(DesiredWristPostion, rev::ControlType::kPosition);
 }
  
 void subsystem_Arm::ManualMacroSwitch()
@@ -272,8 +267,9 @@ void subsystem_Arm::Periodic()
     // double Power4Wrist = Increment * cos( M_PI / 180.0 * WristAngle);
     // frc::SmartDashboard::PutNumber("Power4Wrist", Power4Wrist);
 
-    m_ElbowPID.SetFF(Power4Elbow);
-    m_ShoulderPID.SetFF(Power4Shoulder);
+    m_ElbowPID.SetReference(DesiredElbowPosition, rev::ControlType::kPosition, m_ElbowSlot, Power4Elbow, rev::CANPIDController::ArbFFUnits::kPercentOut);
+    m_ShoulderPID.SetReference(DesiredShoulderPosition, rev::ControlType::kPosition, 0, Power4Shoulder, rev::CANPIDController::ArbFFUnits::kPercentOut);
+    m_WristPID.SetReference(DesiredWristPostion, rev::ControlType::kPosition, 0);
 
     //Potential Code for changing feedforward based on voltage reading
 
@@ -292,15 +288,3 @@ void subsystem_Arm::Periodic()
     frc::SmartDashboard::PutNumber("Shoulder Arm Current", m_ShoulderMotor.GetOutputCurrent());
     frc::SmartDashboard::PutNumber("Elbow Arm Current", m_ElbowMotor.GetOutputCurrent());
 }
-
-// void subsystem_Arm::UnlockArm()
-// {
-//     m_ElbowSolenoid.Set(frc::DoubleSolenoid::kReverse);
-//     m_ShoulderSolenoid.Set(frc::DoubleSolenoid::kReverse);
-// }
-
-// void subsystem_Arm::LockArm()
-// {
-//     m_ElbowSolenoid.Set(frc::DoubleSolenoid::kForward);
-//     m_ShoulderSolenoid.Set(frc::DoubleSolenoid::kForward);
-// }

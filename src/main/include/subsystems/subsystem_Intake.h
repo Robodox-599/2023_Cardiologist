@@ -26,8 +26,9 @@ class subsystem_Intake : public frc2::SubsystemBase {
   bool IsIntakeOpen();
   void SetIntakeWheelsOutput(bool IsIntaking);
   void SetIntakeWheelsOff();
-  void SetHighCubeDynamicVelocity(units::meter_t Distance);
-  void SetMidCubeDynamicVelocity(units::meter_t Distance);
+  void SetIntakeWheelsPassive();
+  void SetHighCubeStaticVelocity();
+  void SetMidCubeStaticVelocity();
 
   IntakeConstants::State GetCurrentState();
 
@@ -53,7 +54,7 @@ class subsystem_Intake : public frc2::SubsystemBase {
 
   bool m_IsOpen = true;
 
-  double m_DesiredOutput = 0.0;
+  double m_DesiredOutput = -0.1;
 
   // Color Sensor stuff
   rev::ColorSensorV3 m_ColorSensor;
@@ -64,9 +65,9 @@ class subsystem_Intake : public frc2::SubsystemBase {
   int m_ColorChangeCount = 0;
   double m_CurrentProximity = 0;
   IntakeConstants::State m_CurrentState = IntakeConstants::State::Nothing;
+  
 
   frc::PIDController m_ProximityPID;
-
 
 
 };

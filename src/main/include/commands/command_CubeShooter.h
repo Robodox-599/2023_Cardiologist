@@ -20,7 +20,7 @@
 class command_CubeShooter
     : public frc2::CommandHelper<frc2::CommandBase, command_CubeShooter> {
  public:
-  command_CubeShooter(subsystem_PoseTracker *poseTracker, subsystem_Arm *arm, subsystem_Intake *intake, std::function<double()> TriggerInput);
+  command_CubeShooter( subsystem_Intake *intake, std::function<double()> TriggerInput);
 
   void Initialize() override;
 
