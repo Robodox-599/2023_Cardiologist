@@ -47,13 +47,13 @@ namespace ArmConstants {
     const int kShoulderIZone = 1.0; 
     const int kShoulderSlot = 0;
 
-    const double kElbowUpP = 0.04; 
-    const double kElbowUpI = 0.0005;
+    const double kElbowUpP = 0.08; 
+    const double kElbowUpI = 0.0001;
     const double kElbowUpD = 0.0; 
     const int kElbowUpSlot = 0;
 
-    const double kElbowDownP = 0.02;
-    const double kElbowDownI = 0.0005;
+    const double kElbowDownP = 0.03;
+    const double kElbowDownI = 0.0001;
     const double kElbowDownD = 0.0; 
     const int kElbowDownSlot = 1;
     const double kElbowIZone = 1.0;
@@ -69,6 +69,7 @@ namespace ArmConstants {
     const double kElbowMaxA = 80.0; 
     const double kElbowMaxV = 80.0; 
     const double kElbowMinV = 0.0;
+
     const double kShoulderMaxA = 25.0; 
     const double kShoulderMaxV = 2500.0; 
     const double kShoulderMinV = 0.0; 
@@ -80,6 +81,7 @@ namespace ArmConstants {
     const double radiansToEncoder = 0.0; 
     const double AbsToRel = 16384/507; 
     const double JoystickToArm = 1.0; 
+    const double TriggerToArm = 0.5;
 
     //units are in meters
     // const double totalArmLength = 71.5;
@@ -95,35 +97,35 @@ namespace ArmConstants {
     const double xOriginAdjustment = 0.0; 
     const double yOriginAdjustment = 0.0; 
 
-    const double bufferZone = 0.1; 
-    constexpr units::time::second_t ManualTimer{1.0};
+    const double bufferZone = 1; 
+    constexpr units::time::second_t ManualTimer{0.1};
 
     constexpr double TicksOffset = 0.0;  
     constexpr double TicksToDegrees = (0.0 / 90);  
 
     constexpr double HighConeX = 0.0;
     constexpr double HighConeY = 0.0;
-    constexpr double HighConeShoulder = -16.0;
+    constexpr double HighConeShoulder = -17.0;
     constexpr double HighConeElbow = 33.2;
-    constexpr double HighConeTilt = 2.0;
+    constexpr double HighConeTilt = 8.0;
 
     constexpr double MidConeX = 0.0;
     constexpr double MidConeY = 0.0;
     constexpr double MidConeShoulder = -8.1;
     constexpr double MidConeElbow = 21.5;
-    constexpr double MidConeTilt = 2.0;
+    constexpr double MidConeTilt = 8.0;
 
     constexpr double HighCubeX = 0.0;
     constexpr double HighCubeY = 0.0;
     constexpr double HighCubeShoulder = -11.5;
     constexpr double HighCubeElbow = 24.5;
-    constexpr double HighCubeTilt = 0.0;
+    constexpr double HighCubeTilt = 8.0;
 
     constexpr double MidCubeX = 0.0;
     constexpr double MidCubeY = 0.0;
     constexpr double MidCubeShoulder = -3.0;
     constexpr double MidCubeElbow = 14.0;
-    constexpr double MidCubeTilt = 0.0;
+    constexpr double MidCubeTilt = 8.0;
 
     constexpr double RestX = 0.0;
     constexpr double RestY = 0.0;
@@ -135,14 +137,14 @@ namespace ArmConstants {
     constexpr double SubstationY = 0.0;
     constexpr double SubstationShoulder = 0.0;
     constexpr double SubstationElbow = 25.5;
-    constexpr double SubstationTilt = 0.0;
+    constexpr double SubstationTilt = 5.0;
 
     constexpr double GroundX = 0.0;
     constexpr double GroundY = 0.0;
     constexpr double GroundShoulder = -26.8;
     constexpr double GroundElbow = -14.5; 
     constexpr double TempElbow = 6.0;
-    constexpr double GroundTilt = 2.0; 
+    constexpr double GroundTilt = 6.0; 
 
     constexpr double ArmBackLimit = 0.0;
     constexpr double ArmFrontLimit = 0.0;
@@ -376,10 +378,10 @@ namespace AutoConstants{
 
 namespace IntakeConstants {
     // Intake Motor
-    constexpr int IntakeMotorID = 4;
+    constexpr int IntakeMotorID = 15;
     constexpr double OuttakePower = 0.3;
-    constexpr double IntakePower = -0.6;
-    constexpr double PassivePower = -0.1;
+    constexpr double IntakePower = -0.2;
+    constexpr double PassivePower = -0.02;
     // PID stuff
     constexpr double kIntakeP = 0.1;
     constexpr double kIntakeI = 0.0; 

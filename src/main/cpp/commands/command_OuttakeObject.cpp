@@ -29,7 +29,7 @@ void command_OuttakeObject::Execute() {
 
 // Called once the command ends or is interrupted.
 void command_OuttakeObject::End(bool interrupted) {
-  m_Intake->SetIntakeWheelsOff();
+  m_Intake->SetIntakeWheelsPassive();
 }
 
 // Returns true when the command should end.

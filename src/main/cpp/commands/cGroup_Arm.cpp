@@ -2,7 +2,7 @@
 #include <frc2/command/Commands.h>
 
 frc2::CommandPtr ArmMovements::ToHighCone(subsystem_Arm *Arm) {
-  return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return ArmConstants::HighConeElbow;}, [=]{return true;}).ToPtr(),
+  return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return 33.2;}, [=]{return true;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::HighConeShoulder;}, [=]{return false;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::HighConeTilt;}, [=]{return false;}).ToPtr());
 }

@@ -31,8 +31,8 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
     m_ElbowFollower.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
     m_WristMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
-    m_ShoulderMotor.SetSmartCurrentLimit(15);
-    m_ShoulderFollower.SetSmartCurrentLimit(15);
+    m_ShoulderMotor.SetSmartCurrentLimit(20);
+    m_ShoulderFollower.SetSmartCurrentLimit(20);
 
     m_ElbowMotor.SetSmartCurrentLimit(20);
     m_ElbowFollower.SetSmartCurrentLimit(20);
@@ -69,8 +69,17 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
     m_WristPID.SetD(ArmConstants::kWristD);
 
     m_ShoulderRelEncoder.SetPosition(0);
-    m_ElbowRelEncoder.SetPosition(0);
+    m_ElbowRelEncoder.SetPosition(3.5);
     m_WristEncoder.SetPosition(-20.925);
+
+
+    m_ElbowMotor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, 33.5);
+    m_ElbowMotor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, 0.0);
+    m_WristMotor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, 14.0);
+    m_WristMotor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, -25.0);
+    m_ShoulderMotor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, 0.0);
+    m_ShoulderMotor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, -30);
+    
 }
 
 double subsystem_Arm::CalculateShoulderAngle(double x, double y)
@@ -97,7 +106,6 @@ void subsystem_Arm::SetShoulderByPosition(double ShoulderPos){
 
 void subsystem_Arm::SetWristByPosition(double tiltPos){
     DesiredWristPostion = tiltPos;
-    m_WristPID.SetReference(DesiredWristPostion, rev::ControlType::kPosition);
 }
 
 //WE ARE NOT USING THIS METHOD RN
@@ -136,14 +144,14 @@ void subsystem_Arm::SetWristByPosition(double tiltPos){
 
 void subsystem_Arm::RunArmManualTest(double leftStick, double rightStick)
 {
-    DesiredShoulderPosition = ShoulderPosition + (leftStick * ArmConstants::JoystickToArm);
-    DesiredElbowPosition = ElbowPosition + (rightStick * ArmConstants::JoystickToArm);
+    DesiredShoulderPosition += (leftStick * ArmConstants::JoystickToArm);
+    DesiredElbowPosition -= (rightStick * ArmConstants::JoystickToArm);
     SetShoulderPIDByDirection(DesiredShoulderPosition);
 }
 
 
 void subsystem_Arm::TiltWristManually(double trigger){
-    DesiredWristPostion = WristPosition + trigger;
+    DesiredWristPostion +=  trigger * ArmConstants::TriggerToArm;
 }
  
 void subsystem_Arm::ManualMacroSwitch()
@@ -271,6 +279,7 @@ void subsystem_Arm::Periodic()
     m_ShoulderPID.SetReference(DesiredShoulderPosition, rev::ControlType::kPosition, 0, Power4Shoulder, rev::CANPIDController::ArbFFUnits::kPercentOut);
     m_WristPID.SetReference(DesiredWristPostion, rev::ControlType::kPosition, 0);
 
+
     //Potential Code for changing feedforward based on voltage reading
 
     // if( m_PDH.GetVoltage() > 12.6){
@@ -279,12 +288,20 @@ void subsystem_Arm::Periodic()
     //     Power4Elbow *= 1.01;
     // }
 
-    frc::SmartDashboard::PutNumber("ElbowAngle", ElbowAngle);
-    frc::SmartDashboard::PutNumber("ShoulderAngle", ShoulderAngle);
-    frc::SmartDashboard::PutNumber("WristAngle", WristAngle);
+    // frc::SmartDashboard::PutNumber("ElbowPosition", DesiredElbowPosition);
+    // frc::SmartDashboard::PutNumber("ShoulderPosition", DesiredShoulderPosition);
+    // frc::SmartDashboard::PutNumber("WristPosition", DesiredWristPostion);
+
+
+
     frc::SmartDashboard::PutNumber("Shoulder Arm Pos", ShoulderPosition);
     frc::SmartDashboard::PutNumber("Elbow Arm Pos", ElbowPosition);
     frc::SmartDashboard::PutNumber("Intake Tilt Pos", WristPosition);
     frc::SmartDashboard::PutNumber("Shoulder Arm Current", m_ShoulderMotor.GetOutputCurrent());
     frc::SmartDashboard::PutNumber("Elbow Arm Current", m_ElbowMotor.GetOutputCurrent());
+
+    frc::SmartDashboard::PutBoolean("Desired Elbow?", IsElbowAtDesiredPosition());
+    frc::SmartDashboard::PutBoolean("Desired Wrist?", IsWristAtDesiredPosition());
+
+    frc::SmartDashboard::PutBoolean("Desired Shoulder?", IsShoulderAtDesiredPosition());
 }

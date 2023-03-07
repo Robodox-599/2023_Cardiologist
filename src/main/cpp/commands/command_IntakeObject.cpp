@@ -20,10 +20,10 @@ void command_IntakeObject::Execute() {
   printf("Setting Intake wheels on");
 }
 
-// Called once the command ends or is interrupted.
+// Called once the command ends or is interrupted.wf1
 void command_IntakeObject::End(bool interrupted) {
   m_Intake->IntakeClose();
-  m_Intake->SetIntakeWheelsOff();
+  m_Intake->SetIntakeWheelsPassive();
 }
 
 // Returns true when the command should end.

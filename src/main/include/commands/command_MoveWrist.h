@@ -7,6 +7,7 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include "subsystems/subsystem_Arm.h"
+#include <frc/Timer.h>
 
 /**
  * An example command.
@@ -32,4 +33,5 @@ class command_MoveWrist
   subsystem_Arm *m_Arm;
   std::function<double()> m_EncPosition;
   std::function<bool()> m_IsWait;
+  frc::Timer m_Timer{};
 };

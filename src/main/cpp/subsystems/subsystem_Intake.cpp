@@ -100,12 +100,9 @@ void subsystem_Intake::Periodic()
 {
     m_IntakeMotor.Set(m_DesiredOutput);
 
-
-
-    frc::SmartDashboard::PutBoolean("Solenoid FWD", m_Solenoid.IsFwdSolenoidDisabled());
-
-    frc::SmartDashboard::PutBoolean("Solenoid REV", m_Solenoid.IsRevSolenoidDisabled());
-    frc::SmartDashboard::PutNumber("Solenoid Direction", m_Solenoid.Get());
+    // frc::SmartDashboard::PutBoolean("Solenoid FWD", m_Solenoid.IsFwdSolenoidDisabled());
+    // frc::SmartDashboard::PutBoolean("Solenoid REV", m_Solenoid.IsRevSolenoidDisabled());
+    // frc::SmartDashboard::PutNumber("Solenoid Direction", m_Solenoid.Get());
 
     // Current Proximity (changes member variable curr proximity)
     // 10000.0 / 1.2 is the constant that transforms proximity into a number out of 100
@@ -168,10 +165,10 @@ void subsystem_Intake::Periodic()
     // frc::SmartDashboard::PutNumber("Actual Velocity", m_IntakeEncoder.GetVelocity());
 
     // // Display Color Sensor info to SmartDashboard
-    // frc::SmartDashboard::PutNumber("Confidence", Confidence);
-    // frc::SmartDashboard::PutNumber("Proximity", m_CurrentProximity);
-    // frc::SmartDashboard::PutNumber("Red", m_CurrentColor.red);
-    // frc::SmartDashboard::PutNumber("Green", m_CurrentColor.green);
-    // frc::SmartDashboard::PutNumber("Blue", m_CurrentColor.blue);
-    // frc::SmartDashboard::PutNumber("Current State", m_CurrentState);
+    frc::SmartDashboard::PutNumber("Confidence", Confidence);
+    frc::SmartDashboard::PutNumber("Proximity", m_CurrentProximity);
+    frc::SmartDashboard::PutNumber("Red", m_CurrentColor.red);
+    frc::SmartDashboard::PutNumber("Green", m_CurrentColor.green);
+    frc::SmartDashboard::PutNumber("Blue", m_CurrentColor.blue);
+    frc::SmartDashboard::PutNumber("Current State", m_CurrentState);
 }

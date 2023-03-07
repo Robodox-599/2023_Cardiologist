@@ -27,10 +27,10 @@ RobotContainer::RobotContainer() {
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
 
-  // m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
-  //                       [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxLYAxis);},
-  //                       [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxRYAxis);},
-  //                       [this]{return XboxYaperator.GetRightTriggerAxis() - XboxYaperator.GetLeftTriggerAxis();}));
+  m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
+                        [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxLYAxis);},
+                        [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxRYAxis);},
+                        [this]{return XboxYaperator.GetRightTriggerAxis() - XboxYaperator.GetLeftTriggerAxis();}));
 
   // Configure the button bindings
   ConfigureBindings();
