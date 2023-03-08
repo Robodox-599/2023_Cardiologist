@@ -36,49 +36,50 @@ namespace ArmConstants {
     const int ElbowMotorID = 30;
     const int ElbowFollowerID = 31;
     const int WristMotorID = 34;
-    const int ElbowBrake1 = 0;
-    const int ElbowBrake2 = 0;
-    const int ShoulderBrake1 = 0;
-    const int ShoulderBrake2 = 0;
-
+    const int ElbowBrake1 = 2;
+    const int ElbowBrake2 = 3;
+    const int ShoulderBrake1 = 4;
+    const int ShoulderBrake2 = 5;
+    
+    //Shoulder constants
     const double kShoulderP = 1.8; 
     const double kShoulderI = 0.008;
     const double kShoulderD = 0.0;
-
     const double kShoulderUpP = 1.8;
     const double kShoulderUpI = 0.008;
     const double kShoulderUpD = 0.0;
     const int kShoulderIZone = 1.0; 
     const int kShoulderSlot = 0;
 
+    //Elbow constants
     const double kElbowUpP = 0.08; 
     const double kElbowUpI = 0.0001;
     const double kElbowUpD = 0.0; 
     const int kElbowUpSlot = 0;
-
     const double kElbowDownP = 0.03;
     const double kElbowDownI = 0.0001;
     const double kElbowDownD = 0.0; 
     const int kElbowDownSlot = 1;
     const double kElbowIZone = 1.0;
 
+    //Wrist constants
     const double kWristP = 1.0;
     const double kWristI = 0.0;
     const double kWristD = 0.0;
 
-    // SmartMotion constants
+    // SmartMotion constants (currently not being used)
     const double kElbowSmartMotionP = 0.0001;
     const double kElbowSmartMotionD = 0.0;
     const double kElbowSmartMotionFF = 0.03;
     const double kElbowMaxA = 80.0; 
     const double kElbowMaxV = 80.0; 
     const double kElbowMinV = 0.0;
-
     const double kShoulderMaxA = 25.0; 
     const double kShoulderMaxV = 2500.0; 
     const double kShoulderMinV = 0.0; 
-    const int ArmCurrentLimit = 12;
-    const int DownwardElbowCurrentLimit = 3;
+
+    const int UpwardElbowCurrentLimit = 15;
+    const int DownwardElbowCurrentLimit = 6;
 
     const double intakeAngleConversion = 0.0;  
     const double DegreesToRotations = 0.4423; 
@@ -92,7 +93,6 @@ namespace ArmConstants {
     const double kShoulderStep = 0.5;
 
     //units are in meters
-    // const double totalArmLength = 71.5;
     const double ShoulderJointLength = 0.965;
     const double ElbowJointLength = 0.8507;
     const double IntakeJointLength = 0.371;
