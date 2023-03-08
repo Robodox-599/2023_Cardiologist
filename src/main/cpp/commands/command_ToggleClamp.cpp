@@ -12,7 +12,7 @@ command_ToggleClamp::command_ToggleClamp(subsystem_Intake* intake) : m_Intake{in
 // Called when the command is initially scheduled.
 void command_ToggleClamp::Initialize() {
   printf("Clamp command started");
-  m_Intake->SetIntakeWheelsOff();
+  m_Intake->SetOff();
   if(m_Intake->IsIntakeOpen()) {
     m_Intake->IntakeClose();
     printf("Clamped");
@@ -26,8 +26,7 @@ void command_ToggleClamp::Initialize() {
 void command_ToggleClamp::Execute() {}
 
 // Called once the command ends or is interrupted.
-void command_ToggleClamp::End(bool interrupted) {
-}
+void command_ToggleClamp::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool command_ToggleClamp::IsFinished() {

@@ -6,7 +6,8 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "subsystems/subsystem_PoseTracker.h"
+#include "subsystems/subsystem_DriveTrain.h"
+
 
 /**
  * An example command.
@@ -15,19 +16,21 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class command_VisionPose: 
-  public frc2::CommandHelper<frc2::CommandBase, command_VisionPose> {
-    public:
-      command_VisionPose(subsystem_PoseTracker* PoseTracker);
+class command_SetLED
+    : public frc2::CommandHelper<frc2::CommandBase, command_SetLED> {
+ public:
+  command_SetLED(subsystem_DriveTrain* DriveTrain, std::function<bool()> WantsCube);
 
-      void Initialize() override;
+  void Initialize() override;
 
-      void Execute() override;
+  void Execute() override;
 
-      void End(bool interrupted) override;
+  void End(bool interrupted) override;
 
-      bool IsFinished() override;
-    
-    private:
-      subsystem_PoseTracker* m_PoseTracker;
+  bool IsFinished() override;
+
+  private:
+  subsystem_DriveTrain* m_DriveTrain;
+  std::function<bool()> m_WantsCube;
+
 };

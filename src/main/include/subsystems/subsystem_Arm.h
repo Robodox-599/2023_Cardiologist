@@ -21,6 +21,7 @@ class subsystem_Arm : public frc2::SubsystemBase
 public:
   subsystem_Arm();
 
+  //Might use these methods later. For now, we are relying on motor rotations instead of coordinates.
   double CalculateShoulderAngle(double x, double y);
   double CalculateElbowAngle(double x, double y);
 
@@ -30,6 +31,7 @@ public:
   void MoveArmManually(double leftAxis, double rightAxis);
   void TiltWristManually(double trigger);
 
+  //Methods for brakes on the arm. Currently deprecated because we don't even need brakes to hold the arm up. 
   void LockArm();
   void UnlockArm();
 
@@ -38,22 +40,21 @@ public:
   void SetShoulderByPosition(double ShoulderPos);
   void SetElbowByPosition(double ElbowPos);
   void SetWristByPosition(double WristPos);
-  // void RunArmManualTest(double leftStick, double rightStick);
+  
+  double GetShoulderIncrement();
+  double GetWristIncrement();
+  double GetElbowIncrement();
 
-  void ManualMacroSwitch();
-  bool IsManual();
-
-  void SetShoulderPIDByDirection(double desiredElbowPos);
-  void SetShoulderPIDByDirection(bool leftJoy, bool rightJoy);
-  bool CheckHallEffect();
+  void SetElbowPIDByDirection(double desiredElbowPos);
+  void SetShoulderPIDByDirection(double desiredShoulderPos);
 
   double GetElbowPosition();
   double GetShoulderPosition();
   double GetWristPosition();
 
-  // True is positive direction ; False is negative direction (Jackson change this later bc its probably wrong)
+  // True is upward direction ; False is downward direction
   bool IsElbowDirectionGoingUp(double Elbow);
-  bool IsShoulderDirectionGoingUp(double x, double y);
+  bool IsShoulderDirectionGoingUp(double shoulder);
 
   bool IsElbowAtDesiredPosition();
   bool IsShoulderAtDesiredPosition(); 
@@ -66,8 +67,6 @@ public:
 
 private:
   double power = 0.0;
-  double kElbowF;
-  // double m_DesiredPos = -14.0;
   double armX = 0.0;
   double armY = 0.0;
   double adjustedX = 0.0;
@@ -75,9 +74,13 @@ private:
   double manualX = 0.0;
   double manualY = 0.0;
 
-  double ElbowPosition;
-  double ShoulderPosition;
-  double WristPosition; 
+  double ElbowPosition = 3.5;
+  double ShoulderPosition = 0.0;
+  double WristPosition = -20.925; 
+
+  double ElbowEnc = 0.0;
+  double ShoulderEnc = 0.0;
+  double WristEnc = 0.0;
 
   double DesiredElbowPosition = 3.5;
   double DesiredShoulderPosition = 0.0;
@@ -113,24 +116,29 @@ private:
   rev::CANSparkMax m_WristMotor;
 
   rev::SparkMaxPIDController m_ShoulderPID;
-  rev::SparkMaxPIDController m_ElbowPID;
   rev::SparkMaxPIDController m_ShoulderFollowerPID;
+  rev::SparkMaxPIDController m_ElbowPID;
   rev::SparkMaxPIDController m_ElbowFollowerPID;
   rev::SparkMaxPIDController m_WristPID;
-
-  // frc::DoubleSolenoid m_ElbowSolenoid;
-  // frc::DoubleSolenoid m_ShoulderSolenoid;
 
   rev::SparkMaxRelativeEncoder m_ShoulderRelEncoder;
   rev::SparkMaxRelativeEncoder m_ElbowRelEncoder;
   rev::SparkMaxRelativeEncoder m_WristEncoder; 
 
-  rev::SparkMaxLimitSwitch m_BackLimit;
-  rev::SparkMaxLimitSwitch m_FrontLimit;
-
   rev::SparkMaxRelativeEncoder m_ShoulderRelFollowerEncoder;
   rev::SparkMaxRelativeEncoder m_ElbowRelFollowerEncoder;
 
-    frc::PowerDistribution m_PDH;
+  rev::SparkMaxLimitSwitch m_BackLimit;
+  rev::SparkMaxLimitSwitch m_FrontLimit;
+
+  frc::PowerDistribution m_PDH;
+  
+  frc::DoubleSolenoid m_ElbowBrake;
+  frc::DoubleSolenoid m_ShoulderBrake;
+
+
+
+
+
 
 };

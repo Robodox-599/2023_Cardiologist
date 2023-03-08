@@ -2,10 +2,12 @@
 #include <frc2/command/Commands.h>
 
 frc2::CommandPtr ArmMovements::ToHighCone(subsystem_Arm *Arm) {
-  return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return 33.2;}, [=]{return true;}).ToPtr(),
+  return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return 21;}, [=]{return true;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::HighConeShoulder;}, [=]{return false;}).ToPtr(),
+                             command_MoveElbow(Arm, [=]{return ArmConstants::HighConeElbow;}, [=]{return false;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::HighConeTilt;}, [=]{return false;}).ToPtr());
 }
+
 frc2::CommandPtr ArmMovements::ToMidCone(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return ArmConstants::MidConeElbow;}, [=]{return true;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::MidConeShoulder;}, [=]{return false;}).ToPtr(),
@@ -31,8 +33,8 @@ frc2::CommandPtr ArmMovements::ToSubstation(subsystem_Arm *Arm){
 }
 
 frc2::CommandPtr ArmMovements::ToStow(subsystem_Arm *Arm){
-  return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return ArmConstants::StowElbow;}, [=]{return true;}).ToPtr(),
-                             command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return false;}).ToPtr(),
+  return frc2::cmd::Sequence(command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return true;}).ToPtr(),
+                             command_MoveElbow(Arm, [=]{return ArmConstants::StowElbow;}, [=]{return false;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::StowTilt;}, [=]{return false;}).ToPtr());
 }
 

@@ -21,7 +21,8 @@ subsystem_DriveTrain::subsystem_DriveTrain():
        m_BackLeftModule.GetPosition(), m_BackRightModule.GetPosition()},
       frc::Pose2d{}}, 
     m_PitchCorrectionPID{SwerveConstants::PitchKP, 0.0, SwerveConstants::RollKD},
-    m_RollCorrectionPID{SwerveConstants::RollKP, 0.0, SwerveConstants::RollKD}
+    m_RollCorrectionPID{SwerveConstants::RollKP, 0.0, SwerveConstants::RollKD},
+    m_CANdle{SwerveConstants::CANCoderID}
     
 {
     frc::Wait(1_s);
@@ -41,6 +42,10 @@ subsystem_DriveTrain::subsystem_DriveTrain():
 
     m_AutoOrientPID.EnableContinuousInput(-180, 180);
     m_AutoOrientPID.SetTolerance(1);
+
+    m_CANdle.ConfigLEDType(ctre::phoenix::led::LEDStripType::RGB);
+    m_CANdle.ConfigBrightnessScalar(0.5);
+    m_CANdle.ConfigLOSBehavior(true);
 
 
 }
@@ -73,6 +78,8 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
     m_BackRightModule.SetDesiredState(BackRight, IsOpenLoop);
 
 }
+
+
 
 
 
@@ -213,10 +220,15 @@ units::radians_per_second_t subsystem_DriveTrain::GetAngularVelocity(){
         }
     }
     return units::radians_per_second_t{m_AutoOrientPID.Calculate(m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value() )};
-
-
-
     
+}
+
+void subsystem_DriveTrain::SetPurpleLED(){
+    m_CANdle.SetLEDs(160, 32, 240);
+}
+
+void subsystem_DriveTrain::SetYellowLED(){
+    m_CANdle.SetLEDs(255, 255, 0);
 }
 
 

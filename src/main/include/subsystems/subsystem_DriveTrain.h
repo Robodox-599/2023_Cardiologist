@@ -21,6 +21,8 @@
 #include <frc/controller/ProfiledPIDController.h>
 #include <ctre/phoenix/sensors/WPI_Pigeon2.h>
 
+#include <ctre/phoenix/led/CANdle.h>
+
 
 
 
@@ -61,6 +63,9 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   void SetAutoOrient(bool IsOrientFront, bool IsOrientBack, double RotVelocity);
   units::radians_per_second_t GetAngularVelocity();
   
+
+  void SetPurpleLED();
+  void SetYellowLED();
   // auto GetChassisSpeed(auto chassisSpeed);
   // void SetAngleToHoloRotation(frc::Rotation2d holo);
 
@@ -101,6 +106,9 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   frc::PIDController m_AutoOrientPID{0.05, 
                                         0.0, 
                                         0.001};
+
+  ctre::phoenix::led::CANdle m_CANdle;
+
   
 
   

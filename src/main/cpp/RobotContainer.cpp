@@ -47,6 +47,15 @@ void RobotContainer::ConfigureBindings() {
                         frc::XboxController::Button::kY)
       .OnTrue(command_ZeroGyro(&m_Drive).ToPtr());
 
+
+  frc2::JoystickButton(&XboxDrive,
+                      frc::XboxController::Button::kA)
+      .OnTrue(command_SetLED(&m_Drive, [=]{return true;}).ToPtr());
+
+  frc2::JoystickButton(&XboxDrive,
+                      frc::XboxController::Button::kB)
+      .OnTrue(command_SetLED(&m_Drive, [=]{return false;}).ToPtr());
+
   // frc2::JoystickButton(&XboxDrive, 
   //                       frc::XboxController::Button::kA)
   //     .WhileTrue(command_AlignToDesired(&m_Drive, &m_PoseTracker,
@@ -60,7 +69,18 @@ void RobotContainer::ConfigureBindings() {
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kX)
                        .OnTrue(ArmMovements::ToHighCube(&m_Arm));
+
+
+  //COMMANDS FOR CUBE SHOOTER 
+  // frc2::JoystickButton(&XboxYaperator, 
+  //                      frc::XboxController::Button::kX)
+  //                      .OnTrue(command_CubeShooter(&m_Intake, [=]{return true;}).ToPtr());  
                   
+  // frc2::JoystickButton(&XboxYaperator, 
+  //                      frc::XboxController::Button::kA)
+  //                      .OnTrue(command_CubeShooter(&m_Intake, [=]{return false;}).ToPtr());  
+  
+
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kY)
                        .OnTrue(ArmMovements::ToHighCone(&m_Arm));

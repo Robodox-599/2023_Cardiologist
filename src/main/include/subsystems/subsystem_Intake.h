@@ -24,9 +24,12 @@ class subsystem_Intake : public frc2::SubsystemBase {
   void IntakeClose();
   void IntakeOpen();
   bool IsIntakeOpen();
-  void SetIntakeWheelsOutput(bool IsIntaking);
-  void SetIntakeWheelsOff();
-  void SetIntakeWheelsPassive();
+  void SetPassive();
+  void SetOff();
+  void SetIntake();
+  void SetOutake();
+  IntakeConstants::IntakeMode GetCurrentMode();
+
   void SetHighCubeStaticVelocity();
   void SetMidCubeStaticVelocity();
 
@@ -44,7 +47,7 @@ class subsystem_Intake : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  
+  void MaintainIntakeMode();
   // Wheels for intaking objects
   rev::CANSparkMax m_IntakeMotor;
   rev::SparkMaxPIDController m_IntakeMotorPID;
@@ -64,7 +67,9 @@ class subsystem_Intake : public frc2::SubsystemBase {
   frc::Color m_PreviousColor = frc::Color(0.0, 0.0, 0.0);
   int m_ColorChangeCount = 0;
   double m_CurrentProximity = 0;
-  IntakeConstants::State m_CurrentState = IntakeConstants::State::Nothing;
+
+  IntakeConstants::IntakeMode m_CurrentMode = IntakeConstants::IntakeMode::Passive;
+  IntakeConstants::State m_CurrentState = IntakeConstants::State::Empty;
   
 
   frc::PIDController m_ProximityPID;

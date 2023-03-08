@@ -36,45 +36,50 @@ namespace ArmConstants {
     const int ElbowMotorID = 30;
     const int ElbowFollowerID = 31;
     const int WristMotorID = 34;
-    const int ElbowBrake1 = 0;
-    const int ElbowBrake2 = 0;
-    const int ShoulderBrake1 = 0;
-    const int ShoulderBrake2 = 0;
-
-    const double kShoulderP = 1.5; 
+    const int ElbowBrake1 = 2;
+    const int ElbowBrake2 = 3;
+    const int ShoulderBrake1 = 4;
+    const int ShoulderBrake2 = 5;
+    
+    //Shoulder constants
+    const double kShoulderP = 1.8; 
     const double kShoulderI = 0.008;
     const double kShoulderD = 0.0;
+    const double kShoulderUpP = 1.8;
+    const double kShoulderUpI = 0.008;
+    const double kShoulderUpD = 0.0;
     const int kShoulderIZone = 1.0; 
     const int kShoulderSlot = 0;
 
+    //Elbow constants
     const double kElbowUpP = 0.08; 
     const double kElbowUpI = 0.0001;
     const double kElbowUpD = 0.0; 
     const int kElbowUpSlot = 0;
-
     const double kElbowDownP = 0.03;
     const double kElbowDownI = 0.0001;
     const double kElbowDownD = 0.0; 
     const int kElbowDownSlot = 1;
     const double kElbowIZone = 1.0;
 
+    //Wrist constants
     const double kWristP = 1.0;
     const double kWristI = 0.0;
     const double kWristD = 0.0;
 
-    // SmartMotion constants
+    // SmartMotion constants (currently not being used)
     const double kElbowSmartMotionP = 0.0001;
     const double kElbowSmartMotionD = 0.0;
     const double kElbowSmartMotionFF = 0.03;
     const double kElbowMaxA = 80.0; 
     const double kElbowMaxV = 80.0; 
     const double kElbowMinV = 0.0;
-
     const double kShoulderMaxA = 25.0; 
     const double kShoulderMaxV = 2500.0; 
     const double kShoulderMinV = 0.0; 
-    const int ArmCurrentLimit = 12;
-    const int DownwardElbowCurrentLimit = 3;
+
+    const int UpwardElbowCurrentLimit = 15;
+    const int DownwardElbowCurrentLimit = 6;
 
     const double intakeAngleConversion = 0.0;  
     const double DegreesToRotations = 0.4423; 
@@ -83,8 +88,11 @@ namespace ArmConstants {
     const double JoystickToArm = 1.0; 
     const double TriggerToArm = 0.5;
 
+    const double kWristStep = 0.5;
+    const double kElbowStep = 0.5;
+    const double kShoulderStep = 0.5;
+
     //units are in meters
-    // const double totalArmLength = 71.5;
     const double ShoulderJointLength = 0.965;
     const double ElbowJointLength = 0.8507;
     const double IntakeJointLength = 0.371;
@@ -97,7 +105,7 @@ namespace ArmConstants {
     const double xOriginAdjustment = 0.0; 
     const double yOriginAdjustment = 0.0; 
 
-    const double bufferZone = 1; 
+    const double bufferZone = 2; 
     constexpr units::time::second_t ManualTimer{0.1};
 
     constexpr double TicksOffset = 0.0;  
@@ -129,8 +137,8 @@ namespace ArmConstants {
 
     constexpr double RestX = 0.0;
     constexpr double RestY = 0.0;
-    constexpr double StowShoulder = -1.0;
-    constexpr double StowElbow = 1.0;
+    constexpr double StowShoulder = -0.5;
+    constexpr double StowElbow = 0.5;
     constexpr double StowTilt = 10.5;
 
     constexpr double SubstationX = 0.0;
@@ -283,6 +291,8 @@ namespace SwerveConstants{
     constexpr units::degrees_per_second_t MaxAngularVelocity{360 * 1.25};
     constexpr bool IsFieldRelative = true;
     constexpr bool IsOpenLoop = false;  
+
+    constexpr int CANdleID = 20;
 }
 
 namespace Orientation{
@@ -381,7 +391,7 @@ namespace IntakeConstants {
     constexpr int IntakeMotorID = 15;
     constexpr double OuttakePower = 0.3;
     constexpr double IntakePower = -0.2;
-    constexpr double PassivePower = -0.02;
+    constexpr double PassivePower = -0.1;
     // PID stuff
     constexpr double kIntakeP = 0.1;
     constexpr double kIntakeI = 0.0; 
@@ -408,7 +418,16 @@ namespace IntakeConstants {
     enum State{
         Purple = 0,
         Yellow =1,
-        Nothing = 2
+        Empty = 2
+    };
+
+    enum IntakeMode{
+        Off,
+        Passive,
+        Intake,
+        Outake,
+        MidShoot,
+        HighShoot
     };
 }
 

@@ -9,6 +9,7 @@
 #include "subsystems/subsystem_Arm.h"
 #include "subsystems/subsystem_Intake.h"
 #include "subsystems/subsystem_PoseTracker.h"
+#include "frc/Timer.h"
 
 /**
  * An example command.
@@ -20,7 +21,7 @@
 class command_CubeShooter
     : public frc2::CommandHelper<frc2::CommandBase, command_CubeShooter> {
  public:
-  command_CubeShooter( subsystem_Intake *intake, std::function<double()> TriggerInput);
+  command_CubeShooter( subsystem_Intake *Intake, std::function<bool()> IsHighNode);
 
   void Initialize() override;
 
@@ -30,12 +31,9 @@ class command_CubeShooter
 
   bool IsFinished() override;
  private:
-   subsystem_Arm *m_Arm;
-   subsystem_PoseTracker *m_PoseTracker;
+
    subsystem_Intake *m_Intake;
-   std::function<double()> m_TriggerInput;
-   double m_TopCubeAngle;
-   double m_TopCubeVel;
-   double m_MidCubeAngle;
-   double m_MidCubeVel;
+   std::function<bool()> m_IsHighNode;
+   frc::Timer m_Timer;
+
 };

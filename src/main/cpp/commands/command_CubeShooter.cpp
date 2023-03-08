@@ -4,39 +4,44 @@
 
 #include "commands/command_CubeShooter.h"
 
-command_CubeShooter::command_CubeShooter(subsystem_Intake *intake, std::function<double()> TriggerInput) : 
-m_Intake{intake},
-m_TriggerInput{TriggerInput} {
-    AddRequirements({m_Arm});
-    AddRequirements({m_PoseTracker});
+command_CubeShooter::command_CubeShooter(subsystem_Intake *Intake, std::function<bool()> IsHighNode) : 
+m_Intake{Intake},
+m_IsHighNode{IsHighNode},
+m_Timer{} {
+
     AddRequirements({m_Intake});
 
 }
 
 // Called when the command is initially scheduled.
 void command_CubeShooter::Initialize() { 
-    
-    //Static velocities
-    if(m_TriggerInput() > ControllerConstants::TriggerActivate ){
-        m_Intake->SetHighCubeStaticVelocity();
-    }else if( m_TriggerInput() < -ControllerConstants::TriggerActivate) {
-        m_Intake->SetMidCubeStaticVelocity();
-    }else{
-        m_Intake->SetIntakeWheelsOff();
-    }
+  m_Timer.Reset();
+  m_Timer.Start();
+
+  if(m_IsHighNode()){
+    m_Intake->SetHighCubeStaticVelocity();
+  }else{
+    m_Intake->SetMidCubeStaticVelocity();
+  }
 
 
-    //dynamic velocities
 
 }
 
 // Called repeatedly when this Command is scheduled to run
-void command_CubeShooter::Execute() {}
+void command_CubeShooter::Execute() {
+  if(m_Intake->GetCurrentState() != IntakeConstants::State::Empty) {
+    m_Timer.Reset();
+    m_Timer.Start();
+  }
+}
 
 // Called once the command ends or is interrupted.
-void command_CubeShooter::End(bool interrupted) {}
+void command_CubeShooter::End(bool interrupted) {
+  m_Intake->SetPassive();
+}
 
 // Returns true when the command should end.
 bool command_CubeShooter::IsFinished() {
-  return true;
+  return m_Timer.Get() >= IntakeConstants::TimerConstant;
 }

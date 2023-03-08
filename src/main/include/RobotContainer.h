@@ -8,7 +8,6 @@
 #include <frc2/command/button/CommandXboxController.h>
 #include "subsystems/subsystem_PoseTracker.h"
 #include "Constants.h"
-#include "commands/command_VisionPose.h"
 #include "subsystems/ExampleSubsystem.h"
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -20,6 +19,8 @@
 #include "commands/command_ShiftThrottle.h"
 #include "commands/command_ZeroGyro.h"
 #include "commands/command_AlignToDesired.h"
+#include "commands/command_SetLED.h"
+
 #include "commands/Autos.h"
 #include "subsystems/subsystem_Arm.h"
 #include "commands/command_MoveArmManually.h"
@@ -35,6 +36,7 @@
 #include "commands/command_OuttakeObject.h"
 #include "commands/command_ToggleClamp.h"
 #include "commands/command_IntakeObject.h"
+#include "commands/command_CubeShooter.h"
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
