@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/command_SetLED.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 
 command_SetLED::command_SetLED(subsystem_DriveTrain* DriveTrain, std::function<bool()> WantsCube): m_DriveTrain{DriveTrain},
                                                                                                   m_WantsCube{WantsCube}
@@ -12,8 +13,9 @@ command_SetLED::command_SetLED(subsystem_DriveTrain* DriveTrain, std::function<b
 
 // Called when the command is initially scheduled.
 void command_SetLED::Initialize() {
-
+  frc::SmartDashboard::PutBoolean("SET_LED BOOLEAN", m_WantsCube() );
   if(m_WantsCube()){
+    
     m_DriveTrain->SetPurpleLED();
   }else{
     m_DriveTrain->SetYellowLED();

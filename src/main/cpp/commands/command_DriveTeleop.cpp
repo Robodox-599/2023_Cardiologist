@@ -10,6 +10,7 @@
                                           std::function<double()> zRotation,
                                           std::function<double()> IsOrientFront,
                                           std::function<double()> IsOrientBack,
+                                          std::function<double()> LED,
                                           std::function<bool()> FieldRelative,
                                           std::function<bool()> OpenLoop): m_DriveTrain{DriveTrain}, 
                                                       m_PoseTracker{PoseTracker},
@@ -18,6 +19,7 @@
                                                       m_zRotation{zRotation},
                                                       m_IsOrientFront{IsOrientFront},
                                                       m_IsOrientBack{IsOrientBack},
+                                                      m_LED{LED},
                                                       m_FieldRelative{FieldRelative},
                                                       m_OpenLoop{OpenLoop}
 {
@@ -36,6 +38,12 @@ void command_DriveTeleop::Execute() {
   }
 
   m_DriveTrain->SetAutoOrient(m_IsOrientFront(), m_IsOrientBack(), m_zRotation());
+
+  if(m_LED() > ControllerConstants::TriggerActivate){
+    m_DriveTrain->SetPurpleLED();
+  }else if(m_LED() < - ControllerConstants::TriggerActivate){
+    m_DriveTrain->SetYellowLED();
+  }
   
   
   m_DriveTrain -> SwerveDrive( m_DriveTrain-> SetThrottle( frc::ApplyDeadband(m_xSpeed(), ControllerConstants::Deadband) )* SwerveConstants::MaxSpeed,

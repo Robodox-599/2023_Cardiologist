@@ -22,8 +22,8 @@ subsystem_DriveTrain::subsystem_DriveTrain():
       frc::Pose2d{}}, 
     m_PitchCorrectionPID{SwerveConstants::PitchKP, 0.0, SwerveConstants::RollKD},
     m_RollCorrectionPID{SwerveConstants::RollKP, 0.0, SwerveConstants::RollKD},
-    m_CANdle{SwerveConstants::CANCoderID}
-    
+    m_CANdle{SwerveConstants::CANdleID}
+    /*m_LEDTimer{}*/
 {
     frc::Wait(1_s);
     ResetModulesToAbsolute();
@@ -34,11 +34,11 @@ subsystem_DriveTrain::subsystem_DriveTrain():
     m_IsAutoOrient = false;
 
     m_PitchCorrectionPID.SetSetpoint(0.0);
-    m_PitchCorrectionPID.SetTolerance(5);
+    m_PitchCorrectionPID.SetTolerance(2);
 
 
     m_RollCorrectionPID.SetSetpoint(0.0);
-    m_RollCorrectionPID.SetTolerance(5);
+    m_RollCorrectionPID.SetTolerance(2);
 
     m_AutoOrientPID.EnableContinuousInput(-180, 180);
     m_AutoOrientPID.SetTolerance(1);
@@ -46,6 +46,9 @@ subsystem_DriveTrain::subsystem_DriveTrain():
     m_CANdle.ConfigLEDType(ctre::phoenix::led::LEDStripType::RGB);
     m_CANdle.ConfigBrightnessScalar(0.5);
     m_CANdle.ConfigLOSBehavior(true);
+
+    // m_LEDTimer.Start();
+
 
 
 }
@@ -184,10 +187,7 @@ units::meters_per_second_t subsystem_DriveTrain::AddRollCorrection(){
 
 }
 
-bool subsystem_DriveTrain::IsOnChargingStation(){
-    return (GetPose().X() < ChargingStation::FrontLeft.first && GetPose().X() > ChargingStation::BackRight.first) 
-                && (GetPose().Y() < ChargingStation::FrontLeft.second && GetPose().Y() > ChargingStation::BackRight.second);
-}
+
 
 
 void subsystem_DriveTrain::SetAutoOrient(bool IsOrientFront, bool IsOrientBack, double RotVelocity){
@@ -224,11 +224,13 @@ units::radians_per_second_t subsystem_DriveTrain::GetAngularVelocity(){
 }
 
 void subsystem_DriveTrain::SetPurpleLED(){
-    m_CANdle.SetLEDs(160, 32, 240);
+    m_LEDState = SwerveConstants::LEDState::Purple;
+    // m_LEDTimer.Reset();
 }
 
 void subsystem_DriveTrain::SetYellowLED(){
-    m_CANdle.SetLEDs(255, 255, 0);
+    m_LEDState = SwerveConstants::LEDState::Yellow;
+    // m_LEDTimer.Reset();
 }
 
 
@@ -245,6 +247,23 @@ void subsystem_DriveTrain::Periodic() {
 
     frc::SmartDashboard::SmartDashboard::PutNumber("Gyro Yaw (raw)", m_Gyro.GetYaw());
     frc::SmartDashboard::SmartDashboard::PutNumber("GetYaw()", GetYaw().Degrees().value());
+
+
+    // if(m_LEDTimer.Get() > SwerveConstants::LEDTimeout){
+    //     m_LEDState = SwerveConstants::LEDState::Standby;
+    // }
+
+    switch(m_LEDState){
+        case(SwerveConstants::LEDState::Standby):
+            m_CANdle.SetLEDs(0, 255, 0);
+            break;
+        case(SwerveConstants::LEDState::Purple):
+            m_CANdle.SetLEDs(255, 0, 255);
+            break;
+        case(SwerveConstants::LEDState::Yellow):
+            m_CANdle.SetLEDs(255, 255, 0);
+            break;
+    }
 
     // double velFL = m_FrontLeftModule.GetState().speed.value();
     // double velFR = m_FrontRightModule.GetState().speed.value();

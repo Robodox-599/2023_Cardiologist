@@ -42,7 +42,7 @@ namespace ArmConstants {
     const int ShoulderBrake2 = 5;
     
     //Shoulder constants
-    const double kShoulderP = 1.8; 
+    const double kShoulderP = 0.7; 
     const double kShoulderI = 0.008;
     const double kShoulderD = 0.0;
     const double kShoulderUpP = 1.8;
@@ -79,7 +79,7 @@ namespace ArmConstants {
     const double kShoulderMinV = 0.0; 
 
     const int UpwardElbowCurrentLimit = 15;
-    const int DownwardElbowCurrentLimit = 6;
+    const int DownwardElbowCurrentLimit = 8;
 
     const double intakeAngleConversion = 0.0;  
     const double DegreesToRotations = 0.4423; 
@@ -149,10 +149,10 @@ namespace ArmConstants {
 
     constexpr double GroundX = 0.0;
     constexpr double GroundY = 0.0;
-    constexpr double GroundShoulder = -26.8;
-    constexpr double GroundElbow = -14.5; 
+    constexpr double GroundShoulder = -30;
+    constexpr double GroundElbow = -18.8; 
     constexpr double TempElbow = 6.0;
-    constexpr double GroundTilt = 6.0; 
+    constexpr double GroundTilt = 1.0; 
 
     constexpr double ArmBackLimit = 0.0;
     constexpr double ArmFrontLimit = 0.0;
@@ -224,6 +224,11 @@ namespace SwerveConstants{
         LINEAR = 1,
         NONLINEAR = 2
     };
+
+    enum LEDState{
+        Standby, Yellow, Purple
+    };
+    // units::second_t LEDTimeout{ 10.0 };
 
 
 
@@ -389,9 +394,9 @@ namespace AutoConstants{
 namespace IntakeConstants {
     // Intake Motor
     constexpr int IntakeMotorID = 15;
-    constexpr double OuttakePower = 0.3;
-    constexpr double IntakePower = -0.2;
-    constexpr double PassivePower = -0.1;
+    constexpr double OuttakePower = 0.2;
+    constexpr double IntakePower = -0.3;
+    constexpr double PassivePower = -0.2;
     // PID stuff
     constexpr double kIntakeP = 0.1;
     constexpr double kIntakeI = 0.0; 

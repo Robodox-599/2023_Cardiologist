@@ -8,7 +8,7 @@
 #include "commands/ExampleCommand.h"
 
 RobotContainer::RobotContainer() {
-  m_Chooser.SetDefaultOption( "Taxi", m_TaxiAuto.get() );
+  m_Chooser.SetDefaultOption( "Taxi", m_TaxiAuto.get());
   m_Chooser.AddOption( "Two Score Auto", m_TwoScoreAuto.get() );
   // m_Chooser.SetDefaultOption("Test", "result of test");
   // m_Chooser.AddOption("Test2", "result of test2");
@@ -24,6 +24,8 @@ RobotContainer::RobotContainer() {
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxRXAxis);},
                                                        [this]{return XboxDrive.GetLeftBumperPressed();},
                                                        [this]{return XboxDrive.GetRightBumperPressed();},
+                                                       [this]{return XboxDrive.GetRawAxis(ControllerConstants::xboxLTAxis) 
+                                                                        - XboxDrive.GetRawAxis(ControllerConstants::xboxRTAxis);},
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
 
@@ -39,7 +41,7 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::ConfigureBindings() {
   frc2::JoystickButton(&XboxDrive,
-                       frc::XboxController::Button::kX)
+                       frc::XboxController::Button::kRightStick)
       .OnTrue(command_ShiftThrottle(&m_Drive).ToPtr());
 
 
@@ -48,13 +50,13 @@ void RobotContainer::ConfigureBindings() {
       .OnTrue(command_ZeroGyro(&m_Drive).ToPtr());
 
 
-  frc2::JoystickButton(&XboxDrive,
-                      frc::XboxController::Button::kA)
-      .OnTrue(command_SetLED(&m_Drive, [=]{return true;}).ToPtr());
+  // frc2::JoystickButton(&XboxDrive,
+  //                     frc::XboxController::Button::kA)
+  //     .OnTrue(command_SetLED(&m_Drive, [=]{return true;}).ToPtr());
 
-  frc2::JoystickButton(&XboxDrive,
-                      frc::XboxController::Button::kB)
-      .OnTrue(command_SetLED(&m_Drive, [=]{return false;}).ToPtr());
+  // frc2::JoystickButton(&XboxDrive,
+  //                     frc::XboxController::Button::kB)
+  //     .OnTrue(command_SetLED(&m_Drive, [=]{return false;}).ToPtr());
 
   // frc2::JoystickButton(&XboxDrive, 
   //                       frc::XboxController::Button::kA)
@@ -101,6 +103,7 @@ void RobotContainer::ConfigureBindings() {
                        frc::XboxController::Button::kRightStick)
                        .OnTrue(ArmMovements::ToGround(&m_Arm));  
   frc2::JoystickButton(&XboxYaperator,
+
                        frc::XboxController::Button::kRightBumper)
                        .OnTrue(command_IntakeObject(&m_Intake).ToPtr());
   frc2::JoystickButton(&XboxYaperator,
@@ -109,6 +112,7 @@ void RobotContainer::ConfigureBindings() {
   frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kLeftStick)
                        .OnTrue(command_ToggleClamp(&m_Intake).ToPtr());
+  
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

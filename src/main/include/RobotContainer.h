@@ -21,6 +21,7 @@
 #include "commands/command_AlignToDesired.h"
 #include "commands/command_SetLED.h"
 
+
 #include "commands/Autos.h"
 #include "subsystems/subsystem_Arm.h"
 #include "commands/command_MoveArmManually.h"
@@ -30,6 +31,7 @@
 #include "frc/XboxController.h"
 #include "frc2/command/button/JoystickButton.h"
 #include <frc/Joystick.h>
+#include "commands/command_ResetWrist.h"
 
 #include "subsystems/subsystem_Intake.h"
 

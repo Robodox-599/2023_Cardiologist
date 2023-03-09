@@ -52,6 +52,8 @@ public:
   double GetShoulderPosition();
   double GetWristPosition();
 
+  void ResetWristEncoder();
+
   // True is upward direction ; False is downward direction
   bool IsElbowDirectionGoingUp(double Elbow);
   bool IsShoulderDirectionGoingUp(double shoulder);

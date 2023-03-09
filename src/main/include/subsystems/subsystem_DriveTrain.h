@@ -20,7 +20,7 @@
 #include <frc/controller/PIDController.h>
 #include <frc/controller/ProfiledPIDController.h>
 #include <ctre/phoenix/sensors/WPI_Pigeon2.h>
-
+#include <frc/Timer.h>
 #include <ctre/phoenix/led/CANdle.h>
 
 
@@ -42,7 +42,6 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   void ResetModulesToAbsolute();
   units::meters_per_second_t AddPitchCorrection();
   units::meters_per_second_t AddRollCorrection();
-  bool IsOnChargingStation();
   
 
 
@@ -108,6 +107,8 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
                                         0.001};
 
   ctre::phoenix::led::CANdle m_CANdle;
+  // frc::Timer m_LEDTimer;
+  SwerveConstants::LEDState m_LEDState = SwerveConstants::LEDState::Standby;
 
   
 

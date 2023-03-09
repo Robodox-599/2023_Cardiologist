@@ -15,10 +15,9 @@ subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMoto
     // m_IntakeMotor.SetSmartCurrentLimit(IntakeConstants::CurrentLimit);
     // m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
     m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-    // m_IntakeMotorPID.SetP(IntakeConstants::kIntakeP);
-    // m_IntakeMotorPID.SetI(IntakeConstants::kIntakeI);
-    // m_IntakeMotorPID.SetD(IntakeConstants::kIntakeD);
-    // m_IntakeMotorPID.SetFF(IntakeConstants::kIntakeFF);
+    m_IntakeMotorPID.SetP(IntakeConstants::kIntakeP);
+    m_IntakeMotorPID.SetI(IntakeConstants::kIntakeI);
+    m_IntakeMotorPID.SetD(IntakeConstants::kIntakeD);
     m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
     m_ColorMatcher.AddColorMatch(ColorConstants::YellowTarget);
     m_ProximityPID.SetSetpoint(ColorConstants::TargetProximity);
@@ -114,10 +113,10 @@ void subsystem_Intake::MaintainIntakeMode(){
             m_IntakeMotor.Set(IntakeConstants::OuttakePower);
             break;
         case(IntakeConstants::IntakeMode::MidShoot):
-            m_IntakeMotorPID.SetReference(4000, rev::ControlType::kVelocity, 0, 0.0);
+            m_IntakeMotorPID.SetReference(4000, rev::CANSparkMaxLowLevel::ControlType::kVelocity, 0, 5);
             break;
         case(IntakeConstants::IntakeMode::HighShoot):
-            m_IntakeMotorPID.SetReference(6000, rev::ControlType::kVelocity, 0, 0.0);
+            m_IntakeMotorPID.SetReference(6000, rev::CANSparkMaxLowLevel::ControlType::kVelocity, 0, 7);
             break;
     }
 }
@@ -128,7 +127,11 @@ void subsystem_Intake::MaintainIntakeMode(){
 // This method will be called once per scheduler run
 void subsystem_Intake::Periodic()
 {
-    
+
+
+
+    // m_IntakeMotorPID.SetReference(4000, rev::ControlType::kVelocity, 0, 4 );
+    frc::SmartDashboard::PutNumber("Velocity", m_IntakeEncoder.GetVelocity());
     MaintainIntakeMode();
 
     // Current Proximity (changes member variable curr proximity)

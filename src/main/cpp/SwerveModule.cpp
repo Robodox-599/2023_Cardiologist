@@ -73,8 +73,8 @@ frc::SwerveModuleState SwerveModule::Optimize(frc::SwerveModuleState DesiredStat
 
 
     units::degree_t ModReferenceAngle { frc::AngleModulus( CurrentAngle.Radians() )  };
-    frc::SmartDashboard::SmartDashboard::PutNumber("Current Angle", ModReferenceAngle.value());
-    frc::SmartDashboard::SmartDashboard::PutNumber("Desired Angle(Continuous)", DesiredState.angle.Degrees().value());
+    // frc::SmartDashboard::SmartDashboard::PutNumber("Current Angle", ModReferenceAngle.value());
+    // frc::SmartDashboard::SmartDashboard::PutNumber("Desired Angle(Continuous)", DesiredState.angle.Degrees().value());
 
     units::meters_per_second_t TargetSpeed = DesiredState.speed;
     units::degree_t Delta = DesiredState.angle.Degrees() - ModReferenceAngle;
@@ -88,7 +88,7 @@ frc::SwerveModuleState SwerveModule::Optimize(frc::SwerveModuleState DesiredStat
         Delta = Delta > 0_deg ? (Delta -= 180_deg) : ( Delta += 180_deg);
     }
     units::degree_t TargetAngle = CurrentAngle.Degrees() + Delta;
-    frc::SmartDashboard::SmartDashboard::PutNumber("Desired Angle(Discontinuous)", DesiredState.angle.Degrees().value());
+    // frc::SmartDashboard::SmartDashboard::PutNumber("Desired Angle(Discontinuous)", DesiredState.angle.Degrees().value());
 
     return  {TargetSpeed, TargetAngle};
 }
