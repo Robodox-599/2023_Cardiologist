@@ -66,8 +66,8 @@ class RobotContainer {
 
   frc::SendableChooser<frc2::Command*> m_Chooser;
 
-  frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
-  frc2::CommandPtr m_TwoScoreAuto = autos::Niemann(&m_Drive, &m_PoseTracker);
+  frc2::CommandPtr m_TaxiAuto = autos::OneSTIS_0(&m_Intake, &m_Arm);
+  frc2::CommandPtr m_TwoScoreAuto = autos::OneSTIS_1(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
 
   void ConfigureBindings();
 

@@ -23,79 +23,44 @@
 
 
 namespace autos {
-/**
- * Example static factory for an autonomous command.
- */
+    
+    frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
 
+    frc2::CommandPtr autos::OneSTIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::OneSTIS_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::OneSTIS_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::OneSTIS_3(subsystem_Intake* Intake, subsystem_Arm* Arm);
 
-frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::TwoSISC_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::TwoSISC_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::TwoSISC_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::TwoSISC_2_half(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::TwoSISC_3(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
 
-/*
-//Two Ball Auto
+    frc2::CommandPtr autos::ThreeSISIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::ThreeSISIS_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::ThreeSISIS_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::ThreeSISIS_2_half(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::ThreeSISIS_3(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::ThreeSISIS_4(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::ThreeSISIS_5(subsystem_Intake* Intake, subsystem_Arm* Arm);
 
-//Niemann
-frc2::CommandPtr Yes2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::ThreeSTIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::ThreeSTIS_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::ThreeSTIS_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::ThreeSTIS_3(subsystem_Intake* Intake, subsystem_Arm* Arm);
 
-//Hikaru
-frc2::CommandPtr FourTC(subsystem_DriveTrain* DriveTrain, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::TwoSTISC_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::TwoSTISC_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::TwoSTISC_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::TwoSTISC_3(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
 
-//Fischer
-frc2::CommandPtr ThreeST(subsystem_DriveTrain* DriveTrain, subsystem_Arm* Arm, subsystem_Intake* Intake);
-
-//Magnus
-frc2::CommandPtr TwoSTC(subsystem_DriveTrain* DriveTrain, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_PoseTracker* PoseTracker);
-
-//Giri
-frc2::CommandPtr ThreeDST(subsystem_DriveTrain* DriveTrain, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_PoseTracker* PoseTracker);
-
-//Kasparov
-frc2::CommandPtr FourT(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
-
-frc2::CommandPtr Giri(subsystem_DriveTrain* DriveTrain, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_PoseTracker* PoseTracker);
-
-
-//Taxi Auto
-frc2::CommandPtr Kasparov(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
-*/
-
-//Good CMDs
-frc2::CommandPtr OneSTIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr OneSTIS_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr OneSTIS_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-frc2::CommandPtr OneSTIS_3(subsystem_Intake* Intake);
-
-frc2::CommandPtr TwoSISC_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr TwoSISC_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr TwoSISC_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-frc2::CommandPtr TwoSISC_2_half(subsystem_Intake* Intake);
-frc2::CommandPtr TwoSISC_3(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-
-frc2::CommandPtr ThreeSISIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr ThreeSISIS_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr ThreeSISIS_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-frc2::CommandPtr ThreeSISIS_2_half(subsystem_Intake* Intake);
-frc2::CommandPtr ThreeSISIS_3(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr ThreeSISIS_4(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-frc2::CommandPtr ThreeSISIS_5(subsystem_Intake* Intake);
-
-frc2::CommandPtr ThreeSTIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr ThreeSTIS_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr ThreeSTIS_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-frc2::CommandPtr ThreeSTIS_3(subsystem_Intake* Intake);
-
-frc2::CommandPtr TwoSTISC_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr TwoSTISC_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr TwoSTISC_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-frc2::CommandPtr TwoSTISC_3(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake);
-
-frc2::CommandPtr OneSISIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr OneSISIS_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr OneSISIS_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-frc2::CommandPtr OneSISIS_2_half(subsystem_Intake* Intake);
-frc2::CommandPtr OneSISIS_3(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
-frc2::CommandPtr OneSISIS_4(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm);
-frc2::CommandPtr OneSISIS_5(subsystem_Intake* Intake);
-
-}  // namespace autos
-
-
+    frc2::CommandPtr autos::OneSISIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::OneSISIS_1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::OneSISIS_2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::OneSISIS_2_half(subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::OneSISIS_3(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr autos::OneSISIS_4(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
+    frc2::CommandPtr autos::OneSISIS_5(subsystem_Intake* Intake, subsystem_Arm* Arm);
+}
+  // namespace autos
