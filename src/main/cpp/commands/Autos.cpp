@@ -182,3 +182,52 @@ frc2::CommandPtr autos::OneSISIS_5(subsystem_Intake* Intake, subsystem_Arm* Arm)
   return frc2::cmd::Sequence(ArmMovements::ToHighCone(Arm), 
                             command_OuttakeObject(Intake).ToPtr());
 }
+
+frc2::CommandPtr paths::OneSTIS(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+  return frc2::cmd::Sequence(autos::OneSTIS_0(Intake, Arm),
+                            autos::OneSTIS_1(DriveTrain, PoseTracker, Intake, Arm),
+                            autos::OneSTIS_2(DriveTrain, PoseTracker),
+                            autos::OneSTIS_3(Intake, Arm)); 
+}
+
+frc2::CommandPtr paths::TwoSISC(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+  return frc2::cmd::Sequence(autos::TwoSISC_0(Intake, Arm),
+                            autos::TwoSISC_1(DriveTrain, PoseTracker, Intake, Arm),
+                            autos::TwoSISC_2(DriveTrain, PoseTracker),
+                            autos::TwoSISC_2_half(Intake, Arm),
+                            autos::TwoSISC_3(DriveTrain, PoseTracker, Arm));  
+}
+
+frc2::CommandPtr paths::ThreeSISIS(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+  return frc2::cmd::Sequence(autos::ThreeSISIS_0(Intake, Arm),
+                            autos::ThreeSISIS_1(DriveTrain, PoseTracker, Intake, Arm),
+                            autos::ThreeSISIS_2(DriveTrain, PoseTracker),
+                            autos::ThreeSISIS_2_half(Intake, Arm),
+                            autos::ThreeSISIS_3(DriveTrain, PoseTracker, Intake, Arm),
+                            autos::ThreeSISIS_4(DriveTrain, PoseTracker),
+                            autos::ThreeSISIS_5(Intake, Arm));  
+}
+
+frc2::CommandPtr paths::ThreeSTIS(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+  return frc2::cmd::Sequence(autos::ThreeSTIS_0(Intake, Arm),
+    autos::ThreeSTIS_1(DriveTrain, PoseTracker, Intake, Arm),
+    autos::ThreeSTIS_2(DriveTrain, PoseTracker),
+    autos::ThreeSTIS_3(Intake, Arm));  
+}
+
+frc2::CommandPtr paths::TwoSTISC(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+  return frc2::cmd::Sequence(autos::TwoSTISC_0(Intake, Arm),
+                            autos::TwoSTISC_1(DriveTrain, PoseTracker, Intake, Arm),
+                            autos::TwoSTISC_2(DriveTrain, PoseTracker),
+                            autos::TwoSTISC_3(DriveTrain, PoseTracker, Intake, Arm));  
+}
+
+frc2::CommandPtr paths::OneSISIS(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+  return frc2::cmd::Sequence(autos::OneSISIS_0(Intake, Arm),
+                            autos::OneSISIS_1(DriveTrain, PoseTracker, Intake, Arm),
+                            autos::OneSISIS_2(DriveTrain, PoseTracker),
+                            autos::OneSISIS_2_half(Intake, Arm),
+                            autos::OneSISIS_3(DriveTrain, PoseTracker, Intake, Arm),
+                            autos::OneSISIS_4(DriveTrain, PoseTracker),
+                            autos::OneSISIS_5(Intake, Arm));  
+}
