@@ -96,6 +96,13 @@ void subsystem_DriveTrain::SetModuleStates(wpi::array<frc::SwerveModuleState, 4>
 
 }
 
+void subsystem_DriveTrain::SetPark(){
+    m_FrontLeftModule.SetDesiredAngle(frc::Rotation2d{-45_deg});
+    m_FrontRightModule.SetDesiredAngle(frc::Rotation2d{45_deg});
+    m_BackLeftModule.SetDesiredAngle(frc::Rotation2d{45_deg});
+    m_BackRightModule.SetDesiredAngle(frc::Rotation2d{-45_deg});
+}
+
 
 
 double subsystem_DriveTrain::SetThrottle(double input){
@@ -166,6 +173,7 @@ void subsystem_DriveTrain::ZeroGyro(){
 
 }
 
+
 void subsystem_DriveTrain::ImplementVisionPose(std::pair<frc::Pose2d, units::millisecond_t> pair){
         m_PoseEstimator.AddVisionMeasurement(pair.first, pair.second);
 }
@@ -234,6 +242,15 @@ void subsystem_DriveTrain::SetYellowLED(){
 }
 
 
+void subsystem_DriveTrain::TogglePark(){
+    m_IsPark  =  !m_IsPark;
+
+}
+
+bool subsystem_DriveTrain::IsPark(){
+    return m_IsPark;
+}
+
 
 
 // This method will be called once per scheduler run
@@ -255,10 +272,12 @@ void subsystem_DriveTrain::Periodic() {
 
     switch(m_LEDState){
         case(SwerveConstants::LEDState::Standby):
-            m_CANdle.SetLEDs(0, 255, 0);
+
+        // green red blue
+            m_CANdle.SetLEDs(255, 0, 0);
             break;
         case(SwerveConstants::LEDState::Purple):
-            m_CANdle.SetLEDs(255, 0, 255);
+            m_CANdle.SetLEDs(0, 255, 255);
             break;
         case(SwerveConstants::LEDState::Yellow):
             m_CANdle.SetLEDs(255, 255, 0);

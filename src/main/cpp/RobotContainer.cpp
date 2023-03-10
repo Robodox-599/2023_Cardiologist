@@ -10,8 +10,7 @@
 RobotContainer::RobotContainer() {
   m_Chooser.SetDefaultOption( "Taxi", m_TaxiAuto.get());
   m_Chooser.AddOption( "Two Score Auto", m_TwoScoreAuto.get() );
-  // m_Chooser.SetDefaultOption("Test", "result of test");
-  // m_Chooser.AddOption("Test2", "result of test2");
+  // // m_Chooser.SetDefaultOption("Test", "result of test");
   frc::SmartDashboard::PutData(&m_Chooser);
 
   
@@ -29,10 +28,11 @@ RobotContainer::RobotContainer() {
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
 
-  m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
-                        [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxLYAxis);},
-                        [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxRYAxis);},
-                        [this]{return XboxYaperator.GetRightTriggerAxis() - XboxYaperator.GetLeftTriggerAxis();}));
+
+  // m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
+  //                       [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxLYAxis);},
+  //                       [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxRYAxis);},
+  //                       [this]{return XboxYaperator.GetRightTriggerAxis() - XboxYaperator.GetLeftTriggerAxis();}));
 
   // Configure the button bindings
   ConfigureBindings();
@@ -115,7 +115,7 @@ void RobotContainer::ConfigureBindings() {
   
 }
 
-frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
+frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return autos::TestAuto(&m_Drive, &m_PoseTracker);
+  return m_Chooser.GetSelected();
 }

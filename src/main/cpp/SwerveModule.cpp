@@ -35,11 +35,7 @@ SwerveModule::SwerveModule(const double Module[] ):
 
 
 
-void SwerveModule::SetDegrees(units::degree_t Degrees){
 
-    m_AngleMotor.SetSelectedSensorPosition( (DegreesToFalcon(Degrees - GetCANCoder().Degrees()) ));
-
-}
 
 double SwerveModule::getTurnCounts(){
     return m_AngleMotor.GetSelectedSensorPosition();
@@ -58,10 +54,18 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState& DesiredState, bool Is
     }
     units::meters_per_second_t minSpeed = (SwerveConstants::MaxSpeed * 0.01);
 
-    units::degree_t Angle = units::math::abs(DesiredState.speed) <= minSpeed ? m_LastAngle: DesiredState.angle.Degrees();
+    units::degree_t Angle = (units::math::abs(DesiredState.speed) <= minSpeed  ) ? m_LastAngle: DesiredState.angle.Degrees();
+
 
     m_AngleMotor.Set( ctre::phoenix::motorcontrol::ControlMode::Position, DegreesToFalcon(Angle) );
     m_LastAngle = Angle;
+}
+
+void SwerveModule::SetDesiredAngle(frc::Rotation2d Angle){
+    frc::SwerveModuleState TempState {0_mps, Angle};
+    TempState= Optimize(TempState, GetState().angle);
+    m_AngleMotor.Set( ctre::phoenix::motorcontrol::ControlMode::Position, DegreesToFalcon(Angle.Degrees()) );
+    m_LastAngle = Angle.Degrees();
 }
 
 units::degree_t SwerveModule::getLastAngle(){

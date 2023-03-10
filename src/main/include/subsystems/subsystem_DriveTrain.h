@@ -51,6 +51,11 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   frc::Pose2d GetPose();
   frc::Rotation2d GetYaw();
   frc::Rotation2d GetPoseYaw();
+  void SetPark();
+  void TogglePark();
+  bool IsPark();
+
+  
 
 
   void ToggleTiltCorrection();
@@ -58,6 +63,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   units::meters_per_second_t CalculateRoll();
 
   std::pair<units::meter_t, units::meter_t> ReflectAlliance();
+  
 
   void SetAutoOrient(bool IsOrientFront, bool IsOrientBack, double RotVelocity);
   units::radians_per_second_t GetAngularVelocity();
@@ -109,6 +115,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   ctre::phoenix::led::CANdle m_CANdle;
   // frc::Timer m_LEDTimer;
   SwerveConstants::LEDState m_LEDState = SwerveConstants::LEDState::Standby;
+  bool m_IsPark = false;
 
   
 

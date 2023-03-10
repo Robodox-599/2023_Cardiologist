@@ -50,7 +50,7 @@ class RobotContainer {
  public:
   RobotContainer();
 
-  frc2::CommandPtr GetAutonomousCommand();
+  frc2::Command* GetAutonomousCommand();
   
 
  private:
@@ -68,7 +68,7 @@ class RobotContainer {
   frc::XboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
 
 
-  frc::SendableChooser<frc2::Command*> m_Chooser;
+  frc::SendableChooser<frc2::Command*> m_Chooser;  
 
   frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
   frc2::CommandPtr m_TwoScoreAuto = autos::Niemann(&m_Drive, &m_PoseTracker);

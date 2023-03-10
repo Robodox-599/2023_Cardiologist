@@ -67,6 +67,9 @@ namespace ArmConstants {
     const double kWristI = 0.0;
     const double kWristD = 0.0;
 
+
+    
+
     // SmartMotion constants (currently not being used)
     const double kElbowSmartMotionP = 0.0001;
     const double kElbowSmartMotionD = 0.0;

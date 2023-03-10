@@ -12,15 +12,17 @@ subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMoto
                                        m_ColorMatcher{},
                                        m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD}
 {
-    // m_IntakeMotor.SetSmartCurrentLimit(IntakeConstants::CurrentLimit);
+    m_IntakeMotor.SetSmartCurrentLimit(25);
     // m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
     m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-    m_IntakeMotorPID.SetP(IntakeConstants::kIntakeP);
-    m_IntakeMotorPID.SetI(IntakeConstants::kIntakeI);
-    m_IntakeMotorPID.SetD(IntakeConstants::kIntakeD);
+    m_IntakeMotorPID.SetP(0.01);
+    m_IntakeMotorPID.SetI(0.0);
+    m_IntakeMotorPID.SetD(0.0);
     m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
     m_ColorMatcher.AddColorMatch(ColorConstants::YellowTarget);
     m_ProximityPID.SetSetpoint(ColorConstants::TargetProximity);
+    m_Solenoid.Set(frc::DoubleSolenoid::kReverse);
+    
 }
 
 void subsystem_Intake::IntakeClose()
@@ -130,8 +132,11 @@ void subsystem_Intake::Periodic()
 
 
 
-    // m_IntakeMotorPID.SetReference(4000, rev::ControlType::kVelocity, 0, 4 );
-    frc::SmartDashboard::PutNumber("Velocity", m_IntakeEncoder.GetVelocity());
+    // m_IntakeMotorPID.SetReference(7000, rev::ControlType::kVelocity, 0, 10);
+
+    // frc::SmartDashboard::PutNumber("Velocity", m_IntakeEncoder.GetVelocity());
+    // frc::SmartDashboard::PutNumber("Graph Velocity", m_IntakeEncoder.GetVelocity());
+
     MaintainIntakeMode();
 
     // Current Proximity (changes member variable curr proximity)

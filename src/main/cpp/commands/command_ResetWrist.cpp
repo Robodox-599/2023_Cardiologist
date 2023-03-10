@@ -13,7 +13,6 @@ command_ResetWrist::command_ResetWrist(subsystem_Arm* Arm): m_Arm{Arm} {
 
 // Called when the command is initially scheduled.
 void command_ResetWrist::Initialize() {
-  m_Arm->ResetWristEncoder();
 }
 
 // Called repeatedly when this Command is scheduled to run
