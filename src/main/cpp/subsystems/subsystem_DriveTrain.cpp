@@ -82,6 +82,10 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
 
 }
 
+bool subsystem_DriveTrain::IsBalanced(){
+    return fabs(m_Gyro.GetYaw()) < 2 && fabs(m_Gyro.GetRoll()) < 2;
+}
+
 
 
 

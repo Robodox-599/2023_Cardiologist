@@ -63,6 +63,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   units::meters_per_second_t CalculateRoll();
   void EnableBalanceCorrection();
   void DisableBalanceCorrection();
+  bool IsBalanced();
 
   std::pair<units::meter_t, units::meter_t> ReflectAlliance();
   

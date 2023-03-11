@@ -248,6 +248,8 @@ namespace SwerveConstants{
     //Tip Correction PID (ROLL) 
     constexpr double RollKP = 0.1;
     constexpr double RollKD = 0.0;
+
+    constexpr units::second_t Timeout {0.1};
     
 
     /*setting up correct units for the simepleMotorFeedforward KS gain*/

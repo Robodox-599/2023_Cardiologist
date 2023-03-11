@@ -238,3 +238,8 @@ frc2::CommandPtr autos::ScoreAndTaxi(subsystem_DriveTrain* DriveTrain, subsystem
     return frc2::cmd::Sequence(autos::OneSTIS_0(Intake, Arm), command_DriveAuton(DriveTrain, PoseTracker, "1STIS (1)", true).ToPtr());
   
   }
+
+
+frc2::CommandPtr autos::TaxiAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker){
+    return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "4TC", true).ToPtr(), command_Balance(DriveTrain).ToPtr());
+}

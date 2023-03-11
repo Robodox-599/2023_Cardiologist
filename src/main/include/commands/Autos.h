@@ -21,6 +21,7 @@
 #include "subsystems/subsystem_Intake.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "commands/command_TimeOut.h"
+#include "commands/command_Balance.h"
 
 
 namespace autos {
@@ -74,6 +75,7 @@ namespace autos {
     frc2::CommandPtr OneSISIS(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
 
     frc2::CommandPtr ScoreAndTaxi(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
+    frc2::CommandPtr TaxiAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
 }
 
 namespace paths{
