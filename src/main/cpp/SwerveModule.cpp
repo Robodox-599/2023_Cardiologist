@@ -36,7 +36,6 @@ SwerveModule::SwerveModule(const double Module[] ):
 
 
 
-
 double SwerveModule::getTurnCounts(){
     return m_AngleMotor.GetSelectedSensorPosition();
 }

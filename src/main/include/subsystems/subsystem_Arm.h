@@ -45,6 +45,10 @@ public:
   double GetWristIncrement();
   double GetElbowIncrement();
 
+  void ResetWrist();
+
+  
+
   void SetElbowPIDByDirection(double desiredElbowPos);
   void SetShoulderPIDByDirection(double desiredShoulderPos);
 

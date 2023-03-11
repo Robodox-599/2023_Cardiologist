@@ -11,7 +11,7 @@ command_ToggleTiltCorrection::command_ToggleTiltCorrection(subsystem_DriveTrain*
 
 // Called when the command is initially scheduled.
 void command_ToggleTiltCorrection::Initialize() {
-  m_DriveTrain->ToggleTiltCorrection();
+  m_DriveTrain->ToggleBalanceCorrection();
 }
 
 // Called repeatedly when this Command is scheduled to run

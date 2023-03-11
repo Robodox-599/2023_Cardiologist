@@ -45,7 +45,6 @@ class HardwareConfig{
         // SwerveAngleFXConfig.closedloopRamp = SwerveConstants::closedLoopRamp;
         SwerveAngleFXConfig.initializationStrategy = ctre::phoenix::sensors::SensorInitializationStrategy::BootToZero;
 
-
     }
     
 

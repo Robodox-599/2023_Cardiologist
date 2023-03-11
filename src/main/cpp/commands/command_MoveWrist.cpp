@@ -36,7 +36,6 @@ void command_MoveWrist::End(bool interrupted) {
   // if(m_arm->IsAtDesiredPosition()){
   //   m_arm->LockArm();
   // }
-
 }
 
 // Returns true when the command should end.

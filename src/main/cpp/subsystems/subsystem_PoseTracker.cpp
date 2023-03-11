@@ -7,7 +7,6 @@
 
 subsystem_PoseTracker::subsystem_PoseTracker()
 {
-
   cameras.push_back(std::make_pair(cameraOne, robotToCam));
 
   SetAllianceOrigin(m_Alliance);
@@ -80,7 +79,7 @@ void subsystem_PoseTracker::Periodic()
     SetAllianceOrigin(m_Alliance);
   } 
   
-  // frc::SmartDashboard::SmartDashboard::PutNumber("Pose_X_2D", estimator.Update().first.ToPose2d().X().value());
-  // frc::SmartDashboard::SmartDashboard::PutNumber("Pose_Y_2D", estimator.Update().first.ToPose2d().Y().value());
+   frc::SmartDashboard::SmartDashboard::PutNumber("Pose_X_2D", estimator.Update().first.ToPose2d().X().value());
+   frc::SmartDashboard::SmartDashboard::PutNumber("Pose_Y_2D", estimator.Update().first.ToPose2d().Y().value());
   
 }

@@ -39,6 +39,7 @@
 #include "commands/command_ToggleClamp.h"
 #include "commands/command_IntakeObject.h"
 #include "commands/command_CubeShooter.h"
+#include "commands/command_ToggleTiltCorrection.h"
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -68,10 +69,10 @@ class RobotContainer {
   frc::XboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
 
 
-  frc::SendableChooser<frc2::Command*> m_Chooser;  
+  frc::SendableChooser<frc2::Command*> m_Chooser;
 
   frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
-  frc2::CommandPtr m_TwoScoreAuto = autos::Niemann(&m_Drive, &m_PoseTracker);
+  frc2::CommandPtr m_ScoreAndTaxi = autos::ScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
 
   void ConfigureBindings();
 

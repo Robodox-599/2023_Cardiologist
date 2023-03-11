@@ -30,7 +30,7 @@ subsystem_DriveTrain::subsystem_DriveTrain():
     m_Gyro.ConfigFactoryDefault();
     ZeroGyro();
     DegreeOfThrottle = SwerveConstants::Throttle::NONLINEAR;
-    m_IsTilting = true;
+    m_IsBalancing = false;
     m_IsAutoOrient = false;
 
     m_PitchCorrectionPID.SetSetpoint(0.0);
@@ -59,10 +59,10 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
                                         bool FieldRelative, 
                                         bool IsOpenLoop){
 
-    // if( !m_IsTilting  && !IsOnChargingStation() ){
-    //     xSpeed += AddPitchCorrection();
-    //     ySpeed += AddRollCorrection();
-    // }
+    if( m_IsBalancing  ){
+        ySpeed += AddPitchCorrection();
+        xSpeed += AddRollCorrection();
+    }
 
 
     zRot = m_IsAutoOrient ? GetAngularVelocity() :  zRot;
@@ -163,8 +163,16 @@ frc::Rotation2d subsystem_DriveTrain::GetPoseYaw(){
 
 
 
-void subsystem_DriveTrain::ToggleTiltCorrection(){
-    m_IsTilting = !m_IsTilting;
+void subsystem_DriveTrain::ToggleBalanceCorrection(){
+    m_IsBalancing = !m_IsBalancing;
+}
+
+void subsystem_DriveTrain::EnableBalanceCorrection(){
+    m_IsBalancing = true;
+}
+
+void subsystem_DriveTrain::DisableBalanceCorrection(){
+    m_IsBalancing = false;  
 }
 
 void subsystem_DriveTrain::ZeroGyro(){
@@ -172,7 +180,6 @@ void subsystem_DriveTrain::ZeroGyro(){
     m_Gyro.SetYaw(0);
 
 }
-
 
 void subsystem_DriveTrain::ImplementVisionPose(std::pair<frc::Pose2d, units::millisecond_t> pair){
         m_PoseEstimator.AddVisionMeasurement(pair.first, pair.second);
@@ -194,7 +201,6 @@ units::meters_per_second_t subsystem_DriveTrain::AddRollCorrection(){
     return units::meters_per_second_t{ m_RollCorrectionPID.Calculate( m_Gyro.GetRoll() )};
 
 }
-
 
 
 
@@ -258,12 +264,17 @@ void subsystem_DriveTrain::Periodic() {
 
     frc::SmartDashboard::PutBoolean("AutoOrient", m_IsAutoOrient);
     frc::SmartDashboard::PutNumber("m_DPAD", m_Dpad);
-    frc::SmartDashboard::SmartDashboard::PutNumber("X Position", m_PoseEstimator.GetEstimatedPosition().X().value());
-    frc::SmartDashboard::SmartDashboard::PutNumber("Y Position", m_PoseEstimator.GetEstimatedPosition().Y().value());
-    frc::SmartDashboard::SmartDashboard::PutNumber("Pose Yaw", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value()); 
 
-    frc::SmartDashboard::SmartDashboard::PutNumber("Gyro Yaw (raw)", m_Gyro.GetYaw());
-    frc::SmartDashboard::SmartDashboard::PutNumber("GetYaw()", GetYaw().Degrees().value());
+    frc::SmartDashboard::PutNumber("Pitch", m_Gyro.GetPitch());
+    frc::SmartDashboard::PutNumber("Yaw", m_Gyro.GetPitch());
+    frc::SmartDashboard::PutNumber("PitchPID", AddPitchCorrection().value());
+    frc::SmartDashboard::PutNumber("Yaw", AddRollCorrection().value());
+    // frc::SmartDashboard::SmartDashboard::PutNumber("X Position", m_PoseEstimator.GetEstimatedPosition().X().value());
+    // frc::SmartDashboard::SmartDashboard::PutNumber("Y Position", m_PoseEstimator.GetEstimatedPosition().Y().value());
+    // frc::SmartDashboard::SmartDashboard::PutNumber("Pose Yaw", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value()); 
+
+    // frc::SmartDashboard::SmartDashboard::PutNumber("Gyro Yaw (raw)", m_Gyro.GetYaw());
+    // frc::SmartDashboard::SmartDashboard::PutNumber("GetYaw()", GetYaw().Degrees().value());
 
 
     // if(m_LEDTimer.Get() > SwerveConstants::LEDTimeout){

@@ -5,14 +5,13 @@
 #include "commands/command_ResetWrist.h"
 
 command_ResetWrist::command_ResetWrist(subsystem_Arm* Arm): m_Arm{Arm} {
-
   // Use addRequirements() here to declare subsystem dependencies.
-
   AddRequirements({m_Arm});
 }
 
 // Called when the command is initially scheduled.
 void command_ResetWrist::Initialize() {
+  m_Arm->ResetWrist();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -23,5 +22,5 @@ void command_ResetWrist::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool command_ResetWrist::IsFinished() {
-  return false;
+  return true;
 }

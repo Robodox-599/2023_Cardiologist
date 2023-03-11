@@ -125,7 +125,6 @@ void subsystem_Intake::MaintainIntakeMode(){
 
 
 
-
 // This method will be called once per scheduler run
 void subsystem_Intake::Periodic()
 {

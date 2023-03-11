@@ -9,7 +9,7 @@
 
 RobotContainer::RobotContainer() {
   m_Chooser.SetDefaultOption( "Taxi", m_TaxiAuto.get());
-  m_Chooser.AddOption( "Two Score Auto", m_TwoScoreAuto.get() );
+  m_Chooser.AddOption( "Test", m_ScoreAndTaxi.get() );
   // // m_Chooser.SetDefaultOption("Test", "result of test");
   frc::SmartDashboard::PutData(&m_Chooser);
 
@@ -29,10 +29,10 @@ RobotContainer::RobotContainer() {
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
 
 
-  // m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
-  //                       [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxLYAxis);},
-  //                       [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxRYAxis);},
-  //                       [this]{return XboxYaperator.GetRightTriggerAxis() - XboxYaperator.GetLeftTriggerAxis();}));
+  m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
+                        [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxLYAxis);},
+                        [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxRYAxis);},
+                        [this]{return XboxYaperator.GetRightTriggerAxis() - XboxYaperator.GetLeftTriggerAxis();}));
 
   // Configure the button bindings
   ConfigureBindings();
@@ -48,6 +48,10 @@ void RobotContainer::ConfigureBindings() {
   frc2::JoystickButton(&XboxDrive,
                         frc::XboxController::Button::kY)
       .OnTrue(command_ZeroGyro(&m_Drive).ToPtr());
+
+  frc2::JoystickButton(&XboxDrive, 
+                        frc::XboxController::Button::kB)
+      .OnTrue(command_ToggleTiltCorrection(&m_Drive).ToPtr());
 
 
   // frc2::JoystickButton(&XboxDrive,
@@ -101,9 +105,10 @@ void RobotContainer::ConfigureBindings() {
 
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kRightStick)
-                       .OnTrue(ArmMovements::ToGround(&m_Arm));  
-  frc2::JoystickButton(&XboxYaperator,
+                       .OnTrue(ArmMovements::ToFloorCube(&m_Arm));  
 
+
+  frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kRightBumper)
                        .OnTrue(command_IntakeObject(&m_Intake).ToPtr());
   frc2::JoystickButton(&XboxYaperator,

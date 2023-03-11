@@ -17,5 +17,6 @@ namespace ArmMovements
   frc2::CommandPtr ToSubstation(subsystem_Arm *Arm);
   frc2::CommandPtr ToStow(subsystem_Arm *Arm);
   frc2::CommandPtr ToGround(subsystem_Arm *Arm);
+  frc2::CommandPtr ToFloorCube(subsystem_Arm *Arm);
 
 }

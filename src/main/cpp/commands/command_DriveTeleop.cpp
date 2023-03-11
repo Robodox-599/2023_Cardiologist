@@ -33,6 +33,8 @@ void command_DriveTeleop::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void command_DriveTeleop::Execute() {
+
+  
   if(m_PoseTracker->HasAcceptableTargets()){
     m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());
   }

@@ -58,9 +58,11 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   
 
 
-  void ToggleTiltCorrection();
+  void ToggleBalanceCorrection();
   units::meters_per_second_t CalculatePitch();
   units::meters_per_second_t CalculateRoll();
+  void EnableBalanceCorrection();
+  void DisableBalanceCorrection();
 
   std::pair<units::meter_t, units::meter_t> ReflectAlliance();
   
@@ -102,7 +104,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
 
   frc2::PIDController m_PitchCorrectionPID;
   frc2::PIDController m_RollCorrectionPID;
-  bool m_IsTilting;
+  bool m_IsBalancing;
 
   bool m_IsAutoOrient;
   int m_Dpad = Orientation::NON_ORIENTED;

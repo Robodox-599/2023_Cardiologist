@@ -86,7 +86,7 @@ private:
   // Camera is mounted facing forward, half a meter forward of center, half a
   // meter up from center.
   frc::Transform3d robotToCam =
-      frc::Transform3d(frc::Translation3d(11.675_in, 0_in, 30.3175_in),
+      frc::Transform3d(frc::Translation3d(16.75_in, 7_in, 32_in),
                        frc::Rotation3d(0_rad, 0_rad, 0_rad));
 
   // ... Add other cameras here

@@ -142,7 +142,7 @@ namespace ArmConstants {
     constexpr double RestY = 0.0;
     constexpr double StowShoulder = -0.5;
     constexpr double StowElbow = 0.5;
-    constexpr double StowTilt = 10.5;
+    constexpr double StowTilt = 13.0;
 
     constexpr double SubstationX = 0.0;
     constexpr double SubstationY = 0.0;
@@ -156,6 +156,11 @@ namespace ArmConstants {
     constexpr double GroundElbow = -18.8; 
     constexpr double TempElbow = 6.0;
     constexpr double GroundTilt = 1.0; 
+
+    constexpr double floorCubeShoulder = -0.5;
+    constexpr double floorCubeElbow = 0.5;
+    constexpr double floorCubeTilt = -18.0;
+
 
     constexpr double ArmBackLimit = 0.0;
     constexpr double ArmFrontLimit = 0.0;
@@ -236,12 +241,12 @@ namespace SwerveConstants{
 
 
     //Tip Correction PID (PITCH)
-    constexpr double PitchKP = 0.0;
+    constexpr double PitchKP = 0.1;
     constexpr double PitchKD = 0.0;
 
 
     //Tip Correction PID (ROLL) 
-    constexpr double RollKP = 0.0;
+    constexpr double RollKP = 0.1;
     constexpr double RollKD = 0.0;
     
 
@@ -398,8 +403,8 @@ namespace IntakeConstants {
     // Intake Motor
     constexpr int IntakeMotorID = 15;
     constexpr double OuttakePower = 0.2;
-    constexpr double IntakePower = -0.3;
-    constexpr double PassivePower = -0.2;
+    constexpr double IntakePower = -0.2;
+    constexpr double PassivePower = -0.10;
     // PID stuff
     constexpr double kIntakeP = 0.1;
     constexpr double kIntakeI = 0.0; 

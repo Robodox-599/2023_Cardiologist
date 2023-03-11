@@ -6,10 +6,12 @@
 #include <frc2/command/CommandScheduler.h>
 
 void Robot::RobotInit() {
+  cs::UsbCamera usbCam("USB Camera 0", 0);
+  // usbCam.SetVideoMode()
+
+
+  frc::CameraServer::SetSize(frc::CameraServer::kSize160x120);
   frc::CameraServer::StartAutomaticCapture();
-  cs::CvSink cvSink = frc::CameraServer::GetVideo();
-  cs::CvSource outputStream = frc::CameraServer::PutVideo("sus cam", 1000, 750);
-  // camera0.SetResolution(320, 240); 
 }
 
 /**
