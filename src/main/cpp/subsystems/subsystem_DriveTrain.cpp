@@ -270,15 +270,15 @@ void subsystem_DriveTrain::Periodic() {
     frc::SmartDashboard::PutNumber("m_DPAD", m_Dpad);
 
     frc::SmartDashboard::PutNumber("Pitch", m_Gyro.GetPitch());
-    frc::SmartDashboard::PutNumber("Yaw", m_Gyro.GetPitch());
+    frc::SmartDashboard::PutNumber("Roll", m_Gyro.GetRoll());
     frc::SmartDashboard::PutNumber("PitchPID", AddPitchCorrection().value());
-    frc::SmartDashboard::PutNumber("Yaw", AddRollCorrection().value());
+    frc::SmartDashboard::PutNumber("RollPID", AddRollCorrection().value());
     // frc::SmartDashboard::SmartDashboard::PutNumber("X Position", m_PoseEstimator.GetEstimatedPosition().X().value());
     // frc::SmartDashboard::SmartDashboard::PutNumber("Y Position", m_PoseEstimator.GetEstimatedPosition().Y().value());
-    // frc::SmartDashboard::SmartDashboard::PutNumber("Pose Yaw", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value()); 
+    frc::SmartDashboard::SmartDashboard::PutNumber("Pose Yaw", m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value()); 
 
-    // frc::SmartDashboard::SmartDashboard::PutNumber("Gyro Yaw (raw)", m_Gyro.GetYaw());
-    // frc::SmartDashboard::SmartDashboard::PutNumber("GetYaw()", GetYaw().Degrees().value());
+    frc::SmartDashboard::SmartDashboard::PutNumber("Gyro Yaw (raw)", m_Gyro.GetYaw());
+    frc::SmartDashboard::SmartDashboard::PutNumber("GetYaw()", GetYaw().Degrees().value());
 
 
     // if(m_LEDTimer.Get() > SwerveConstants::LEDTimeout){
@@ -328,6 +328,12 @@ void subsystem_DriveTrain::Periodic() {
                                 m_FrontRightModule.GetPosition(),
                                 m_BackLeftModule.GetPosition(),
                                 m_BackRightModule.GetPosition()} );
+
+
+    frc::SmartDashboard::PutBoolean("Balanced",IsBalanced());
+    frc::SmartDashboard::PutBoolean("IsBalancing?", m_IsBalancing);
+
+    
 
 }
 

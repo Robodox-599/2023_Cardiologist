@@ -40,6 +40,9 @@
 #include "commands/command_IntakeObject.h"
 #include "commands/command_CubeShooter.h"
 #include "commands/command_ToggleTiltCorrection.h"
+#include "commands/command_EveryBotIntake.h"
+#include "commands/command_EveryBotOutake.h"
+#include "subsystems/subsystem_EveryBotIntake.h"
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -63,6 +66,8 @@ class RobotContainer {
   subsystem_PoseTracker m_PoseTracker;
   subsystem_Arm m_Arm;
   subsystem_Intake m_Intake;
+  subsystem_EveryBotIntake m_EveryBotIntake;
+
 
 
   frc::XboxController XboxDrive{ControllerConstants::XboxDriveID};
@@ -73,7 +78,7 @@ class RobotContainer {
 
   frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
   frc2::CommandPtr m_ScoreAndTaxi = autos::ScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
-
+  frc2::CommandPtr m_TaxiAndBalance = autos::TaxiAndBalance(&m_Drive, &m_PoseTracker);
   void ConfigureBindings();
 
 

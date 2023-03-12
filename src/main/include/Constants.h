@@ -370,8 +370,8 @@ namespace BackRightModule{
 }
 
 namespace AutoConstants{
-    constexpr units::meters_per_second_t MaxSpeed{ 4 };
-    constexpr units::meters_per_second_squared_t MaxAccel{ 3 };
+    constexpr units::meters_per_second_t MaxSpeed{ 2 };
+    constexpr units::meters_per_second_squared_t MaxAccel{ 1 };
     constexpr units::radians_per_second_t MaxAngularSpeed{ 6 };
     constexpr units::radians_per_second_squared_t MaxAngularAccel{ 3 };
 

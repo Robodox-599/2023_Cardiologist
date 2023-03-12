@@ -29,5 +29,5 @@ void command_Balance::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool command_Balance::IsFinished() {
-  return m_Timer.Get() > SwerveConstants::Timeout;
+  return m_Timer.Get() > 2_s;
 }
