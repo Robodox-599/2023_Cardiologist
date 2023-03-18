@@ -27,7 +27,6 @@ class command_DriveTeleop
                                           std::function<double()> zRotation,
                                           std::function<double()> IsOrientFront,
                                           std::function<double()> IsOrientBack,
-                                          std::function<double()> LED,
                                           std::function<bool()> FieldRelative,
                                           std::function<bool()> OpenLoop);
 
@@ -47,7 +46,8 @@ class command_DriveTeleop
   std::function<double()> m_zRotation;
   std::function<bool()> m_IsOrientFront;
   std::function<bool()> m_IsOrientBack;
-  std::function<double()> m_LED;
   std::function<bool()> m_FieldRelative;
   std::function<bool()> m_OpenLoop;
+
+  double m_LastRotation;
 };

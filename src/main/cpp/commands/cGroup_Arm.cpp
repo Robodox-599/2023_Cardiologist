@@ -34,9 +34,9 @@ frc2::CommandPtr ArmMovements::ToSubstation(subsystem_Arm *Arm){
 
 frc2::CommandPtr ArmMovements::ToStow(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(
-                             command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return false;}).ToPtr(),
-                             command_MoveElbow(Arm, [=]{return ArmConstants::StowElbow;}, [=]{return false;}).ToPtr(),
-                             command_MoveWrist(Arm, [=]{return ArmConstants::StowTilt;}, [=]{return false;}).ToPtr());
+                             command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return true;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return ArmConstants::StowTilt;}, [=]{return false;}).ToPtr(),
+                             command_MoveElbow(Arm, [=]{return ArmConstants::StowElbow;}, [=]{return false;}).ToPtr());
 }
 
 frc2::CommandPtr ArmMovements::ToGround(subsystem_Arm *Arm){
@@ -53,6 +53,13 @@ frc2::CommandPtr ArmMovements::ToFloorCube(subsystem_Arm *Arm){
                              command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return false;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::StowElbow;}, [=]{return false;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::floorCubeTilt;}, [=]{return false;}).ToPtr());
+}
+
+frc2::CommandPtr ArmMovements::ScoreAndStow(subsystem_Arm *Arm, subsystem_Intake *Intake){
+    return frc2::cmd::Sequence(
+                              command_MoveWrist(Arm, [=]{return ArmConstants::ScoreTilt;}, [=]{return true;}).ToPtr(),
+                              command_OuttakeObject(Intake).ToPtr(),
+                              ArmMovements::ToStow(Arm));
 }
 
 

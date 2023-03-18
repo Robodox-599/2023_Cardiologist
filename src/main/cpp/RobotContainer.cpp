@@ -9,8 +9,9 @@
 
 RobotContainer::RobotContainer() {
   m_Chooser.SetDefaultOption( "Taxi", m_TaxiAuto.get());
-  m_Chooser.AddOption( "ScoreAndTaxi", m_ScoreAndTaxi.get() );
-  m_Chooser.AddOption("TaxiAndBalance", m_TaxiAndBalance.get());
+  m_Chooser.AddOption( "OneScoreAndTaxi", m_OneScoreAndTaxi.get() );
+  m_Chooser.AddOption("TwoScoreAndTaxi", m_TwoScoreAndTaxi.get());
+  m_Chooser.AddOption("ThreeScoreAndTaxi", m_ThreeScoreAndTaxi.get());
   // // m_Chooser.SetDefaultOption("Test", "result of test");
   frc::SmartDashboard::PutData(&m_Chooser);
 
@@ -24,11 +25,12 @@ RobotContainer::RobotContainer() {
                                                        [this]{return -XboxDrive.GetRawAxis(ControllerConstants::xboxRXAxis);},
                                                        [this]{return XboxDrive.GetLeftBumperPressed();},
                                                        [this]{return XboxDrive.GetRightBumperPressed();},
-                                                       [this]{return XboxDrive.GetRawAxis(ControllerConstants::xboxLTAxis) 
-                                                                        - XboxDrive.GetRawAxis(ControllerConstants::xboxRTAxis);},
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
 
+  m_LED.SetDefaultCommand( command_SetLED(&m_LED, &m_Intake,
+                                                       [this]{return XboxDrive.GetRawAxis(ControllerConstants::xboxLTAxis) 
+                                                                        - XboxDrive.GetRawAxis(ControllerConstants::xboxRTAxis);}));
 
   m_Arm.SetDefaultCommand(command_MoveArmManually(&m_Arm,
                         [this]{return XboxYaperator.GetRawAxis(ControllerConstants::xboxLYAxis);},
@@ -50,14 +52,14 @@ void RobotContainer::ConfigureBindings() {
                         frc::XboxController::Button::kY)
       .OnTrue(command_ZeroGyro(&m_Drive).ToPtr());
 
-   frc2::JoystickButton(&XboxDrive, 
-                         frc::XboxController::Button::kB)
-       .OnTrue(command_Balance(&m_Drive).ToPtr());
+  //  frc2::JoystickButton(&XboxDrive, 
+  //                        frc::XboxController::Button::kB)
+  //      .OnTrue(command_Balance(&m_Drive).ToPtr());
 
 
-  frc2::JoystickButton(&XboxDrive,
-                      frc::XboxController::Button::kA)
-      .OnTrue(command_ToggleTiltCorrection(&m_Drive).ToPtr());
+  // frc2::JoystickButton(&XboxDrive,
+  //                     frc::XboxController::Button::kA)
+  //     .OnTrue(command_ToggleTiltCorrection(&m_Drive).ToPtr());
 
   // frc2::JoystickButton(&XboxDrive,
   //                     frc::XboxController::Button::kB)
@@ -106,24 +108,24 @@ void RobotContainer::ConfigureBindings() {
 
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kRightStick)
-                       .OnTrue(ArmMovements::ToFloorCube(&m_Arm));  
-
-  frc2::JoystickButton(&XboxYaperator,
-                       frc::XboxController::Button::kRightBumper)
-                       .WhileTrue(command_EveryBotIntake(&m_EveryBotIntake).ToPtr());
-  frc2::JoystickButton(&XboxYaperator,
-                       frc::XboxController::Button::kLeftBumper)
-                       .WhileTrue(command_EveryBotOutake(&m_EveryBotIntake).ToPtr());
+                       .OnTrue(ArmMovements::ToGround(&m_Arm));  
 
   // frc2::JoystickButton(&XboxYaperator,
   //                      frc::XboxController::Button::kRightBumper)
-  //                      .OnTrue(command_IntakeObject(&m_Intake).ToPtr());
+  //                      .WhileTrue(command_EveryBotIntake(&m_EveryBotIntake).ToPtr());
   // frc2::JoystickButton(&XboxYaperator,
   //                      frc::XboxController::Button::kLeftBumper)
-  //                      .OnTrue(command_OuttakeObject(&m_Intake).ToPtr());
-  // frc2::JoystickButton(&XboxYaperator,
-  //                      frc::XboxController::Button::kLeftStick)
-  //                      .OnTrue(command_ToggleClamp(&m_Intake).ToPtr());
+  //                      .WhileTrue(command_EveryBotOutake(&m_EveryBotIntake).ToPtr());
+
+  frc2::JoystickButton(&XboxYaperator,
+                       frc::XboxController::Button::kRightBumper)
+                       .OnTrue(command_IntakeObject(&m_Intake).ToPtr());
+  frc2::JoystickButton(&XboxYaperator,
+                       frc::XboxController::Button::kLeftBumper)
+                       .OnTrue(ArmMovements::ScoreAndStow(&m_Arm, &m_Intake));
+  frc2::JoystickButton(&XboxYaperator,
+                       frc::XboxController::Button::kLeftStick)
+                       .OnTrue(command_ToggleClamp(&m_Intake).ToPtr());
   
 }
 

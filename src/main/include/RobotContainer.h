@@ -19,7 +19,6 @@
 #include "commands/command_ShiftThrottle.h"
 #include "commands/command_ZeroGyro.h"
 #include "commands/command_AlignToDesired.h"
-#include "commands/command_SetLED.h"
 
 
 #include "commands/Autos.h"
@@ -40,9 +39,9 @@
 #include "commands/command_IntakeObject.h"
 #include "commands/command_CubeShooter.h"
 #include "commands/command_ToggleTiltCorrection.h"
-#include "commands/command_EveryBotIntake.h"
-#include "commands/command_EveryBotOutake.h"
-#include "subsystems/subsystem_EveryBotIntake.h"
+
+#include "subsystems/subsystem_LED.h"
+#include "commands/command_SetLED.h"
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -66,7 +65,8 @@ class RobotContainer {
   subsystem_PoseTracker m_PoseTracker;
   subsystem_Arm m_Arm;
   subsystem_Intake m_Intake;
-  subsystem_EveryBotIntake m_EveryBotIntake;
+  subsystem_LED m_LED;
+  // subsystem_EveryBotIntake m_EveryBotIntake;
 
 
 
@@ -77,7 +77,10 @@ class RobotContainer {
   frc::SendableChooser<frc2::Command*> m_Chooser;
 
   frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
-  frc2::CommandPtr m_ScoreAndTaxi = autos::ScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
+  frc2::CommandPtr m_OneScoreAndTaxi = autos::OneScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
+  frc2::CommandPtr m_TwoScoreAndTaxi = autos::TwoScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
+  frc2::CommandPtr m_ThreeScoreAndTaxi = autos::ThreeScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
+
   frc2::CommandPtr m_TaxiAndBalance = autos::TaxiAndBalance(&m_Drive, &m_PoseTracker);
   void ConfigureBindings();
 

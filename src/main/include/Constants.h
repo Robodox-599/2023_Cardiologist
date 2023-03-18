@@ -98,12 +98,12 @@ namespace ArmConstants {
     //units are in meters
     const double ShoulderJointLength = 0.965;
     const double ElbowJointLength = 0.8507;
-    const double IntakeJointLength = 0.371;
+    const double IntakeJointLength = 0.457;
 
     //units are in kg
     const double ShoulderJointMass = 3.896;
     const double ElbowJointMass = 2.22;
-    const double IntakeJointMass = 3.18;
+    const double IntakeJointMass = 1.814;
 
     const double xOriginAdjustment = 0.0; 
     const double yOriginAdjustment = 0.0; 
@@ -160,6 +160,8 @@ namespace ArmConstants {
     constexpr double floorCubeShoulder = -0.5;
     constexpr double floorCubeElbow = 0.5;
     constexpr double floorCubeTilt = -18.0;
+
+    constexpr double ScoreTilt = -18.0;
 
 
     constexpr double ArmBackLimit = 0.0;
@@ -233,10 +235,7 @@ namespace SwerveConstants{
         NONLINEAR = 2
     };
 
-    enum LEDState{
-        Standby, Yellow, Purple
-    };
-    // units::second_t LEDTimeout{ 10.0 };
+
 
 
 
@@ -302,12 +301,21 @@ namespace SwerveConstants{
     constexpr bool DriveMotorInvert = false;
 
     /* Swerve Profiling values */
-    constexpr units::meters_per_second_t MaxSpeed{4.2};
+    constexpr units::meters_per_second_t MaxSpeed{5.0};
     constexpr units::degrees_per_second_t MaxAngularVelocity{360 * 1.25};
     constexpr bool IsFieldRelative = true;
     constexpr bool IsOpenLoop = false;  
 
+}
+
+namespace LEDConstants{
+    enum LEDState{
+        Standby, Yellow, Purple, Intaked, Error
+    };
+    constexpr units::second_t Timeout{ 10.0 };
+    
     constexpr int CANdleID = 20;
+
 }
 
 namespace Orientation{

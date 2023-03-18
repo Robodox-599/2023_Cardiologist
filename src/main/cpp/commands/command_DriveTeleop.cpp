@@ -10,7 +10,6 @@
                                           std::function<double()> zRotation,
                                           std::function<double()> IsOrientFront,
                                           std::function<double()> IsOrientBack,
-                                          std::function<double()> LED,
                                           std::function<bool()> FieldRelative,
                                           std::function<bool()> OpenLoop): m_DriveTrain{DriveTrain}, 
                                                       m_PoseTracker{PoseTracker},
@@ -19,7 +18,6 @@
                                                       m_zRotation{zRotation},
                                                       m_IsOrientFront{IsOrientFront},
                                                       m_IsOrientBack{IsOrientBack},
-                                                      m_LED{LED},
                                                       m_FieldRelative{FieldRelative},
                                                       m_OpenLoop{OpenLoop}
 {
@@ -36,16 +34,17 @@ void command_DriveTeleop::Execute() {
 
   
   if(m_PoseTracker->HasAcceptableTargets()){
+    
     m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());
+
+    // std::pair<frc::Pose2d, units::second_t> Pose = m_PoseTracker->getEstimatedGlobalPose().first;
+    // frc::SmartDashboard::PutNumber("VisionX")
+
   }
 
-  m_DriveTrain->SetAutoOrient(m_IsOrientFront(), m_IsOrientBack(), m_zRotation());
+  m_DriveTrain->SetAutoOrient(m_IsOrientFront(), m_IsOrientBack(), m_zRotation() - m_LastRotation);
 
-  if(m_LED() > ControllerConstants::TriggerActivate){
-    m_DriveTrain->SetPurpleLED();
-  }else if(m_LED() < - ControllerConstants::TriggerActivate){
-    m_DriveTrain->SetYellowLED();
-  }
+
 
   
   
@@ -55,6 +54,7 @@ void command_DriveTeleop::Execute() {
                                 m_FieldRelative(),
                                 m_OpenLoop());
 
+  m_LastRotation = m_zRotation();
 
 
   

@@ -49,9 +49,9 @@ class subsystem_Intake : public frc2::SubsystemBase {
   // declared private and exposed only through public methods.
   void MaintainIntakeMode();
   // Wheels for intaking objects
-  rev::CANSparkMax m_IntakeMotor;
-  rev::SparkMaxPIDController m_IntakeMotorPID;
-  rev::SparkMaxRelativeEncoder m_IntakeEncoder;
+  // rev::CANSparkMax m_IntakeMotor;
+  // rev::SparkMaxPIDController m_IntakeMotorPID;
+  // rev::SparkMaxRelativeEncoder m_IntakeEncoder;
   // Pistons for clamping
   frc::DoubleSolenoid m_Solenoid;
 

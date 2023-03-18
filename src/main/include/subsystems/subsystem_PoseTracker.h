@@ -9,6 +9,7 @@
 #include <photonlib/PhotonUtils.h>
 #include <photonlib/PhotonTrackedTarget.h>
 #include <photonlib/RobotPoseEstimator.h>
+
 #include <frc/apriltag/AprilTagFieldLayout.h>
 #include <frc/apriltag/AprilTagPoseEstimator.h>
 #include <frc/apriltag/AprilTag.h>
@@ -20,7 +21,7 @@ class subsystem_PoseTracker : public frc2::SubsystemBase
 {
 public:
   subsystem_PoseTracker();
-  std::pair<frc::Pose2d, units::millisecond_t> getEstimatedGlobalPose();
+  std::pair<frc::Pose2d, units::second_t> getEstimatedGlobalPose();
   std::pair<frc::Pose3d, units::time::second_t> getInitialPose();
   int getID();
   bool HasAcceptableTargets();
@@ -86,7 +87,7 @@ private:
   // Camera is mounted facing forward, half a meter forward of center, half a
   // meter up from center.
   frc::Transform3d robotToCam =
-      frc::Transform3d(frc::Translation3d(16.75_in, 7_in, 32_in),
+      frc::Transform3d(frc::Translation3d(16.75_in, -7_in, 14.5_in),
                        frc::Rotation3d(0_rad, 0_rad, 0_rad));
 
   // ... Add other cameras here

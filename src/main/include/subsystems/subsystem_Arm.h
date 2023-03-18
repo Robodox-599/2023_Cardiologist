@@ -142,7 +142,7 @@ private:
   frc::DoubleSolenoid m_ShoulderBrake;
 
 
-
+ double Increment = 0.0;
 
 
 

@@ -18,8 +18,9 @@ void command_Balance::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void command_Balance::Execute() {
-  if(!m_DriveTrain->IsBalanced())
+  if(!m_DriveTrain->IsBalanced()){
   m_Timer.Reset();
+  }
 }
 
 // Called once the command ends or is interrupted.

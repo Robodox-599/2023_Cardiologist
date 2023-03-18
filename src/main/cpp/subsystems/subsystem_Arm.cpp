@@ -31,8 +31,8 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
     m_ElbowFollower.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
     m_WristMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
-    m_ShoulderMotor.SetSmartCurrentLimit(30);
-    m_ShoulderFollower.SetSmartCurrentLimit(30);
+    m_ShoulderMotor.SetSmartCurrentLimit(10);
+    m_ShoulderFollower.SetSmartCurrentLimit(10);
 
     // Elbow current ends up getting redefined in the SetElbowPIDByDirection method
     // m_ElbowMotor.SetSmartCurrentLimit(25);
@@ -192,7 +192,8 @@ void subsystem_Arm::TiltWristManually(double trigger){
 }
 
 void subsystem_Arm::ResetWrist(){
-    m_WristEncoder.SetPosition(10.5);
+    // m_WristEncoder.SetPosition(10.5);
+    Increment += 0.001;
 }
 
 void subsystem_Arm::SetElbowPIDByDirection(double Elbow)
@@ -343,10 +344,10 @@ void subsystem_Arm::Periodic()
                                                                                 ArmConstants::IntakeJointMass * ArmConstants::ElbowJointLength )
                                             + cos(M_PI / 180.0 * WristAngle) * ( ArmConstants::IntakeJointMass * ArmConstants::IntakeJointLength / 2.0) );
 
-    Power4Shoulder = GravTorqueShoulder / (40.0 * 160);
+    Power4Shoulder = GravTorqueShoulder / (38.0 * 160);
     // frc::SmartDashboard::PutNumber("Power4Shoulder", Power4Shoulder);
 
-    Power4Elbow = 0.020 * cos(  M_PI / 180.0 * ElbowAngle);
+    Power4Elbow = 0.012 * cos(  M_PI / 180.0 * ElbowAngle);
     // frc::SmartDashboard::PutNumber("Power4Elbow", Power4Elbow);
 
     // frc::SmartDashboard::PutNumber("Shoulder Current Pull", m_ShoulderMotor.GetOutputCurrent());
@@ -380,18 +381,16 @@ void subsystem_Arm::Periodic()
     // m_ShoulderPID.SetD(frc::SmartDashboard::GetNumber("D", 0), 1);
     // m_ShoulderPID.SetIZone(1.0, 1);
 
+    
+    // m_ShoulderPID.SetP(Increment, 0);
+    // m_ShoulderPID.SetI(0.0, 0);
+    // m_ShoulderPID.SetD(0.0, 0);
+    // m_ShoulderPID.SetIZone(0.0, 0);
+    // m_ShoulderPID.SetFF(0.0);
     m_ElbowPID.SetReference(ElbowPosition, rev::CANSparkMaxLowLevel::ControlType::kPosition, m_ElbowSlot, Power4Elbow, rev::SparkMaxPIDController::ArbFFUnits::kPercentOut);
     m_ShoulderPID.SetReference(ShoulderPosition, rev::CANSparkMaxLowLevel::ControlType::kPosition, m_ShoulderSlot, Power4Shoulder, rev::SparkMaxPIDController::ArbFFUnits::kPercentOut);
     m_WristPID.SetReference(DesiredWristPostion, rev::CANSparkMaxLowLevel::ControlType::kPosition, 0);
 
-
-    
-    // m_ElbowMotor.Set(Power4Elbow);
-    // m_ShoulderMotor.Set(Power4Shoulder);
-
-
-    // m_ElbowMotor.Set(Power4Elbow);
-    // m_ShoulderMotor.Set(Power4Shoulder);
 
 
     //Potential Code for changing feedforward based on voltage reading

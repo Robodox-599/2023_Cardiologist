@@ -22,6 +22,7 @@
 #include <ctre/phoenix/sensors/WPI_Pigeon2.h>
 #include <frc/Timer.h>
 #include <ctre/phoenix/led/CANdle.h>
+#include <frc/DriverStation.h>
 
 
 
@@ -46,7 +47,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
 
 
   void ZeroGyro();
-  void ResetOdometry(frc::Rotation2d Rotation, frc::Pose2d Pose);
+  void ResetOdometry(frc::Pose2d Pose);
   void ImplementVisionPose(std::pair<frc::Pose2d, units::millisecond_t> pair);
   frc::Pose2d GetPose();
   frc::Rotation2d GetYaw();
@@ -72,8 +73,7 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
   units::radians_per_second_t GetAngularVelocity();
   
 
-  void SetPurpleLED();
-  void SetYellowLED();
+
   // auto GetChassisSpeed(auto chassisSpeed);
   // void SetAngleToHoloRotation(frc::Rotation2d holo);
 
@@ -115,9 +115,14 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
                                         0.0, 
                                         0.001};
 
-  ctre::phoenix::led::CANdle m_CANdle;
-  // frc::Timer m_LEDTimer;
-  SwerveConstants::LEDState m_LEDState = SwerveConstants::LEDState::Standby;
+  frc::TrapezoidProfile<units::degree>::Constraints m_constraints{AutoConstants::MaxAngularSpeed,
+                                                                  AutoConstants::MaxAngularAccel};
+  frc::ProfiledPIDController<units::degree> m_ProfiledOrientPID{AutoConstants::AngleKP, 0.0, AutoConstants::AngleKD,
+                                                         m_constraints};
+
+  // frc::ProfiledPIDController<units::radian_t> m_ProfiledOrientPID{AutoConstants::AngleKP, 0.0, AutoConstants::AngleKD,  frc::ProfiledPIDController<units::radian_t>::Constraints{AutoConstants::MaxAngularSpeed, 
+  //                                                                                                                             AutoConstants::MaxAngularAccel}};
+
   bool m_IsPark = false;
 
   

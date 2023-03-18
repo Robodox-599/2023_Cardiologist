@@ -26,7 +26,7 @@ frc2::CommandPtr autos::Kasparov(subsystem_DriveTrain* DriveTrain, subsystem_Pos
 }
 
 
-frc2::CommandPtr autos::OneSTIS_0(subsystem_Intake* Intake, subsystem_Arm* Arm){
+frc2::CommandPtr autos::ScoreHighCube(subsystem_Intake* Intake, subsystem_Arm* Arm){
   return frc2::cmd::Sequence(command_IntakeObject(Intake).ToPtr(),
                             ArmMovements::ToHighCube(Arm),
                             command_TimeOut([=]{return 1.0;}).ToPtr(),
@@ -186,7 +186,7 @@ frc2::CommandPtr autos::OneSISIS_5(subsystem_Intake* Intake, subsystem_Arm* Arm)
 }
 
 frc2::CommandPtr autos::OneSTIS(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
-  return frc2::cmd::Sequence(autos::OneSTIS_0(Intake, Arm),
+  return frc2::cmd::Sequence(autos::ScoreHighCube(Intake, Arm),
                             autos::OneSTIS_1(DriveTrain, PoseTracker, Intake, Arm),
                             autos::OneSTIS_2(DriveTrain, PoseTracker),
                             autos::OneSTIS_3(Intake, Arm)); 
@@ -234,12 +234,19 @@ frc2::CommandPtr autos::OneSISIS(subsystem_DriveTrain* DriveTrain, subsystem_Pos
                             autos::OneSISIS_5(Intake, Arm));  
 
 }
-frc2::CommandPtr autos::ScoreAndTaxi(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
-    return frc2::cmd::Sequence(autos::OneSTIS_0(Intake, Arm), command_DriveAuton(DriveTrain, PoseTracker, "1STIS (1)", true).ToPtr());
-  
-  }
 
+frc2::CommandPtr autos::OneScoreAndTaxi(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+    return frc2::cmd::Sequence(autos::ScoreHighCube(Intake, Arm), command_DriveAuton(DriveTrain, PoseTracker, "1ST", true).ToPtr());
+}
+frc2::CommandPtr autos::TwoScoreAndTaxi(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+    return frc2::cmd::Sequence(autos::ScoreHighCube(Intake, Arm), command_DriveAuton(DriveTrain, PoseTracker, "2ST", true).ToPtr());
+}
+frc2::CommandPtr autos::ThreeScoreAndTaxi(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+    return frc2::cmd::Sequence(autos::ScoreHighCube(Intake, Arm), command_DriveAuton(DriveTrain, PoseTracker, "3ST", true).ToPtr());
+}
 
 frc2::CommandPtr autos::TaxiAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker){
-    return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "4TC", true).ToPtr(), command_Balance(DriveTrain).ToPtr());
+    return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "2STC", true).ToPtr(), command_Balance(DriveTrain).ToPtr());
+    // return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "4TC", true).ToPtr(), );
+
 }

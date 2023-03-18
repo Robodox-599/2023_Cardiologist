@@ -7,6 +7,9 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include "subsystems/subsystem_DriveTrain.h"
+#include "subsystems/subsystem_Intake.h"
+#include "subsystems/subsystem_LED.h"
+#include "subsystems/subsystem_Arm.h"
 
 
 /**
@@ -19,7 +22,7 @@
 class command_SetLED
     : public frc2::CommandHelper<frc2::CommandBase, command_SetLED> {
  public:
-  command_SetLED(subsystem_DriveTrain* DriveTrain, std::function<bool()> WantsCube);
+  command_SetLED(subsystem_LED* LED, subsystem_Intake* Intake, std::function<double()> WantsCube);
 
   void Initialize() override;
 
@@ -30,7 +33,8 @@ class command_SetLED
   bool IsFinished() override;
 
   private:
-  subsystem_DriveTrain* m_DriveTrain;
-  std::function<bool()> m_WantsCube;
+  subsystem_LED* m_LED;
+  subsystem_Intake* m_Intake;
+  std::function<double()> m_WantsCube;
 
 };

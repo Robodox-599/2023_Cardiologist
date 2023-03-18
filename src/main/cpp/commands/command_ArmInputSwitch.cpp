@@ -11,7 +11,7 @@ command_ArmInputSwitch::command_ArmInputSwitch(subsystem_Arm *arm) : m_arm{arm} 
 // Called when the command is initially scheduled.
 void command_ArmInputSwitch::Initialize() { 
   // m_arm->ManualMacroSwitch();
-  m_arm -> RunArmManualTest(0.0, 0.0);
+  m_arm -> ResetWrist();
 }
 
 // Called repeatedly when this Command is scheduled to run

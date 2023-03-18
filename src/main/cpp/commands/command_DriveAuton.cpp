@@ -13,6 +13,8 @@ m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_ToReset{ToReset}, m_Driv
   AddRequirements({PoseTracker});
   // m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
   m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );  
+
+  
   }
 
 
@@ -24,8 +26,13 @@ void command_DriveAuton::Initialize() {
   m_Timer.Start();
 
   if( m_ToReset ){
-    m_DriveTrain->ResetOdometry(m_DriveTrain->GetYaw(), {m_Trajectory.getInitialState().pose.Translation(), m_Trajectory.getInitialState().holonomicRotation});
+    m_DriveTrain->ResetOdometry(m_Trajectory.getInitialHolonomicPose());
   }
+  frc::SmartDashboard::GetNumber("InitialX", m_Trajectory.getInitialHolonomicPose().X().value());
+  frc::SmartDashboard::GetNumber("InitialY", m_Trajectory.getInitialHolonomicPose().Y().value());
+  frc::SmartDashboard::GetNumber("InitialHeading", m_Trajectory.getInitialHolonomicPose().Rotation().Degrees().value());
+
+  
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -42,6 +49,10 @@ void command_DriveAuton::Execute() {
   auto ModuleStates = SwerveConstants::m_kinematics.ToSwerveModuleStates(chassisSpeeds);
   SwerveConstants::m_kinematics.DesaturateWheelSpeeds(&ModuleStates, AutoConstants::MaxSpeed);
   m_DriveTrain->SetModuleStates(ModuleStates);
+
+    frc::SmartDashboard::GetNumber("xTraj", state.pose.X().value());
+  frc::SmartDashboard::GetNumber("yTraj", state.pose.Y().value());
+  frc::SmartDashboard::GetNumber("RotTraj", state.pose.Rotation().Degrees().value());
   
 
 }

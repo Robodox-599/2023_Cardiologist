@@ -4,9 +4,10 @@
 
 #include "Robot.h"
 #include <frc2/command/CommandScheduler.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
-  cs::UsbCamera usbCam("USB Camera 0", 0);
+  // cs::UsbCamera usbCam("USB Camera 0", 0);
   // usbCam.SetVideoMode()
 
 
@@ -24,6 +25,8 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
+  frc::SmartDashboard::PutNumber("constants", IntakeConstants::IntakePower);
+
 }
 
 /**

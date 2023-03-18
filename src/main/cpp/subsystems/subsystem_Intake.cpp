@@ -4,20 +4,20 @@
 
 #include "subsystems/subsystem_Intake.h"
 
-subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMotorID, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
+subsystem_Intake::subsystem_Intake() : /*m_IntakeMotor{IntakeConstants::IntakeMotorID, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
                                        m_IntakeMotorPID{m_IntakeMotor.GetPIDController()},
-                                       m_IntakeEncoder{m_IntakeMotor.GetEncoder()},
+                                       m_IntakeEncoder{m_IntakeMotor.GetEncoder()},*/
                                        m_Solenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonA, IntakeConstants::IntakePistonB},
                                        m_ColorSensor{frc::I2C::Port::kOnboard},
                                        m_ColorMatcher{},
                                        m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD}
 {
-    m_IntakeMotor.SetSmartCurrentLimit(25);
-    // m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
-    m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-    m_IntakeMotorPID.SetP(0.01);
-    m_IntakeMotorPID.SetI(0.0);
-    m_IntakeMotorPID.SetD(0.0);
+    // m_IntakeMotor.SetSmartCurrentLimit(25);
+    // // m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
+    // m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    // m_IntakeMotorPID.SetP(0.01);
+    // m_IntakeMotorPID.SetI(0.0);
+    // m_IntakeMotorPID.SetD(0.0);
     m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
     m_ColorMatcher.AddColorMatch(ColorConstants::YellowTarget);
     m_ProximityPID.SetSetpoint(ColorConstants::TargetProximity);
@@ -27,13 +27,13 @@ subsystem_Intake::subsystem_Intake() : m_IntakeMotor{IntakeConstants::IntakeMoto
 
 void subsystem_Intake::IntakeClose()
 {
-    m_Solenoid.Set(frc::DoubleSolenoid::kReverse);
+    m_Solenoid.Set(frc::DoubleSolenoid::kForward);
     m_IsOpen = false;
 }
 
 void subsystem_Intake::IntakeOpen()
 {
-    m_Solenoid.Set(frc::DoubleSolenoid::kForward);
+    m_Solenoid.Set(frc::DoubleSolenoid::kReverse);
     m_IsOpen = true;
 }
 
@@ -101,26 +101,26 @@ void subsystem_Intake::SetMidCubeStaticVelocity()
 
 
 void subsystem_Intake::MaintainIntakeMode(){
-    switch(m_CurrentMode){
-        case(IntakeConstants::IntakeMode::Off):
-            m_IntakeMotor.Set(0.0);
-            break;
-        case(IntakeConstants::IntakeMode::Passive):
-            m_IntakeMotor.Set(IntakeConstants::PassivePower);
-            break;
-        case(IntakeConstants::IntakeMode::Intake):
-            m_IntakeMotor.Set(m_ProximityPID.Calculate(m_CurrentProximity));
-            break;
-        case(IntakeConstants::IntakeMode::Outake):
-            m_IntakeMotor.Set(IntakeConstants::OuttakePower);
-            break;
-        case(IntakeConstants::IntakeMode::MidShoot):
-            m_IntakeMotorPID.SetReference(4000, rev::CANSparkMaxLowLevel::ControlType::kVelocity, 0, 5);
-            break;
-        case(IntakeConstants::IntakeMode::HighShoot):
-            m_IntakeMotorPID.SetReference(6000, rev::CANSparkMaxLowLevel::ControlType::kVelocity, 0, 7);
-            break;
-    }
+    // switch(m_CurrentMode){
+    //     case(IntakeConstants::IntakeMode::Off):
+    //         m_IntakeMotor.Set(0.0);
+    //         break;
+    //     case(IntakeConstants::IntakeMode::Passive):
+    //         m_IntakeMotor.Set(IntakeConstants::PassivePower);
+    //         break;
+    //     case(IntakeConstants::IntakeMode::Intake):
+    //         m_IntakeMotor.Set(m_ProximityPID.Calculate(m_CurrentProximity));
+    //         break;
+    //     case(IntakeConstants::IntakeMode::Outake):
+    //         m_IntakeMotor.Set(IntakeConstants::OuttakePower);
+    //         break;
+    //     case(IntakeConstants::IntakeMode::MidShoot):
+    //         m_IntakeMotorPID.SetReference(4000, rev::CANSparkMaxLowLevel::ControlType::kVelocity, 0, 5);
+    //         break;
+    //     case(IntakeConstants::IntakeMode::HighShoot):
+    //         m_IntakeMotorPID.SetReference(6000, rev::CANSparkMaxLowLevel::ControlType::kVelocity, 0, 7);
+    //         break;
+    // }
 }
 
 
