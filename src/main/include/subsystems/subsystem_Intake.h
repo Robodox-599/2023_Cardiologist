@@ -39,6 +39,8 @@ class subsystem_Intake : public frc2::SubsystemBase {
 
   void SetVelocity(double velocity);
 
+  frc::Color GetColor();
+
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */

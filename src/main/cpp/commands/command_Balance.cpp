@@ -19,8 +19,9 @@ void command_Balance::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void command_Balance::Execute() {
   if(!m_DriveTrain->IsBalanced()){
-  m_Timer.Reset();
+    m_Timer.Reset();
   }
+  m_DriveTrain->SwerveDrive(0_mps, 0_mps, 0_rad_per_s, true, false);
 }
 
 // Called once the command ends or is interrupted.
@@ -30,5 +31,5 @@ void command_Balance::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool command_Balance::IsFinished() {
-  return m_Timer.Get() > 2_s;
+  return m_Timer.Get() > 4_s;
 }

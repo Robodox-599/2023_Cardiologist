@@ -25,6 +25,7 @@
 #include "subsystems/subsystem_Arm.h"
 #include "commands/command_MoveArmManually.h"
 #include "commands/command_ArmInputSwitch.h"
+#include "commands/command_ControllerVibrate.h"
 #include "commands/cGroup_Arm.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "frc/XboxController.h"
@@ -75,13 +76,14 @@ class RobotContainer {
 
 
   frc::SendableChooser<frc2::Command*> m_Chooser;
+  frc::Timer m_Timer{};
 
   frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
   frc2::CommandPtr m_OneScoreAndTaxi = autos::OneScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
   frc2::CommandPtr m_TwoScoreAndTaxi = autos::TwoScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
   frc2::CommandPtr m_ThreeScoreAndTaxi = autos::ThreeScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
 
-  frc2::CommandPtr m_TaxiAndBalance = autos::TaxiAndBalance(&m_Drive, &m_PoseTracker);
+  frc2::CommandPtr m_TwoTaxiAndBalance = autos::TwoTaxiAndBalance(&m_Drive, &m_PoseTracker);
   void ConfigureBindings();
 
 

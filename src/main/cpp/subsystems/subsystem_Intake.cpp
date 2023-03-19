@@ -123,6 +123,10 @@ void subsystem_Intake::MaintainIntakeMode(){
     // }
 }
 
+frc::Color subsystem_Intake::GetColor(){
+    return m_CurrentColor;
+}
+
 
 
 // This method will be called once per scheduler run

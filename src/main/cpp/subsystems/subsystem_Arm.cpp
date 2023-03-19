@@ -75,7 +75,7 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
     m_WristPID.SetD(ArmConstants::kWristD);
 
     m_ShoulderRelEncoder.SetPosition(0);
-    m_ElbowRelEncoder.SetPosition(3.5);
+    m_ElbowRelEncoder.SetPosition(0);
     m_WristEncoder.SetPosition(-20.925);
 
     m_ElbowMotor.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, true);
@@ -333,10 +333,14 @@ void subsystem_Arm::Periodic()
     WristEnc = m_WristEncoder.GetPosition();
 
 
-    ElbowAngle =   (m_ElbowRelEncoder.GetPosition() / 0.4444444 - 55);
+    ElbowAngle =   (m_ElbowRelEncoder.GetPosition() / 0.4444444 - 49);
     ShoulderAngle =   (m_ShoulderRelEncoder.GetPosition() / 0.44444 + 110);
     WristAngle =   (m_WristEncoder.GetPosition() / 0.2325  );
 
+
+    frc::SmartDashboard::PutNumber("Shoulder Arm Deg", ShoulderAngle);
+    frc::SmartDashboard::PutNumber("Elbow Arm Deg", ElbowAngle);
+    frc::SmartDashboard::PutNumber("Intake Tilt Deg", WristAngle);
     double GravTorqueShoulder = 9.8 * ( cos(M_PI / 180.0 * ShoulderAngle) * ( ArmConstants::ShoulderJointMass * ArmConstants::ShoulderJointLength / 2.0 +
                                                                                 ArmConstants::ElbowJointMass *  ArmConstants::ShoulderJointLength + 
                                                                                 ArmConstants::IntakeJointMass * ArmConstants::ShoulderJointLength  ) 
@@ -391,6 +395,8 @@ void subsystem_Arm::Periodic()
     m_ShoulderPID.SetReference(ShoulderPosition, rev::CANSparkMaxLowLevel::ControlType::kPosition, m_ShoulderSlot, Power4Shoulder, rev::SparkMaxPIDController::ArbFFUnits::kPercentOut);
     m_WristPID.SetReference(DesiredWristPostion, rev::CANSparkMaxLowLevel::ControlType::kPosition, 0);
 
+    // m_ElbowMotor.Set(Power4Elbow);
+    // m_ShoulderMotor.Set(Power4Shoulder);
 
 
     //Potential Code for changing feedforward based on voltage reading

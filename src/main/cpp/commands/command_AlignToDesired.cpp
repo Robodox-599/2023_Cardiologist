@@ -9,10 +9,15 @@ command_AlignToDesired::command_AlignToDesired(subsystem_DriveTrain* DriveTrain,
   AddRequirements({DriveTrain});
   AddRequirements({PoseTracker});
 
-  XPID.SetSetpoint(XDesired());
-  YPID.SetSetpoint(YDesired());
-  ThetaPID.SetSetpoint(ThetaDesired());
-  ThetaPID.EnableContinuousInput(-180, 180);
+
+  m_ThetaProfiledPID.EnableContinuousInput(-180_deg, 180_deg);
+
+  m_YProfiledPID.SetTolerance(0.1_m);
+  m_XProfiledPID.SetTolerance(0.1_m);
+  m_ThetaProfiledPID.SetTolerance(0.5_deg);
+  m_XProfiledPID.SetGoal(units::meter_t{XDesired()});
+  m_YProfiledPID.SetGoal(units::meter_t{YDesired()});
+  m_ThetaProfiledPID.SetGoal(units::degree_t{ThetaDesired()});
   
 
 }
@@ -27,15 +32,14 @@ void command_AlignToDesired::Execute() {
     m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());    
   }
 
-  units::meters_per_second_t SupplementX { XPID.Calculate(m_DriveTrain->GetPose().X().value()) }; 
-  units::meters_per_second_t SupplementY { YPID.Calculate(m_DriveTrain->GetPose().Y().value()) };
-  units::degrees_per_second_t SupplementTheta { ThetaPID.Calculate(m_DriveTrain->GetPose().Rotation().Degrees().value()) };
-
-  units::meters_per_second_t BaseSpeed{ 0 };
-  units::degrees_per_second_t BaseAngularSpeed { 0 };
+  units::meters_per_second_t SupplementX { m_XProfiledPID.Calculate(m_DriveTrain->GetPose().X()) }; 
+  units::meters_per_second_t SupplementY { m_YProfiledPID.Calculate(m_DriveTrain->GetPose().Y()) };
+  units::degrees_per_second_t SupplementTheta { m_ThetaProfiledPID.Calculate(m_DriveTrain->GetPose().Rotation().Degrees()) };
 
 
-  m_DriveTrain->SwerveDrive(BaseSpeed + SupplementX, BaseSpeed + SupplementY, BaseAngularSpeed + SupplementTheta, true, false);
+
+
+  m_DriveTrain->SwerveDrive( SupplementX, SupplementY, SupplementTheta, true, false);
 
 }
 
@@ -47,5 +51,5 @@ void command_AlignToDesired::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool command_AlignToDesired::IsFinished() {
-  return false;
+  return m_XProfiledPID.AtGoal() && m_YProfiledPID.AtGoal() && m_ThetaProfiledPID.AtGoal();
 }

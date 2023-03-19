@@ -10,7 +10,10 @@ command_SetLED::command_SetLED(subsystem_LED* LED, subsystem_Intake* Intake, std
                                                                                                   m_Intake{Intake},
                                                                                                   m_WantsCube{WantsCube}
 {
+
   // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements({m_LED});
+  AddRequirements({m_Intake});
 }
 
 // Called when the command is initially scheduled.

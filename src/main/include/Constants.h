@@ -117,32 +117,32 @@ namespace ArmConstants {
     constexpr double HighConeX = 0.0;
     constexpr double HighConeY = 0.0;
     constexpr double HighConeShoulder = -17.0;
-    constexpr double HighConeElbow = 33.2;
-    constexpr double HighConeTilt = 8.0;
+    constexpr double HighConeElbow = 28.7;
+    constexpr double HighConeTilt = 5.0;
 
     constexpr double MidConeX = 0.0;
     constexpr double MidConeY = 0.0;
-    constexpr double MidConeShoulder = -8.1;
-    constexpr double MidConeElbow = 21.5;
-    constexpr double MidConeTilt = 8.0;
+    constexpr double MidConeShoulder = -4.85;
+    constexpr double MidConeElbow = 16.6;
+    constexpr double MidConeTilt = 1.0;
 
     constexpr double HighCubeX = 0.0;
     constexpr double HighCubeY = 0.0;
-    constexpr double HighCubeShoulder = -11.5;
-    constexpr double HighCubeElbow = 24.5;
-    constexpr double HighCubeTilt = 8.0;
+    constexpr double HighCubeShoulder = -11.166;
+    constexpr double HighCubeElbow = 22.333;
+    constexpr double HighCubeTilt = -3.027;
 
     constexpr double MidCubeX = 0.0;
     constexpr double MidCubeY = 0.0;
-    constexpr double MidCubeShoulder = -3.0;
+    constexpr double MidCubeShoulder = -5.45;
     constexpr double MidCubeElbow = 14.0;
-    constexpr double MidCubeTilt = 8.0;
+    constexpr double MidCubeTilt = 0.3;
 
     constexpr double RestX = 0.0;
     constexpr double RestY = 0.0;
     constexpr double StowShoulder = -0.5;
     constexpr double StowElbow = 0.5;
-    constexpr double StowTilt = 13.0;
+    constexpr double StowTilt = 14.0;
 
     constexpr double SubstationX = 0.0;
     constexpr double SubstationY = 0.0;
@@ -152,16 +152,16 @@ namespace ArmConstants {
 
     constexpr double GroundX = 0.0;
     constexpr double GroundY = 0.0;
-    constexpr double GroundShoulder = -30;
-    constexpr double GroundElbow = -18.8; 
+    constexpr double GroundShoulder = -24.5;
+    constexpr double GroundElbow = -21.1; 
     constexpr double TempElbow = 6.0;
-    constexpr double GroundTilt = 1.0; 
+    constexpr double GroundTilt = 1.4; 
 
     constexpr double floorCubeShoulder = -0.5;
     constexpr double floorCubeElbow = 0.5;
     constexpr double floorCubeTilt = -18.0;
 
-    constexpr double ScoreTilt = -18.0;
+    constexpr double ScoreTilt = -8.0;
 
 
     constexpr double ArmBackLimit = 0.0;
@@ -378,7 +378,7 @@ namespace BackRightModule{
 }
 
 namespace AutoConstants{
-    constexpr units::meters_per_second_t MaxSpeed{ 2 };
+    constexpr units::meters_per_second_t MaxSpeed{ 1 };
     constexpr units::meters_per_second_squared_t MaxAccel{ 1 };
     constexpr units::radians_per_second_t MaxAngularSpeed{ 6 };
     constexpr units::radians_per_second_squared_t MaxAngularAccel{ 3 };
@@ -433,6 +433,8 @@ namespace IntakeConstants {
     constexpr double MaxVelocity = 30.0;
     constexpr double kProximityP = 0.005;
     constexpr double kProximityD = 0.0001;
+
+    constexpr units::second_t VibrationTimeout{2.5};
 
     constexpr units::meter_t CenterToStowedIntake{0.0};
     constexpr units::meter_t DistanceToMidCube{30.45_in};

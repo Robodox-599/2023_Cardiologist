@@ -20,8 +20,8 @@ subsystem_DriveTrain::subsystem_DriveTrain():
       {m_FrontLeftModule.GetPosition(), m_FrontRightModule.GetPosition(),
        m_BackLeftModule.GetPosition(), m_BackRightModule.GetPosition()},
       frc::Pose2d{}, {0.70, 0.70, 0.10}, {0.30, 0.30, 0.90}}, 
-    m_PitchCorrectionPID{SwerveConstants::PitchKP, 0.0, SwerveConstants::RollKD},
-    m_RollCorrectionPID{SwerveConstants::RollKP, 0.0, SwerveConstants::RollKD}
+    m_PitchCorrectionPID{0.000, 0.0, 0},
+    m_RollCorrectionPID{0.01, 0.0, 0}
 {
     frc::Wait(1_s);
     ResetModulesToAbsolute();
@@ -56,10 +56,14 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
                                         bool FieldRelative, 
                                         bool IsOpenLoop){
 
-    // if( m_IsBalancing  ){
-    //     ySpeed += AddPitchCorrection();
-    //     xSpeed += AddRollCorrection();
+    // if( IsBalanced()){
+    //     m_IsBalancing = false;
     // }
+    if( m_IsBalancing  ){
+        // ySpeed += AddPitchCorrection();
+        xSpeed += AddRollCorrection();
+    }
+    
 
 
     zRot = m_IsAutoOrient ? GetAngularVelocity() :  zRot;
@@ -80,7 +84,7 @@ void subsystem_DriveTrain::SwerveDrive(units::meters_per_second_t xSpeed,
 }
 
 bool subsystem_DriveTrain::IsBalanced(){
-    return fabs(m_Gyro.GetYaw()) < 2 && fabs(m_Gyro.GetRoll()) < 2;
+    return (fabs(m_Gyro.GetPitch()) < 2) && (fabs(m_Gyro.GetRoll()) < 2);
 }
 
 
@@ -213,7 +217,7 @@ units::meters_per_second_t subsystem_DriveTrain::AddRollCorrection(){
 
 void subsystem_DriveTrain::SetAutoOrient(bool IsOrientFront, bool IsOrientBack, double RotVelocity){
     
-    if( (fabs(RotVelocity) <= ControllerConstants::Deadband)  && frc::DriverStation::IsEnabled()){      
+    if( (fabs(RotVelocity) <= ControllerConstants::Deadband)  && frc::DriverStation::IsTeleopEnabled()){      
 
         if( IsOrientFront ){
             m_Dpad = Orientation::FRONT;
@@ -287,6 +291,9 @@ void subsystem_DriveTrain::Periodic() {
     //frc::SmartDashboard::SmartDashboard::PutNumber("Gyro Yaw (raw)", m_Gyro.GetYaw());
     //frc::SmartDashboard::SmartDashboard::PutNumber("GetYaw()", GetYaw().Degrees().value());
 
+    frc::SmartDashboard::PutBoolean("BalancedMethod", IsBalanced());
+    frc::SmartDashboard::PutBoolean("IsBalancing", m_IsBalancing);
+    
  
 
     m_PoseEstimator.Update(m_Gyro.GetRotation2d(),

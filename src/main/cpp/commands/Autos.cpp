@@ -245,8 +245,12 @@ frc2::CommandPtr autos::ThreeScoreAndTaxi(subsystem_DriveTrain* DriveTrain, subs
     return frc2::cmd::Sequence(autos::ScoreHighCube(Intake, Arm), command_DriveAuton(DriveTrain, PoseTracker, "3ST", true).ToPtr());
 }
 
-frc2::CommandPtr autos::TaxiAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker){
-    return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "2STC", true).ToPtr(), command_Balance(DriveTrain).ToPtr());
+frc2::CommandPtr autos::ThreeTaxiAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker){
+    return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "4TC", true).ToPtr(), command_Balance(DriveTrain).ToPtr());
     // return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "4TC", true).ToPtr(), );
 
+}
+
+frc2::CommandPtr autos::TwoTaxiAndBalance(subsystem_DriveTrain*DriveTrain, subsystem_PoseTracker* PoseTracker){
+    return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "2TC", true).ToPtr(), command_Balance(DriveTrain).ToPtr());
 }
