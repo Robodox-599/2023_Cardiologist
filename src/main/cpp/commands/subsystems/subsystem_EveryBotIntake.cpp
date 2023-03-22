@@ -48,7 +48,7 @@ void subsystem_EveryBotIntake::MaintainIntakeMode(){
     }
 }
 
-// This method will be called once per scheduler run
+// This  method will be called once per scheduler run
 void subsystem_EveryBotIntake::Periodic() {
 
     if(m_IntakeMotor.GetOutputCurrent() >= IntakeConstants::HighOutputCurrent)
