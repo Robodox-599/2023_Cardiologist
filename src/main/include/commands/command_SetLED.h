@@ -25,7 +25,7 @@
 class command_SetLED
     : public frc2::CommandHelper<frc2::CommandBase, command_SetLED> {
  public:
-  command_SetLED(subsystem_LED* LED,  frc::XboxController* DriverController, std::function<double()> WantsCube);
+  command_SetLED(subsystem_LED* LED,  std::function<double()> WantsCube);
 
   void Initialize() override;
 
@@ -38,7 +38,7 @@ class command_SetLED
   private:
   subsystem_LED* m_LED;
   // subsystem_Intake* m_Intake;
-  frc::XboxController* m_DriverController;
+  // frc::XboxController* m_DriverController;
   std::function<double()> m_WantsCube;
 
   frc::Timer m_Timer{};

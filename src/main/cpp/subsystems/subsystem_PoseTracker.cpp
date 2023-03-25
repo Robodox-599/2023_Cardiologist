@@ -10,11 +10,11 @@ subsystem_PoseTracker::subsystem_PoseTracker()
   cameras.push_back(std::make_pair(cameraOne, robotToCam));
 
   SetAllianceOrigin(m_Alliance);
-  m_Chooser.SetDefaultOption("BLUE_ALLIANCE", BLUE_ALLIANCE);
-  m_Chooser.AddOption("RED_ALLIANCE", RED_ALLIANCE);
-  frc::SmartDashboard::PutNumber("ID DETECTED", 0);
+  // m_Chooser.SetDefaultOption("BLUE_ALLIANCE", BLUE_ALLIANCE);
+  // m_Chooser.AddOption("RED_ALLIANCE", RED_ALLIANCE);
+  // frc::SmartDashboard::PutNumber("ID DETECTED", 0);
 
-  frc::SmartDashboard::PutData(&m_Chooser);
+  // frc::SmartDashboard::PutData(&m_Chooser);
 
 }
 
@@ -76,11 +76,11 @@ std::pair<frc::Pose2d, units::second_t> subsystem_PoseTracker::getEstimatedGloba
   frc::Transform3d camToTarget = target.GetBestCameraToTarget();
   frc::Pose3d camPose = targetPose.value().TransformBy(camToTarget.Inverse()); 
   frc::Pose3d visionMeasurement = camPose.TransformBy(robotToCam.Inverse());
-  frc::SmartDashboard::PutNumber("VisionMesX", visionMeasurement.X().value());
-  frc::SmartDashboard::PutNumber("VisionMesY", visionMeasurement.Y().value());
-  frc::SmartDashboard::PutNumber("PoseAmbiguity", target.GetPoseAmbiguity());
-  frc::SmartDashboard::PutNumber("ToTarget", camToTarget.X().value());
-  frc::SmartDashboard::PutNumber("ID DETECTED", targetID);
+  // frc::SmartDashboard::PutNumber("VisionMesX", visionMeasurement.X().value());
+  // frc::SmartDashboard::PutNumber("VisionMesY", visionMeasurement.Y().value());
+  // frc::SmartDashboard::PutNumber("PoseAmbiguity", target.GetPoseAmbiguity());
+  // frc::SmartDashboard::PutNumber("ToTarget", camToTarget.X().value());
+  // frc::SmartDashboard::PutNumber("ID DETECTED", targetID);
   // frc::SmartDashboard::PutNumber("ID DETECTED", targetID);
   return std::make_pair<>(visionMeasurement.ToPose2d(), timeStamp);
   // return std::make_pair(frc::Pose2d(), 0_ms);

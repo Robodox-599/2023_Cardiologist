@@ -76,7 +76,8 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
     m_WristPID.SetD(ArmConstants::kWristD);
 
     m_ShoulderRelEncoder.SetPosition(0);
-    m_ElbowRelEncoder.SetPosition((m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio);
+     m_ElbowRelEncoder.SetPosition((m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio);
+    // m_ElbowRelEncoder.SetPosition(0);
     m_WristEncoder.SetPosition(-20.925);
 
     m_ElbowMotor.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kForward, true);
@@ -430,9 +431,9 @@ void subsystem_Arm::Periodic()
     // frc::SmartDashboard::PutNumber("I", 0);
     // frc::SmartDashboard::PutNumber("D", 0);
 
-    // frc::SmartDashboard::PutNumber("ElbowAbsPosition", (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio );
-    // frc::SmartDashboard::PutNumber("AbsPos with offset", m_ElbowAbsEncoder.GetAbsolutePosition() -0.77);
-    // frc::SmartDashboard::PutNumber("ABsPos without Offset", m_ElbowAbsEncoder.GetAbsolutePosition());
+     frc::SmartDashboard::PutNumber("ElbowAbsPosition", (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio );
+     frc::SmartDashboard::PutNumber("AbsPos with offset", m_ElbowAbsEncoder.GetAbsolutePosition() -0.77);
+     frc::SmartDashboard::PutNumber("ABsPos without Offset", m_ElbowAbsEncoder.GetAbsolutePosition());
 
     // m_ShoulderPID.SetP(frc::SmartDashboard::GetNumber("P", 0), 1);
     // m_ShoulderPID.SetI(frc::SmartDashboard::GetNumber("I", 0), 1);
@@ -476,7 +477,7 @@ void subsystem_Arm::Periodic()
     //     DesiredShoulderPosition = -1.0;
     // }
 
-    // frc::SmartDashboard::PutNumber("Shoulder Arm Pos", m_ShoulderRelEncoder.GetPosition());
-    // frc::SmartDashboard::PutNumber("Elbow Arm Pos", m_ElbowRelEncoder.GetPosition());
-    // frc::SmartDashboard::PutNumber("Intake Tilt Pos", m_WristEncoder.GetPosition());
+    frc::SmartDashboard::PutNumber("Shoulder Arm Pos", m_ShoulderRelEncoder.GetPosition());
+    frc::SmartDashboard::PutNumber("Elbow Arm Pos", m_ElbowRelEncoder.GetPosition());
+    frc::SmartDashboard::PutNumber("Intake Tilt Pos", m_WristEncoder.GetPosition());
 }

@@ -59,7 +59,7 @@ void subsystem_LED::Periodic() {
             break;
         case(LEDConstants::LEDState::Intaked):
 
-            m_CANdle.Animate(IntakedAnimation, 0);
+            // m_CANdle.Animate(IntakedAnimation, 0);
             // if( std::fmod(m_LEDTimer.Get().value(), 10) < 5 ){
             //     m_CANdle.SetLEDs(255,0,0);
             // }else{

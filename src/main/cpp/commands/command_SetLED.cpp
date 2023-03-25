@@ -5,9 +5,9 @@
 #include "commands/command_SetLED.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 
-command_SetLED::command_SetLED(subsystem_LED* LED, frc::XboxController* DriverController, std::function<double()> WantsCube): 
+command_SetLED::command_SetLED(subsystem_LED* LED, std::function<double()> WantsCube): 
                                                                                                   m_LED{LED}, 
-                                                                                                  m_DriverController{DriverController},
+                                                                                                  
                                                                                                   // m_Intake{Intake},
 
                                                                                                   m_WantsCube{WantsCube}

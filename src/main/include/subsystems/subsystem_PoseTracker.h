@@ -97,7 +97,7 @@ private:
   photonlib::RobotPoseEstimator estimator{aprilTags, photonlib::CLOSEST_TO_REFERENCE_POSE, cameras};
 
   frc::DriverStation::Alliance m_Alliance{ frc::DriverStation::Alliance::kBlue };
-  frc::SendableChooser<frc::DriverStation::Alliance> m_Chooser{};
+  // frc::SendableChooser<frc::DriverStation::Alliance> m_Chooser{};
   const frc::DriverStation::Alliance BLUE_ALLIANCE = frc::DriverStation::Alliance::kBlue;
   const frc::DriverStation::Alliance RED_ALLIANCE = frc::DriverStation::Alliance::kRed;
 

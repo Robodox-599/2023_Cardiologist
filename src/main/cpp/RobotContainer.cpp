@@ -15,6 +15,8 @@ RobotContainer::RobotContainer() {
   m_Chooser.AddOption("Two_TaxiAndBalance", m_TwoTaxiAndBalance.get());
   m_Chooser.AddOption("Three_TaxiAndBalance", m_ThreeTaxiAndBalance.get());
   m_Chooser.AddOption("Two_ScoreTaxiAndBalance", m_Two_ScoreTaxiAndBalance.get());
+  m_Chooser.AddOption("NonAuto", nullptr);
+  m_Chooser.AddOption("ScoreHighCube", m_ScoreHigh.get());
   // // m_Chooser.SetDefaultOption("Test", "result of test");
   frc::SmartDashboard::PutData(&m_Chooser);
 
@@ -31,7 +33,7 @@ RobotContainer::RobotContainer() {
                                                        [this]{return SwerveConstants::IsFieldRelative;},
                                                        [this]{return SwerveConstants::IsOpenLoop;}));
 
-  m_LED.SetDefaultCommand( command_SetLED(&m_LED, &XboxDrive,
+  m_LED.SetDefaultCommand( command_SetLED(&m_LED,
                                                        [this]{return XboxDrive.GetRawAxis(ControllerConstants::xboxLTAxis) 
                                                                         - XboxDrive.GetRawAxis(ControllerConstants::xboxRTAxis);}));
 
@@ -111,7 +113,7 @@ void RobotContainer::ConfigureBindings() {
 
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kRightStick)
-                       .OnTrue(ArmMovements::ToGround(&m_Arm));  
+                       .OnTrue(ArmMovements::ToPortal(&m_Arm));  
 
 
   frc2::JoystickButton(&XboxYaperator,
@@ -129,4 +131,5 @@ void RobotContainer::ConfigureBindings() {
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   return m_Chooser.GetSelected();
+    // return null;
 }

@@ -124,32 +124,38 @@ namespace ArmConstants {
     constexpr double HighConeX = 0.0;
     constexpr double HighConeY = 0.0;
     constexpr double HighConeShoulder = -17.0;
-    constexpr double HighConeElbow = 28.7;
+    constexpr double HighConeElbow = 29.05;
     constexpr double HighConeTilt = 5.0;
+
 
     constexpr double MidConeX = 0.0;
     constexpr double MidConeY = 0.0;
-    constexpr double MidConeShoulder = -4.85;
-    constexpr double MidConeElbow = 16.6;
+    constexpr double MidConeShoulder = -5.24;
+    constexpr double MidConeElbow = 17.29;
     constexpr double MidConeTilt = 5.0;
+
 
     constexpr double HighCubeX = 0.0;
     constexpr double HighCubeY = 0.0;
-    constexpr double HighCubeShoulder = -11.166;
-    constexpr double HighCubeElbow = 22.333;
+    constexpr double HighCubeShoulder = -12.8;
+    constexpr double HighCubeElbow = 19.56;
     constexpr double HighCubeTilt = 5.0;
 
     constexpr double MidCubeX = 0.0;
     constexpr double MidCubeY = 0.0;
-    constexpr double MidCubeShoulder = -5.45;
-    constexpr double MidCubeElbow = 14.0;
+    constexpr double MidCubeShoulder = -3.98;
+    constexpr double MidCubeElbow = 12.8;
     constexpr double MidCubeTilt = 5.0;
 
     constexpr double RestX = 0.0;
     constexpr double RestY = 0.0;
     constexpr double StowShoulder = -0.5;
-    constexpr double StowElbow = 0.5;
-    constexpr double StowTilt = 16.0;
+    constexpr double PortalElbow = 0.5;
+    constexpr double PortalTilt = 10.5;
+    
+    constexpr double StowElbow = -7.55;
+    constexpr double StowTilt = 0.0;
+    
 
     constexpr double SubstationX = 0.0;
     constexpr double SubstationY = 0.0;
@@ -469,6 +475,6 @@ namespace ColorConstants {
     constexpr frc::Color PurpleTarget = frc::Color(0.202, 0.333, 0.459);
     constexpr frc::Color YellowTarget = frc::Color(0.361, 0.524, 0.113);
 
-    constexpr double RecognitionProximity = 80.0;
+    constexpr double RecognitionProximity = 100.0;
     constexpr double TargetProximity = 20.0;
 }

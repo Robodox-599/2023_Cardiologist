@@ -204,35 +204,35 @@ void subsystem_Intake::Periodic()
 
 
     // Display IntakeMode to SmartDashboard
-    switch(m_CurrentMode){
-        case(IntakeConstants::IntakeMode::Off):
-            frc::SmartDashboard::PutString("IntakeMode", "OFF");
-            break;
-        case(IntakeConstants::IntakeMode::Passive):
-            frc::SmartDashboard::PutString("IntakeMode", "Passive");
-            break;
-        case(IntakeConstants::IntakeMode::Intake):
-            frc::SmartDashboard::PutString("IntakeMode", "Intake");
-            break;
-        case(IntakeConstants::IntakeMode::Outake):
-            frc::SmartDashboard::PutString("IntakeMode", "Outake");
-            break;
-        case(IntakeConstants::IntakeMode::MidShoot):
-            frc::SmartDashboard::PutString("IntakeMode", "MidShoot");
-            break;
-        case(IntakeConstants::IntakeMode::HighShoot):
-            frc::SmartDashboard::PutString("IntakeMode", "HighShoot");
-            break;
-    }
+    // switch(m_CurrentMode){
+    //     case(IntakeConstants::IntakeMode::Off):
+    //         frc::SmartDashboard::PutString("IntakeMode", "OFF");
+    //         break;
+    //     case(IntakeConstants::IntakeMode::Passive):
+    //         frc::SmartDashboard::PutString("IntakeMode", "Passive");
+    //         break;
+    //     case(IntakeConstants::IntakeMode::Intake):
+    //         frc::SmartDashboard::PutString("IntakeMode", "Intake");
+    //         break;
+    //     case(IntakeConstants::IntakeMode::Outake):
+    //         frc::SmartDashboard::PutString("IntakeMode", "Outake");
+    //         break;
+    //     case(IntakeConstants::IntakeMode::MidShoot):
+    //         frc::SmartDashboard::PutString("IntakeMode", "MidShoot");
+    //         break;
+    //     case(IntakeConstants::IntakeMode::HighShoot):
+    //         frc::SmartDashboard::PutString("IntakeMode", "HighShoot");
+    //         break;
+    // }
 
     // // Display Color Sensor info to SmartDashboard
-    frc::SmartDashboard::PutNumber("Proximity", m_CurrentProximity);
-    if(m_CurrentState == IntakeConstants::State::Empty){
-        frc::SmartDashboard::PutString("Intake State", "Empty");
-    }else if(m_CurrentState == IntakeConstants::State::Yellow){
-        frc::SmartDashboard::PutString("Intake State", "Cone");
-    }else if(m_CurrentState == IntakeConstants::State::Purple){
-        frc::SmartDashboard::PutString("Intake State", "Cube");
-    }
+    // frc::SmartDashboard::PutNumber("Proximity", m_CurrentProximity);
+    // if(m_CurrentState == IntakeConstants::State::Empty){
+    //     frc::SmartDashboard::PutString("Intake State", "Empty");
+    // }else if(m_CurrentState == IntakeConstants::State::Yellow){
+    //     frc::SmartDashboard::PutString("Intake State", "Cone");
+    // }else if(m_CurrentState == IntakeConstants::State::Purple){
+    //     frc::SmartDashboard::PutString("Intake State", "Cube");
+    // }
 
 }

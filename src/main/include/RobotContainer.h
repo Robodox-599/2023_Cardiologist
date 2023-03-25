@@ -84,6 +84,7 @@ class RobotContainer {
 
   frc2::CommandPtr m_TwoTaxiAndBalance = autos::TwoTaxiAndBalance(&m_Drive, &m_PoseTracker);
   frc2::CommandPtr m_ThreeTaxiAndBalance = autos::ThreeTaxiAndBalance(&m_Drive, &m_PoseTracker);
+  frc2::CommandPtr m_ScoreHigh = autos::ScoreHighCube(&m_Intake, &m_Arm);
   // frc2::CommandPtr m_One_ScoreIntakeScore = autos::One_ScoreIntakeScore(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
 
   frc2::CommandPtr m_Two_ScoreTaxiAndBalance = autos::Two_ScoreTaxiAndBalance(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);

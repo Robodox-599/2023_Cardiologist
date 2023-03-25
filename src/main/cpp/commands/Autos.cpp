@@ -66,7 +66,7 @@ frc2::CommandPtr autos::TwoTaxiAndBalance(subsystem_DriveTrain*DriveTrain, subsy
 frc2::CommandPtr autos::One_ScoreIntakeScore(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
   return frc2::cmd::Sequence(autos::ScoreHighCube(Intake, Arm), 
                             command_DriveAuton(DriveTrain, PoseTracker, "OneToTopPiece", true, false).ToPtr(), 
-                            ArmMovements::ToGround(Arm),
+                            ArmMovements::ToStow(Arm),
                             command_TimeOut([=]{return 2.0;}),
                             frc2::cmd::Race(                            
                             command_DriveAuton(DriveTrain, PoseTracker, "IntakeTopPiece", false, true), 
