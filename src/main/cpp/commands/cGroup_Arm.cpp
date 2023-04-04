@@ -46,7 +46,7 @@ frc2::CommandPtr ArmMovements::ToSubstation(subsystem_Arm *Arm){
 frc2::CommandPtr ArmMovements::ToStow(subsystem_Arm *Arm, subsystem_Intake *Intake){
   return frc2::cmd::Sequence(
                              command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return false;}).ToPtr(),
-                             command_MoveElbow(Arm, [=]{return 7.5;}, [=]{return true;}, [=]{return 20;}).ToPtr(),
+                            //  command_MoveElbow(Arm, [=]{return 7.5;}, [=]{return true;}, [=]{return 20;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return -20.925;}, [=]{return true;}, [=]{return -15;}).ToPtr(),
                              command_Clamp(Intake).ToPtr(),
                              command_MoveElbow(Arm, [=]{return 1.5;}, [=]{return false;}, [=]{return 1000000;}).ToPtr());
@@ -61,8 +61,9 @@ frc2::CommandPtr ArmMovements::ToFloorScore(subsystem_Arm *Arm){
                              command_MoveWrist(Arm, [=]{return ArmConstants::floorCubeTilt;}, [=]{return false;}, [=]{return 1000;}).ToPtr());
 }
 
-frc2::CommandPtr ArmMovements::ToGround(subsystem_Arm *Arm){
+frc2::CommandPtr ArmMovements::ToGround(subsystem_Arm *Arm, subsystem_Intake* Intake){
   return frc2::cmd::Sequence(
+                             Intake->UnclampCommand(),
                              command_MoveElbow(Arm, [=]{return 8.0;}, [=]{return true;}, [=]{return 5.88;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return -28.0;}, [=]{return true;}, [=]{return -10.5;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return -6.75;}, [=]{return false;}, [=]{return 100000;}).ToPtr(),
@@ -73,7 +74,7 @@ frc2::CommandPtr ArmMovements::ToGround(subsystem_Arm *Arm){
 
 frc2::CommandPtr ArmMovements::ToPortal(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(
-                             command_MoveWrist(Arm, [=]{return ArmConstants::PortalTilt;}, [=]{return true;}, [=]{return -15.0;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return 5;}, [=]{return true;}, [=]{return -15.0;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return true;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::PortalElbow;}, [=]{return false;}, [=]{return 10000;}).ToPtr());
     
@@ -167,8 +168,16 @@ frc2::CommandPtr ArmMovements::HybridScoreAndStow(subsystem_Arm *Arm, subsystem_
                               );
 }
 
+frc2::CommandPtr ArmMovements::TiltedStow(subsystem_Arm* Arm){
+  return frc2::cmd::Sequence(
+                              command_MoveElbow(Arm, [=]{return -6.95;}, [=]{return false;}, [=]{return 7.0;}).ToPtr(),
+                              command_MoveWrist(Arm, [=]{return 6.0;}, [=]{return false;}, [=]{return 0;}).ToPtr(),
+                              command_MoveShoulder(Arm, [=]{return 0.05;}, [=]{return true;}).ToPtr());
+}
+
 frc2::CommandPtr ArmMovements::ConeScore(subsystem_Arm* Arm, subsystem_Intake* Intake, std::function<int()> NODE_LEVEL){
     DPAD::NODE_LEVEL ArmPoll = DPAD::NODE_LEVEL::NON_SPECIFIED;
+    frc::SmartDashboard::PutNumber("Node Level", NODE_LEVEL());
     // // frc::Smartdashboard::PutNumber("ArmPoll", ArmPoll);
     // frc::SmartDashboard::PutNumber("arm poll", ArmPoll);
     // Arm->PollArmPosition(NODE_LEVEL());

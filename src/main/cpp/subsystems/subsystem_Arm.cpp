@@ -34,8 +34,8 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
     m_ElbowFollower.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
     m_WristMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
-    m_ShoulderMotor.SetSmartCurrentLimit(10);
-    m_ShoulderFollower.SetSmartCurrentLimit(10);
+    // m_ShoulderMotor.SetSmartCurrentLimit(10);
+    // m_ShoulderFollower.SetSmartCurrentLimit(10);
 
     // Elbow current ends up getting redefined in the SetElbowPIDByDirection method
     // m_ElbowMotor.SetSmartCurrentLimit(25);
@@ -226,12 +226,12 @@ void subsystem_Arm::SetElbowPIDByDirection(double Elbow)
 {
     if (IsElbowDirectionGoingUp(Elbow))
     {
-        m_ElbowMotor.SetSmartCurrentLimit(20);
+        m_ElbowMotor.SetSmartCurrentLimit(25);
         m_ElbowSlot = 0;
     }
     else
     {
-        m_ElbowMotor.SetSmartCurrentLimit(ArmConstants::DownwardElbowCurrentLimit);
+        m_ElbowMotor.SetSmartCurrentLimit(25);
         m_ElbowSlot = 1;
     }
 }
@@ -241,12 +241,12 @@ void subsystem_Arm::SetShoulderPIDByDirection(double desiredShoulderPos){
         if(desiredShoulderPos < 20.0){
             m_ShoulderMotor.SetSmartCurrentLimit(30);
         } else {
-            m_ShoulderMotor.SetSmartCurrentLimit(20);
+            m_ShoulderMotor.SetSmartCurrentLimit(30);
         }
         m_ShoulderSlot = 1;
     }
     else{
-        m_ShoulderMotor.SetSmartCurrentLimit(20);
+        m_ShoulderMotor.SetSmartCurrentLimit(30);
         m_ShoulderSlot = 0;
     }
 }
@@ -358,14 +358,6 @@ double subsystem_Arm::GetWristIncrement(){
         }else{
             return DesiredWristPostion;
         }
-    }else{
-        if( Difference > ArmConstants::kWristCrawl ){
-            return WristPosition + ArmConstants::kWristCrawl;
-        }else if( Difference < -ArmConstants::kWristCrawl ){
-            return WristPosition - ArmConstants::kWristCrawl;
-        }else{
-            return DesiredWristPostion;
-        }   
     }
 }
 
@@ -427,7 +419,7 @@ bool subsystem_Arm::WristThreshold(double Threshold){
 void subsystem_Arm::Periodic()
 {
 
-    frc::SmartDashboard::PutNumber("POLL ARM SUBSTATION", GetArmPoll());
+    // frc::SmartDashboard::PutNumber("POLL ARM SUBSTATION", GetArmPoll());
     ShoulderEnc = m_ShoulderRelEncoder.GetPosition();
     ElbowEnc = m_ElbowRelEncoder.GetPosition();
     WristEnc = m_WristEncoder.GetPosition();
@@ -453,9 +445,9 @@ void subsystem_Arm::Periodic()
     ShoulderPosition = GetShoulderIncrement();
     WristPosition = GetWristIncrement();
 // :)
-    // frc::SmartDashboard::PutNumber("ElbowAbsPosition", (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio );
-    // frc::SmartDashboard::PutNumber("AbsPos with offset", m_ElbowAbsEncoder.GetAbsolutePosition() -0.77);
-    // frc::SmartDashboard::PutNumber("ABsPos without Offset", m_ElbowAbsEncoder.GetAbsolutePosition());
+    frc::SmartDashboard::PutNumber("ElbowAbsPosition", (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio );
+    frc::SmartDashboard::PutNumber("AbsPos with offset", m_ElbowAbsEncoder.GetAbsolutePosition() -0.77);
+    frc::SmartDashboard::PutNumber("ABsPos without Offset", m_ElbowAbsEncoder.GetAbsolutePosition());
 
 
     DesiredElbowRadians = RotationsToRadians(DesiredElbowPosition);
@@ -463,7 +455,11 @@ void subsystem_Arm::Periodic()
     DesiredWristRadians = units::angle::radian_t{DesiredWristPostion * 0.07197237113};
 
     frc::SmartDashboard::PutNumber("ShoulderRadians", DesiredShoulderRadians.value());
-    ElbowFF = m_ElbowFeedforward.Calculate((DesiredElbowRadians - units::radian_t{0.45378}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{2.5});
+    if(DesiredElbowPosition >= ElbowEnc){
+        ElbowFF = m_ElbowFeedforward.Calculate((DesiredElbowRadians - units::radian_t{0.45378}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{2.5});
+    } else if (DesiredElbowPosition < ElbowEnc){
+        ElbowFF = m_ElbowFeedforward.Calculate((DesiredElbowRadians - units::radian_t{0.45378}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{5.0});
+    }
     ShoulderFF = m_ShoulderFeedforward.Calculate((DesiredShoulderRadians + units::radian_t{1.24965}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{2.5});
     // WristFF = m_WristFeedforward.Calculate((DesiredShoulderRadians), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{6.0});
     m_ElbowPID.SetFF(ElbowFF.value(), m_ElbowSlot);
@@ -472,7 +468,7 @@ void subsystem_Arm::Periodic()
 
     m_ElbowPID.SetReference(DesiredElbowPosition, rev::CANSparkMax::ControlType::kPosition, m_ElbowSlot);
     m_ShoulderPID.SetReference(DesiredShoulderPosition, rev::CANSparkMax::ControlType::kPosition, m_ShoulderSlot);
-    m_WristPID.SetReference(DesiredWristPostion, rev::CANSparkMaxLowLevel::ControlType::kPosition, 0);
+    m_WristPID.SetReference(WristPosition, rev::CANSparkMaxLowLevel::ControlType::kPosition, 0);
 
     frc::SmartDashboard::PutNumber("DesiredShoulderPos", DesiredShoulderPosition);
     // m_ElbowPID.SetReference(ElbowPosition, rev::CANSparkMaxLowLevel::ControlType::kPosition, m_ElbowSlot, Power4Elbow, rev::SparkMaxPIDController::ArbFFUnits::kPercentOut);

@@ -20,6 +20,7 @@
 #include "commands/command_DriveTeleop.h"
 #include "commands/Autos.h"
 #include "commands/command_ToggleGamePieceMode.h"
+#include "commands/command_ToggleClamp.h"
 
 
 #include "subsystems/subsystem_Arm.h"

@@ -124,7 +124,7 @@ namespace ArmConstants {
     const double JoystickToArm = 1.0; 
     const double TriggerToArm = 0.5;
 
-    const double kWristStep = 0.5;
+    const double kWristStep = 1.0;
     const double kElbowStep = 0.5;
     const double kShoulderStep = 0.5;
 

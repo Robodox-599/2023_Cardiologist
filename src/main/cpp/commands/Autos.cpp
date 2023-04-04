@@ -98,7 +98,7 @@ frc2::CommandPtr autos::Two_ScoreTaxiAndBalance(subsystem_DriveTrain* DriveTrain
 frc2::CommandPtr autos::TestPickUp(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
   return frc2::cmd::Sequence( command_DriveAuton(DriveTrain, PoseTracker, "LinePath", true).ToPtr(),
                               Intake->UnclampCommand(),
-                             ArmMovements::ToGround(Arm),
+                             ArmMovements::ToGround(Arm, Intake),
                              command_TimeOut([=]{return 1.5;}).ToPtr(),
                              command_Clamp(Intake).ToPtr(),
                              ArmMovements::ToPortal(Arm));

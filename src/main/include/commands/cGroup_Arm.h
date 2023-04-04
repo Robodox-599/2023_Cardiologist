@@ -18,7 +18,7 @@ namespace ArmMovements
   frc2::CommandPtr ToMidCube(subsystem_Arm *Arm);
   frc2::CommandPtr ToSubstation(subsystem_Arm *Arm);
   frc2::CommandPtr ToFloorScore(subsystem_Arm *Arm);
-  frc2::CommandPtr ToGround(subsystem_Arm *Arm);
+  frc2::CommandPtr ToGround(subsystem_Arm *Arm, subsystem_Intake *Intake);
   frc2::CommandPtr ToStow(subsystem_Arm *Arm, subsystem_Intake* Intake);
 
   frc2::CommandPtr ToPortal(subsystem_Arm *Arm);
@@ -37,6 +37,7 @@ namespace ArmMovements
   frc2::CommandPtr HybridScoreAndStow(subsystem_Arm* Arm, subsystem_Intake* Intake);
   frc2::CommandPtr StowFromMidCube(subsystem_Arm* Arm, subsystem_Intake* Intake);
   frc2::CommandPtr StowFromHighCube(subsystem_Arm* Arm, subsystem_Intake* Intake);
+  frc2::CommandPtr TiltedStow(subsystem_Arm* Arm);
 
   frc2::CommandPtr CubeScore(subsystem_Arm* Arm, subsystem_Intake* Intake);
   frc2::CommandPtr ConeScore(subsystem_Arm* Arm, subsystem_Intake* Intake, std::function<int()> NODE_LEVEL);

@@ -98,13 +98,21 @@ void RobotContainer::ConfigureBindings() {
                       //  frc::XboxController::Button::kBack)
                       //  .OnTrue(command_ToggleGamePieceMode(&m_Arm).ToPtr());
   
-  frc2::JoystickButton(&XboxYaperator, 
-                       frc::XboxController::Button::kA)
-                       .OnTrue(ArmMovements::MidCubeScoreAndStow(&m_Arm, &m_Intake));
+  // frc2::JoystickButton(&XboxYaperator, 
+  //                      frc::XboxController::Button::kA)
+  //                      .OnTrue(ArmMovements::MidCubeScoreAndStow(&m_Arm, &m_Intake));
+
+  // frc2::JoystickButton(&XboxYaperator, 
+  //                      frc::XboxController::Button::kA)
+  //                      .OnTrue(ArmMovements::ToGround(&m_Arm));
 
   // frc2::JoystickButton(&XboxYaperator, 
   //                      frc::XboxController::Button::kX)
   //                      .OnTrue(ArmMovements::CubeScore(&m_Arm, &m_Intake));
+
+  // frc2::JoystickButton(&XboxYaperator, 
+  //                      frc::XboxController::Button::kY)
+  //                      .OnTrue(ArmMovements::ConeScore(&m_Arm, &m_Intake, [this]{return XboxYaperator.GetPOV();}));
 
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kX)
@@ -113,13 +121,14 @@ void RobotContainer::ConfigureBindings() {
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kY)
                        .OnTrue(ArmMovements::HighConeScoreAndStow(&m_Arm, &m_Intake));
-  // frc2::JoystickButton(&XboxYaperator, 
-  //                      frc::XboxController::Button::kY)
-  //                      .OnTrue(ArmMovements::ConeScore(&m_Arm, &m_Intake, &m_Intake, [this]{return XboxYaperator.GetPOV();}));
 
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kB)
                        .OnTrue(ArmMovements::MidConeScoreAndStow(&m_Arm, &m_Intake));
+
+    // frc2::JoystickButton(&XboxYaperator, 
+  //                      frc::XboxController::Button::kB)
+  //                      .OnTrue(ArmMovements::MidConeScoreAndStow(&m_Arm, &m_Intake));
 
   // frc2::JoystickButton(&XboxYaperator, 
   //                      frc::XboxController::Button::kB)
@@ -137,10 +146,13 @@ void RobotContainer::ConfigureBindings() {
   //                      frc::XboxController::Button::kBack)
   //                      .OnTrue(ArmMovements::ScoreAndStow(&m_Arm, &m_Intake));
 
-  frc2::JoystickButton(&XboxYaperator, 
-                       frc::XboxController::Button::kRightStick)
-                       .OnTrue(ArmMovements::ToPortal(&m_Arm));  
+  // frc2::JoystickButton(&XboxYaperator, 
+  //                      frc::XboxController::Button::kRightStick)
+  //                      .OnTrue(ArmMovements::ToPortal(&m_Arm));  
 
+    frc2::JoystickButton(&XboxYaperator, 
+                       frc::XboxController::Button::kRightStick)
+                       .OnTrue(ArmMovements::TiltedStow(&m_Arm));  
 
   frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kRightBumper)
@@ -149,13 +161,13 @@ void RobotContainer::ConfigureBindings() {
   frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kLeftBumper)
                        .OnTrue(m_Intake.UnclampCommand());
-  // frc2::JoystickButton(&XboxYaperator,
-  //                      frc::XboxController::Button::kLeftStick)
-  //                      .OnTrue(ArmMovements::ScoreConeAndStow(&m_Arm, &m_Intake));
-
   frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kLeftStick)
-                       .OnTrue(ArmMovements::ScoreAndStow(&m_Arm, &m_Intake));
+                       .OnTrue(command_ToggleClamp(&m_Intake).ToPtr());
+
+  // frc2::JoystickButton(&XboxYaperator,
+  //                      frc::XboxController::Button::kLeftStick)
+  //                      .OnTrue(ArmMovements::ScoreAndStow(&m_Arm, &m_Intake));
   
 }
 

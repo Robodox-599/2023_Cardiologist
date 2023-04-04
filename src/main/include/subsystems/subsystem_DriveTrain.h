@@ -134,11 +134,11 @@ class subsystem_DriveTrain : public frc2::SubsystemBase {
 
   frc::TrapezoidProfile<units::degree>::Constraints m_constraints{AutoConstants::MaxAngularSpeed,
                                                                   AutoConstants::MaxAngularAccel};
-  frc::ProfiledPIDController<units::degree> m_ProfiledOrientPID{AutoConstants::AngleKP, 0.0, AutoConstants::AngleKD,
-                                                         m_constraints};
+  // frc::ProfiledPIDController<units::degree> m_ProfiledOrientPID{AutoConstants::AngleKP, 0.0, AutoConstants::AngleKD,
+  //                                                        m_constraints};
 
-  // frc::ProfiledPIDController<units::radian_t> m_ProfiledOrientPID{AutoConstants::AngleKP, 0.0, AutoConstants::AngleKD,  frc::ProfiledPIDController<units::radian_t>::Constraints{AutoConstants::MaxAngularSpeed, 
-  //                                                                                                                             AutoConstants::MaxAngularAccel}};
+  frc::ProfiledPIDController<units::radians> m_ProfiledOrientPID{175.0, 0.0, 0.0,  frc::ProfiledPIDController<units::radians>::Constraints{AutoConstants::MaxAngularSpeed, 
+                                                                                                                              AutoConstants::MaxAngularAccel}};
 
   bool m_IsPark = false;
 
