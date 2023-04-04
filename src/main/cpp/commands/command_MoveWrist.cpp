@@ -5,9 +5,10 @@
 #include "commands/command_MoveWrist.h"
 
 command_MoveWrist::command_MoveWrist(subsystem_Arm *Arm, std::function<double()> EncPosition, 
-                                                      std::function<bool()> IsWait) :m_Arm{Arm},
+                                                      std::function<bool()> IsWait, std::function<double()> Threshold) :m_Arm{Arm},
                                                                                     m_EncPosition{EncPosition},
-                                                                                    m_IsWait{IsWait}
+                                                                                    m_IsWait{IsWait},
+                                                                                    m_Threshold{Threshold}
 {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({m_Arm});
@@ -36,15 +37,18 @@ void command_MoveWrist::End(bool interrupted) {
   // if(m_arm->IsAtDesiredPosition()){
   //   m_arm->LockArm();
   // }
-
 }
 
 // Returns true when the command should end.
 bool command_MoveWrist::IsFinished() {
   // return m_arm->IsAtDesiredPosition();
   if( m_IsWait() && m_Timer.Get() < ArmConstants::ManualTimer){
+    if(m_Arm->WristThreshold(m_Threshold())){
+      return true;
+    }
     return false;
-  }else{
+  }
+  else{
     return true;
   }
   // if(m_IsWait()){

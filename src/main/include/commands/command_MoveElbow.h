@@ -18,7 +18,7 @@
 class command_MoveElbow
     : public frc2::CommandHelper<frc2::CommandBase, command_MoveElbow> {
  public:
-  command_MoveElbow(subsystem_Arm *Arm,  std::function<double()> EncPosition, std::function<bool()> IsWait);
+  command_MoveElbow(subsystem_Arm *Arm,  std::function<double()> EncPosition, std::function<bool()> IsWait, std::function<double()> Threshold);
 
   void Initialize() override;
 
@@ -30,6 +30,7 @@ class command_MoveElbow
 
  private:
   subsystem_Arm *m_Arm;
+  std::function<double()> m_Threshold;
   std::function<double()> m_EncPosition;
   std::function<bool()> m_IsWait;
   frc::Timer m_Timer{};

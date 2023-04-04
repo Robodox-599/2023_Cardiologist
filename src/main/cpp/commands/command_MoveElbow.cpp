@@ -5,9 +5,10 @@
 #include "commands/command_MoveElbow.h"
 
 command_MoveElbow::command_MoveElbow(subsystem_Arm *Arm,  std::function<double()> EncPosition, 
-                                                      std::function<bool()> IsWait) :m_Arm{Arm},
+                                                      std::function<bool()> IsWait, std::function<double()> Threshold) :m_Arm{Arm},
                                                                                     m_EncPosition{EncPosition},
-                                                                                    m_IsWait{IsWait}
+                                                                                    m_IsWait{IsWait},
+                                                                                    m_Threshold{Threshold}
 {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({m_Arm});
@@ -43,6 +44,9 @@ void command_MoveElbow::End(bool interrupted) {
 bool command_MoveElbow::IsFinished() {
   // return m_arm->IsAtDesiredPosition();
   if( m_IsWait() && m_Timer.Get() < ArmConstants::ManualTimer){
+    if(m_Arm->ElbowThreshold(m_Threshold())){
+      return true;
+    }
     return false;
   }else{
     return true;

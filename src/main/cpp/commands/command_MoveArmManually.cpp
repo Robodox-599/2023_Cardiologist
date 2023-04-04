@@ -7,10 +7,12 @@
 command_MoveArmManually::command_MoveArmManually(subsystem_Arm *arm,
                                                  std::function<double()> leftJoystick,
                                                  std::function<double()> rightJoystick,
-                                                 std::function<double()> triggers) : m_arm{arm},
+                                                 std::function<double()> triggers,
+                                                 std::function<int()> PollArm) : m_arm{arm},
                                                                                      m_LeftJoystickInput{leftJoystick},
                                                                                      m_RightJoystickInput{rightJoystick},
-                                                                                     m_TriggerInput{triggers}
+                                                                                     m_TriggerInput{triggers},
+                                                                                     m_PollArm{PollArm}
 {
   AddRequirements({m_arm});
 }
@@ -23,6 +25,11 @@ void command_MoveArmManually::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void command_MoveArmManually::Execute()
 {
+
+  m_arm->PollArmPosition(m_PollArm());
+
+
+
   isDone = false;
   if (fabs(m_TriggerInput()) > ControllerConstants::Deadband)
   {

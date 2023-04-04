@@ -13,7 +13,10 @@
 class command_MoveArmManually
     : public frc2::CommandHelper<frc2::CommandBase, command_MoveArmManually> {
  public:
-  command_MoveArmManually(subsystem_Arm *arm, std::function<double()> leftJoystick, std::function<double()> rightJoystick, std::function<double()> triggers);
+  command_MoveArmManually(subsystem_Arm *arm, std::function<double()> leftJoystick, 
+                            std::function<double()> rightJoystick, 
+                            std::function<double()> triggers, 
+                            std::function<int()> PollArm);
   void Initialize() override;
 
   void Execute() override;
@@ -29,4 +32,6 @@ class command_MoveArmManually
   std::function<double()> m_LeftJoystickInput;
   std::function<double()> m_RightJoystickInput;
   std::function<double()> m_TriggerInput;
+
+  std::function<int()> m_PollArm;
 };

@@ -4,12 +4,15 @@
 
 #include "Robot.h"
 #include <frc2/command/CommandScheduler.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit() {
+  // cs::UsbCamera usbCam("USB Camera 0", 0);
+  // usbCam.SetVideoMode()
+
+
+  frc::CameraServer::SetSize(frc::CameraServer::kSize160x120);
   frc::CameraServer::StartAutomaticCapture();
-  cs::CvSink cvSink = frc::CameraServer::GetVideo();
-  cs::CvSource outputStream = frc::CameraServer::PutVideo("sus cam", 1000, 750);
-  // camera0.SetResolution(320, 240); 
 }
 
 /**
@@ -22,6 +25,7 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
+
 }
 
 /**
@@ -40,7 +44,7 @@ void Robot::DisabledPeriodic() {}
 void Robot::AutonomousInit() {
   m_autonomousCommand = m_container.GetAutonomousCommand();
 
-  if (m_autonomousCommand) {
+  if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();
   }
 }
@@ -52,8 +56,9 @@ void Robot::TeleopInit() {
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove
   // this line or comment it out.
-  if (m_autonomousCommand) {
+  if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Cancel();
+    m_autonomousCommand = nullptr;
   }
 }
 

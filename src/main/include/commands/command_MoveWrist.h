@@ -19,7 +19,7 @@
 class command_MoveWrist
     : public frc2::CommandHelper<frc2::CommandBase, command_MoveWrist> {
  public:
-  command_MoveWrist(subsystem_Arm *Arm, std::function<double()> EncPosition, std::function<bool()> IsWait);
+  command_MoveWrist(subsystem_Arm *Arm, std::function<double()> EncPosition, std::function<bool()> IsWait, std::function<double()> Threshold);
 
   void Initialize() override;
 
@@ -33,5 +33,6 @@ class command_MoveWrist
   subsystem_Arm *m_Arm;
   std::function<double()> m_EncPosition;
   std::function<bool()> m_IsWait;
+  std::function<double()> m_Threshold;
   frc::Timer m_Timer{};
 };

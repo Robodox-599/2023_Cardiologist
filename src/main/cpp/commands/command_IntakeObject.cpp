@@ -16,17 +16,17 @@ void command_IntakeObject::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void command_IntakeObject::Execute() {
-  m_Intake->SetIntakeWheelsOutput(true);
+  // m_Intake->SetIntakeWheelsOutput(true);
   printf("Setting Intake wheels on");
 }
 
 // Called once the command ends or is interrupted.wf1
 void command_IntakeObject::End(bool interrupted) {
   m_Intake->IntakeClose();
-  m_Intake->SetIntakeWheelsPassive();
+  // m_Intake->SetIntakeWheelsPassive();
 }
 
 // Returns true when the command should end.
 bool command_IntakeObject::IsFinished() {
-  return (m_Intake->GetCurrentState() != IntakeConstants::State::Nothing);
+  return (m_Intake->GetCurrentState() != IntakeConstants::State::Empty);
 }

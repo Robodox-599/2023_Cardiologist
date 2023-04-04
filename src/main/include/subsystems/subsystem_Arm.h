@@ -5,9 +5,12 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include <frc2/command/CommandPtr.h>
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <rev/CANSparkMax.h>
+#include <frc/DutyCycleEncoder.h>
+#include <frc/controller/ArmFeedforward.h>
 #include "frc/DoubleSolenoid.h"
 #include <frc/DigitalInput.h>
 #include <frc/Timer.h>
@@ -20,6 +23,10 @@ class subsystem_Arm : public frc2::SubsystemBase
 {
 public:
   subsystem_Arm();
+
+  void PollArmPosition(int POV);
+  DPAD::NODE_LEVEL GetArmPoll();
+
 
   //Might use these methods later. For now, we are relying on motor rotations instead of coordinates.
   double CalculateShoulderAngle(double x, double y);
@@ -45,12 +52,23 @@ public:
   double GetWristIncrement();
   double GetElbowIncrement();
 
+  bool ElbowThreshold(double Threshold);
+  bool WristThreshold(double Threshold);
+  bool ShoulderThreshold(double Threshold);
+
+  bool IsCubeMode();
+  void ChangeGamePieceMode();
+  frc2::CommandPtr ResetWrist();
+
+  units::angle::radian_t RotationsToRadians(double rotations);
+
   void SetElbowPIDByDirection(double desiredElbowPos);
   void SetShoulderPIDByDirection(double desiredShoulderPos);
 
   double GetElbowPosition();
   double GetShoulderPosition();
   double GetWristPosition();
+
 
   // True is upward direction ; False is downward direction
   bool IsElbowDirectionGoingUp(double Elbow);
@@ -66,6 +84,8 @@ public:
   void Periodic() override;
 
 private:
+  DPAD::NODE_LEVEL m_ArmPoll = DPAD::NODE_LEVEL::NON_SPECIFIED; 
+
   double power = 0.0;
   double armX = 0.0;
   double armY = 0.0;
@@ -85,6 +105,10 @@ private:
   double DesiredElbowPosition = 3.5;
   double DesiredShoulderPosition = 0.0;
   double DesiredWristPostion = -20.925;
+
+  units::angle::radian_t DesiredShoulderRadians;
+  units::angle::radian_t DesiredElbowRadians;  
+  units::angle::radian_t DesiredWristRadians;
 
   double convertedElbow;
   double convertedShoulder;
@@ -107,7 +131,7 @@ private:
   int m_ShoulderSlot = 0;
 
   bool m_IsManual = false;
-
+  bool m_IsCubeMode = false;
 
   rev::CANSparkMax m_ShoulderMotor;
   rev::CANSparkMax m_ShoulderFollower;
@@ -116,23 +140,34 @@ private:
   rev::CANSparkMax m_WristMotor;
 
   rev::SparkMaxPIDController m_ShoulderPID;
-  rev::SparkMaxPIDController m_ElbowPID;
   rev::SparkMaxPIDController m_ShoulderFollowerPID;
+  rev::SparkMaxPIDController m_ElbowPID;
   rev::SparkMaxPIDController m_ElbowFollowerPID;
   rev::SparkMaxPIDController m_WristPID;
-
-  frc::DoubleSolenoid m_ElbowBrake;
-  frc::DoubleSolenoid m_ShoulderBrake;
 
   rev::SparkMaxRelativeEncoder m_ShoulderRelEncoder;
   rev::SparkMaxRelativeEncoder m_ElbowRelEncoder;
   rev::SparkMaxRelativeEncoder m_WristEncoder; 
 
-  rev::SparkMaxLimitSwitch m_BackLimit;
-  rev::SparkMaxLimitSwitch m_FrontLimit;
-
   rev::SparkMaxRelativeEncoder m_ShoulderRelFollowerEncoder;
   rev::SparkMaxRelativeEncoder m_ElbowRelFollowerEncoder;
 
+  rev::SparkMaxLimitSwitch m_BackLimit;
+  rev::SparkMaxLimitSwitch m_FrontLimit;
+
   frc::PowerDistribution m_PDH;
+
+  frc::DutyCycleEncoder m_ElbowAbsEncoder;
+  frc::DutyCycleEncoder m_WristAbsEncoder;
+
+
+
+  frc::ArmFeedforward m_ElbowFeedforward;
+  units::volt_t ElbowFF;
+  frc::ArmFeedforward m_ShoulderFeedforward;
+  units::volt_t ShoulderFF; 
+  frc::ArmFeedforward m_WristFeedforward;
+  units::volt_t WristFF;
+ double Increment = 0.0;
+
 };

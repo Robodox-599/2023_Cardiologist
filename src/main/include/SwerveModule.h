@@ -14,10 +14,10 @@ class SwerveModule {
     public:
         SwerveModule(const double Module[]);
         void SetDesiredState(frc::SwerveModuleState& DesiredState, bool IsOpenLoop);
+        void SetDesiredAngle(frc::Rotation2d Angle);
         frc::Rotation2d GetCANCoder();
         frc::SwerveModuleState Optimize(frc::SwerveModuleState DesiredState, frc::Rotation2d CurrentAngle);
         frc::SwerveModuleState GetState();
-        void SetDegrees(units::degree_t Degrees);
         void SwapOrientation();   
         frc::SwerveModulePosition GetPosition();
         void ResetToAbsolute();

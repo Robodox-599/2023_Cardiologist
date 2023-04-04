@@ -6,33 +6,57 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 
 command_DriveAuton::command_DriveAuton(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::string TrajFilePath, bool ToReset):
-m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_ToReset{ToReset}, m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ThetaPID} {
+m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_ToReset{ToReset},  m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ThetaPID} {
   // pathplanner::PPHolonomicDriveController m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ZPID};
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements({DriveTrain});
-  AddRequirements({PoseTracker});
+  AddRequirements({m_DriveTrain});
+  AddRequirements({m_PoseTracker});
   // m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
   m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );  
-  }
 
+
+
+
+
+// command_DriveAuton::command_DriveAuton(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::string TrajFilePath, bool ToReset):
+// m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_ToReset{ToReset}, m_IsCustomMotion{false}, m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ThetaPID} {
+  // pathplanner::PPHolonomicDriveController m_DriveController{AutoConstants::XPID, AutoConstants::YPID, AutoConstants::ZPID};
+  // Use addRequirements() here to declare subsystem dependencies.
+  // AddRequirements({m_DriveTrain});
+  // AddRequirements({m_PoseTracker});
+  // m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
+
+
+  // m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );  
+  
+  
+}
 
 // Called when the command is initially scheduled.
 void command_DriveAuton::Initialize() {
-  pathplanner::PathPlannerTrajectory::transformTrajectoryForAlliance(m_Trajectory, m_PoseTracker->GetAlliance());
+  m_Trajectory = pathplanner::PathPlannerTrajectory::transformTrajectoryForAlliance(m_Trajectory, frc::DriverStation::GetAlliance());
+  
   m_Timer.Stop();
   m_Timer.Reset();
   m_Timer.Start();
 
   if( m_ToReset ){
-    m_DriveTrain->ResetOdometry(m_DriveTrain->GetYaw(), {m_Trajectory.getInitialState().pose.Translation(), m_Trajectory.getInitialState().holonomicRotation});
+    m_DriveTrain->ResetOdometry(m_Trajectory.getInitialHolonomicPose());
   }
+  frc::SmartDashboard::GetNumber("InitialX", m_Trajectory.getInitialHolonomicPose().X().value());
+  frc::SmartDashboard::GetNumber("InitialY", m_Trajectory.getInitialHolonomicPose().Y().value());
+  frc::SmartDashboard::GetNumber("InitialHeading", m_Trajectory.getInitialHolonomicPose().Rotation().Degrees().value());
+
+  
 }
 
 // Called repeatedly when this Command is scheduled to run
 void command_DriveAuton::Execute() {
-  if(m_PoseTracker->HasAcceptableTargets()){
-    m_DriveTrain->ImplementVisionPose(m_PoseTracker->getEstimatedGlobalPose());    
-  }
+  // if(m_DriveTrain->HasAcceptableTargets()){
+  //   m_DriveTrain->ImplementVisionPose(m_DriveTrain->getEstimatedGlobalPose());    
+  // }
+  m_DriveTrain->ImplementVisionPose(m_PoseTracker->GetEstimatedGlobalPose());
+
   pathplanner::PathPlannerTrajectory::PathPlannerState state = m_Trajectory.sample(m_Timer.Get()); 
   auto chassisSpeeds = m_DriveController.Calculate(m_DriveTrain->GetPose(), 
                                                   state.pose,
@@ -42,8 +66,8 @@ void command_DriveAuton::Execute() {
   auto ModuleStates = SwerveConstants::m_kinematics.ToSwerveModuleStates(chassisSpeeds);
   SwerveConstants::m_kinematics.DesaturateWheelSpeeds(&ModuleStates, AutoConstants::MaxSpeed);
   m_DriveTrain->SetModuleStates(ModuleStates);
-  
 
+  
 }
 
 // Called once the command ends or is interrupted.

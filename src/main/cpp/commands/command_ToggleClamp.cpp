@@ -12,7 +12,7 @@ command_ToggleClamp::command_ToggleClamp(subsystem_Intake* intake) : m_Intake{in
 // Called when the command is initially scheduled.
 void command_ToggleClamp::Initialize() {
   printf("Clamp command started");
-  m_Intake->SetIntakeWheelsOff();
+  // m_Intake->SetIntakeWheelsOff();
   if(m_Intake->IsIntakeOpen()) {
     m_Intake->IntakeClose();
     printf("Clamped");

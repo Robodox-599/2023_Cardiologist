@@ -9,7 +9,6 @@ class HardwareConfig{
     ctre::phoenix::sensors::CANCoderConfiguration SwerveCanCoderConfig;
     ctre::phoenix::motorcontrol::can::TalonFXConfiguration SwerveAngleFXConfig;
     ctre::phoenix::motorcontrol::can::TalonFXConfiguration SwerveDriveFXConfig;
-
     HardwareConfig(){
         /*Swerve CANCoder Config*/
         SwerveCanCoderConfig.absoluteSensorRange = ctre::phoenix::sensors::AbsoluteSensorRange::Unsigned_0_to_360;
@@ -46,7 +45,6 @@ class HardwareConfig{
         // SwerveAngleFXConfig.closedloopRamp = SwerveConstants::closedLoopRamp;
         SwerveAngleFXConfig.initializationStrategy = ctre::phoenix::sensors::SensorInitializationStrategy::BootToZero;
 
-        
     }
     
 

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include <frc2/command/CommandPtr.h>
 #include "Constants.h"
 
 #include "rev/CANSparkMax.h"
@@ -24,17 +25,26 @@ class subsystem_Intake : public frc2::SubsystemBase {
   void IntakeClose();
   void IntakeOpen();
   bool IsIntakeOpen();
-  void SetIntakeWheelsOutput(bool IsIntaking);
-  void SetIntakeWheelsOff();
-  void SetIntakeWheelsPassive();
-  void SetHighCubeStaticVelocity();
-  void SetMidCubeStaticVelocity();
+  void SetPassive();
+  void SetOff();
+  void SetIntake();
+  void SetOutake();
+  IntakeConstants::IntakeMode GetCurrentMode();
+
+  
 
   IntakeConstants::State GetCurrentState();
 
   double GetCurrentProximity();
 
   void SetVelocity(double velocity);
+
+  frc::Color GetColor();
+
+
+  frc2::CommandPtr ClampCommand();
+  frc2::CommandPtr UnclampCommand();
+  frc2::CommandPtr ToggleCommand();
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -44,11 +54,11 @@ class subsystem_Intake : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  
+  void MaintainIntakeMode();
   // Wheels for intaking objects
-  rev::CANSparkMax m_IntakeMotor;
-  rev::SparkMaxPIDController m_IntakeMotorPID;
-  rev::SparkMaxRelativeEncoder m_IntakeEncoder;
+  // rev::CANSparkMax m_IntakeMotor;
+  // rev::SparkMaxPIDController m_IntakeMotorPID;
+  // rev::SparkMaxRelativeEncoder m_IntakeEncoder;
   // Pistons for clamping
   frc::DoubleSolenoid m_Solenoid;
 
@@ -64,7 +74,9 @@ class subsystem_Intake : public frc2::SubsystemBase {
   frc::Color m_PreviousColor = frc::Color(0.0, 0.0, 0.0);
   int m_ColorChangeCount = 0;
   double m_CurrentProximity = 0;
-  IntakeConstants::State m_CurrentState = IntakeConstants::State::Nothing;
+
+  IntakeConstants::IntakeMode m_CurrentMode = IntakeConstants::IntakeMode::Passive;
+  IntakeConstants::State m_CurrentState = IntakeConstants::State::Empty;
   
 
   frc::PIDController m_ProximityPID;

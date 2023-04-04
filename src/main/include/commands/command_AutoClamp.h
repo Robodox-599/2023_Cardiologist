@@ -6,9 +6,8 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "subsystems/subsystem_Arm.h"
+#include <frc/Timer.h>
 #include "subsystems/subsystem_Intake.h"
-#include "subsystems/subsystem_PoseTracker.h"
 
 /**
  * An example command.
@@ -17,10 +16,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class command_CubeShooter
-    : public frc2::CommandHelper<frc2::CommandBase, command_CubeShooter> {
+class command_AutoClamp
+    : public frc2::CommandHelper<frc2::CommandBase, command_AutoClamp> {
  public:
-  command_CubeShooter( subsystem_Intake *intake, std::function<double()> TriggerInput);
+  command_AutoClamp(subsystem_Intake* intake);
 
   void Initialize() override;
 
@@ -29,13 +28,8 @@ class command_CubeShooter
   void End(bool interrupted) override;
 
   bool IsFinished() override;
- private:
-   subsystem_Arm *m_Arm;
-   subsystem_PoseTracker *m_PoseTracker;
-   subsystem_Intake *m_Intake;
-   std::function<double()> m_TriggerInput;
-   double m_TopCubeAngle;
-   double m_TopCubeVel;
-   double m_MidCubeAngle;
-   double m_MidCubeVel;
+
+  private:
+    subsystem_Intake* m_Intake;
+    frc::Timer m_Timer;
 };

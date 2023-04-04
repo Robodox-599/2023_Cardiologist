@@ -25,7 +25,7 @@
 class command_AlignToDesired
     : public frc2::CommandHelper<frc2::CommandBase, command_AlignToDesired> {
  public:
-  command_AlignToDesired(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::function<double()> XDesired, std::function<double()> YDesired, std::function<double()> ThetaDesired);
+  command_AlignToDesired(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::function<frc::Pose2d()> DesiredPose);
 
   void Initialize() override;
 
@@ -38,12 +38,23 @@ class command_AlignToDesired
   private:
   subsystem_DriveTrain* m_DriveTrain;
   subsystem_PoseTracker* m_PoseTracker;
-  std::function<double()>  m_X;
-  std::function<double()>  m_Y;
-  std::function<double()>  m_Theta;
-
+  std::function<frc::Pose2d()> m_DesiredPose;
   
-  frc::PIDController XPID {0.5, 0, 0};
-  frc::PIDController YPID {0.5, 0, 0};
-  frc::PIDController ThetaPID {0.5, 0, 0};
+
+
+
+  frc::TrapezoidProfile<units::meter>::Constraints m_Xconstraints{AutoConstants::MaxSpeed,
+                                                                  AutoConstants::MaxAccel};
+  frc::ProfiledPIDController<units::meter> m_XProfiledPID{AutoConstants::XDriveKP, 0.0, AutoConstants::XDriveKD,
+                                                         m_Xconstraints};
+
+  frc::TrapezoidProfile<units::meter>::Constraints m_Yconstraints{AutoConstants::MaxSpeed,
+                                                                  AutoConstants::MaxAccel};
+  frc::ProfiledPIDController<units::meter> m_YProfiledPID{AutoConstants::YDriveKP, 0.0, AutoConstants::YDriveKD,
+                                                         m_Yconstraints};
+
+  frc::TrapezoidProfile<units::degree>::Constraints m_Thetaconstraints{AutoConstants::MaxAngularSpeed,
+                                                                  AutoConstants::MaxAngularAccel};
+  frc::ProfiledPIDController<units::degree> m_ThetaProfiledPID{AutoConstants::AngleKP, 0.0, AutoConstants::AngleKD,
+                                                         m_Thetaconstraints};
 };
