@@ -41,8 +41,8 @@ subsystem_DriveTrain::subsystem_DriveTrain():
     m_AutoOrientPID.EnableContinuousInput(-180, 180);
     m_AutoOrientPID.SetTolerance(1);
 
-    m_ProfiledOrientPID.EnableContinuousInput(-180_deg, 180_deg);
-    m_ProfiledOrientPID.SetTolerance(1_deg);
+    // m_ProfiledOrientPID.EnableContinuousInput(-180_deg, 180_deg);
+    // m_ProfiledOrientPID.SetTolerance(1_deg);
 
 
     // m_LEDTimer.Start();
@@ -253,32 +253,32 @@ void subsystem_DriveTrain::SetAutoOrient(bool IsOrientFront, bool IsOrientBack, 
 }
 
 units::radians_per_second_t subsystem_DriveTrain::GetAngularVelocity(){
-    double temp = m_Dpad;
-    m_ProfiledOrientPID.SetGoal(units::degree_t{temp + 0.0});
+    // double temp = m_Dpad;
+    // m_ProfiledOrientPID.SetGoal(units::degree_t{temp + 0.0});
 
-    if(m_ProfiledOrientPID.AtSetpoint()){
-        m_OrientCounter++;
-        if(m_OrientCounter >= 4){
-            m_IsAutoOrient = false;
-            m_Dpad = DPAD::ORIENTATION::NON_ORIENTED;
-            m_OrientCounter = 0;
-            return 0_rad_per_s;
-        }
-    }
-    return units::degrees_per_second_t{ m_ProfiledOrientPID.Calculate(m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees())};
-
-
-    // m_AutoOrientPID.SetSetpoint(m_Dpad);
-    // if(m_AutoOrientPID.AtSetpoint()){
+    // if(m_ProfiledOrientPID.AtSetpoint()){
     //     m_OrientCounter++;
-    //     if(m_OrientCounter >= 4 ){
+    //     if(m_OrientCounter >= 4){
     //         m_IsAutoOrient = false;
-    //         m_Dpad =  DPAD::ORIENTATION::NON_ORIENTED;
+    //         m_Dpad = DPAD::ORIENTATION::NON_ORIENTED;
     //         m_OrientCounter = 0;
     //         return 0_rad_per_s;
     //     }
     // }
-    // return units::radians_per_second_t{m_AutoOrientPID.Calculate(m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value() )};
+    // return units::degrees_per_second_t{ m_ProfiledOrientPID.Calculate(m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees())};
+
+
+    m_AutoOrientPID.SetSetpoint(m_Dpad);
+    if(m_AutoOrientPID.AtSetpoint()){
+        m_OrientCounter++;
+        if(m_OrientCounter >= 4 ){
+            m_IsAutoOrient = false;
+            m_Dpad =  DPAD::ORIENTATION::NON_ORIENTED;
+            m_OrientCounter = 0;
+            return 0_rad_per_s;
+        }
+    }
+    return units::radians_per_second_t{m_AutoOrientPID.Calculate(m_PoseEstimator.GetEstimatedPosition().Rotation().Degrees().value() )};
     
 }
 

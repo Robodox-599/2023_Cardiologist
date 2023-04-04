@@ -8,28 +8,19 @@
 #include "Constants.h"
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc/smartdashboard/SmartDashboard.h>
-
 #include "commands/command_ControllerVibrate.h"
 #include "frc/XboxController.h"
 #include "frc2/command/button/JoystickButton.h"
 #include <frc/Joystick.h>
 #include <frc2/command/button/CommandXboxController.h>
-
-
 #include "subsystems/subsystem_DriveTrain.h"
 #include "commands/command_DriveTeleop.h"
 #include "commands/Autos.h"
-#include "commands/command_ToggleGamePieceMode.h"
-#include "commands/command_ToggleClamp.h"
-
-
 #include "subsystems/subsystem_Arm.h"
 #include "commands/command_MoveArmManually.h"
 #include "commands/cGroup_Arm.h"
-
 #include "subsystems/subsystem_LED.h"
 #include "commands/command_SetLED.h"
-
 #include "subsystems/subsystem_Intake.h"
 #include "commands/command_AutoClamp.h"
 

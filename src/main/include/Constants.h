@@ -145,73 +145,69 @@ namespace ArmConstants {
     const double ElbowJointMass = 2.22;
     const double IntakeJointMass = 1.814;
 
-    const double xOriginAdjustment = 0.0; 
-    const double yOriginAdjustment = 0.0; 
-
     const double bufferZone = 2; 
     constexpr units::time::second_t ManualTimer{0.1};
 
-    constexpr double TicksOffset = 0.0;  
-    constexpr double TicksToDegrees = (0.0 / 90);  
-
-    constexpr double HighConeX = 0.0;
-    constexpr double HighConeY = 0.0;
     constexpr double HighConeShoulder = 17.0;
     constexpr double HighConeElbow = 28.1;
     constexpr double HighConeTilt = 5.0;
 
-
-    constexpr double MidConeX = 0.0;
-    constexpr double MidConeY = 0.0;
     constexpr double MidConeShoulder = 5.24;
     constexpr double MidConeElbow = 17.29;
     constexpr double MidConeTilt = 4.3;
 
-
-    constexpr double HighCubeX = 0.0;
-    constexpr double HighCubeY = 0.0;
     constexpr double HighCubeShoulder = 12.8;
     constexpr double HighCubeElbow = 19.56;
     constexpr double HighCubeTilt = 4.3;
 
-    constexpr double MidCubeX = 0.0;
-    constexpr double MidCubeY = 0.0;
     constexpr double MidCubeShoulder = 3.98;
-    constexpr double MidCubeElbow = 12.8;
-    constexpr double MidCubeTilt = 5.0;
+    constexpr double MidCubeTempElbow = 16.6;
+    constexpr double MidCubeTempElbowThreshold = 16;
+    constexpr double MidCubeElbow = 12.0;
+    constexpr double MidCubeTilt = 3.0;
+    constexpr double MidCubeTiltThreshold = -5;
 
-    constexpr double RestX = 0.0;
-    constexpr double RestY = 0.0;
     constexpr double StowShoulder = 0.5;
+    constexpr double StowTempElbow = 7.5;
+    constexpr double StowCubeElbow = 1.5;
+    constexpr double StowTempElbowThreshold = 20;
+    constexpr double StowElbow = 1.5;
+    constexpr double StowTilt = -20.925;
+    constexpr double StowMidCubeTiltThreshold = -17;
+    constexpr double StowHighCubeTiltThreshold = -14;
+    constexpr double StowTiltThreshold = -15;
+   
     constexpr double PortalElbow = 0.5;
-    constexpr double PortalTilt = 10.5;
-    
-    constexpr double StowElbow = -7.55;
-    constexpr double StowTilt = 0.0;
-    
+    constexpr double PortalTilt = 5;
+    constexpr double PortalTiltThreshold = -15;
 
+    constexpr double TiltedStowShoulder = 0.05;
+    constexpr double TiltedStowElbow = -6.95;
+    constexpr double TiltedStowTilt = 6.0;
+     
     constexpr double SubstationX = 0.0;
     constexpr double SubstationY = 0.0;
     constexpr double SubstationShoulder = 0.0;
     constexpr double SubstationElbow = 25.5;
+    constexpr double SubstationElbowThreshold = 10;
     constexpr double SubstationTilt = 5.0;
 
     constexpr double GroundX = 0.0;
     constexpr double GroundY = 0.0;
-    constexpr double GroundShoulder = 24.85;
-    constexpr double GroundElbow = -24.78; 
+    constexpr double GroundTempElbow = 8.0;
+    constexpr double GroundTempElbowThreshold = 5.88;
+    constexpr double GroundElbow = -6.75; 
+    constexpr double GroundShoulder = 13.3;
     constexpr double TempElbow = 6.0;
-    constexpr double GroundTilt = 0.0; 
+    constexpr double GroundTilt = -28.0; 
+    constexpr double GroundTiltThreshold = -10.5;
 
     constexpr double floorCubeShoulder = 0.5;
     constexpr double floorCubeElbow = 0.5;
     constexpr double floorCubeTilt = -18.0;
 
     constexpr double ScoreTilt = -6.0;
-
-
-    constexpr double ArmBackLimit = 0.0;
-    constexpr double ArmFrontLimit = 0.0;
+    constexpr double ScoreTimeout = 0.2;
 }
 
 namespace ControllerConstants{
