@@ -522,7 +522,7 @@ namespace GroundTakeConstants{
     constexpr int RightBeamBreakID = 6;
 
 
-    constexpr int ExtenderID = 40;
-    constexpr int IntakeID = 41;
+    constexpr int ExtenderID = 41;
+    constexpr int IntakeID = 40;
 
 }

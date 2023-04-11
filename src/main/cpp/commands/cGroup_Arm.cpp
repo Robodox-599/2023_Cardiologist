@@ -3,7 +3,7 @@
 #include <frc/smartdashboard/Smartdashboard.h>
 
 frc2::CommandPtr ArmMovements::ToHighCone(subsystem_Arm *Arm) {
-  return frc2::cmd::Sequence(
+  return frc2::cmd::Sequence( command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
                             // command_MoveElbow(Arm, [=]{return 26;}, [=]{return true;}, [=]{return 26;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::HighConeElbow;}, [=]{return true;}, [=]{return ArmConstants::HighConeElbow * 0.80;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::HighConeTilt;}, [=]{return false;}, [=]{return ArmConstants::HighConeTilt;}).ToPtr(),
@@ -115,7 +115,7 @@ frc2::CommandPtr ArmMovements::StowFromHighCube(subsystem_Arm *Arm, subsystem_In
 frc2::CommandPtr ArmMovements::HighConeScoreAndStow(subsystem_Arm *Arm, subsystem_Intake *Intake){
 
     return frc2::cmd::Sequence( ArmMovements::ToHighCone(Arm), 
-                                command_TimeOut([=]{return ArmConstants::ScoreTimeout;}).ToPtr(),
+                                command_TimeOut([=]{return 1.0;}).ToPtr(),
                                 ArmMovements::ScoreConeAndStow(Arm, Intake) );
 }
 
