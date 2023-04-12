@@ -28,7 +28,7 @@ namespace autos {
 
     frc2::CommandPtr ThreeScoreAuto2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake);
 
-    frc2::CommandPtr ThreeScoreAutoBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake);
+    frc2::CommandPtr ThreeScoreAutoBalance1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake);
 
     frc2::CommandPtr ThreeScoreAutoBalance2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake);
 
