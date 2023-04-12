@@ -20,7 +20,10 @@ RobotContainer::RobotContainer()
   m_Chooser.AddOption("ScoreMidCube", m_ScoreCubeMid.get());
   m_Chooser.AddOption("ScoreHighCone", m_ScoreConeHigh.get());
   m_Chooser.AddOption("ScoreMidCone", m_ScoreConeMid.get());
-
+  m_Chooser.AddOption("Three Score Auto 1", m_ThreeScoreAuto1.get());
+  m_Chooser.AddOption("Three Score Auto 2", m_ThreeScoreAuto2.get());
+  m_Chooser.AddOption("Three Score Auto Balance 1", m_ThreeScoreAutoBalance1.get());
+  m_Chooser.AddOption("Three Score Auto Balance 2", m_ThreeScoreAutoBalance2.get());
   // m_Chooser.AddOption("TestPickup", m_TestPickUp.get());
   // // m_Chooser.SetDefaultOption("Test", "result of test");
   frc::SmartDashboard::PutData(&m_Chooser);
