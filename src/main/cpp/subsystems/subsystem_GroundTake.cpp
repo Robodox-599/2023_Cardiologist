@@ -24,6 +24,8 @@ subsystem_GroundTake::subsystem_GroundTake():
     // frc::SmartDashboard::PutNumber("kD", 0.0);
     // frc::SmartDashboard::PutNumber("kFF", 0.0);
     // frc::SmartDashboard::PutNumber("Vel", 0.0);
+
+    
     // frc::SmartDashboard::PutNumber("Accel", 0.0);
     m_ExtenderMotor.SetInverted(false);
     m_ExtenderMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
