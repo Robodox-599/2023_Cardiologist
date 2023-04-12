@@ -517,12 +517,21 @@ namespace ColorConstants {
 }
 
 namespace GroundTakeConstants{
-    constexpr int LeftBeamBreakID = 4;
-    constexpr int CenterBeamBreakID = 5;
-    constexpr int RightBeamBreakID = 6;
+    constexpr int LeftBeamBreakID = 0;
+    constexpr int CenterBeamBreakID = 1;
+    constexpr int RightBeamBreakID = 2;
 
 
     constexpr int ExtenderID = 41;
     constexpr int IntakeID = 40;
+
+    constexpr double kP = 0.0002;
+    constexpr double kD = 0.00028;
+    constexpr double kFF = 0.0007;
+    constexpr double maxVel = 1280.0;
+    constexpr double maxAccel = 1280.0;
+
+    constexpr double ExtendedPosition = 6.19;
+    constexpr double RetractedPosition = 0.0;
 
 }

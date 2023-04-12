@@ -2,11 +2,15 @@
 
 #include <frc2/command/CommandPtr.h>
 #include "subsystems/subsystem_Arm.h"
+#include "subsystems/subsystem_GroundTake.h"
 #include "commands/command_MoveElbow.h"
 #include "commands/command_MoveShoulder.h"
 #include "commands/command_MoveWrist.h"
 #include "commands/command_AutoClamp.h"
+#include "commands/command_Clamp.h"
 #include "commands/command_TimeOut.h"
+#include "commands/command_EngageGroundTake.h"
+#include <frc2/command/WaitCommand.h>
 #include "Constants.h"
 
 namespace ArmMovements
