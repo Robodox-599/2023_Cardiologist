@@ -67,6 +67,7 @@ public:
   frc2::CommandPtr ToMidCone();
   frc2::CommandPtr ToHighCube();
   frc2::CommandPtr ToMidCube();
+  frc2::CommandPtr ToTiltedStow();
 
   frc2::CommandPtr ConeMovement();
   frc2::CommandPtr CubeMovement();

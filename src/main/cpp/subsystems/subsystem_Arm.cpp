@@ -116,14 +116,6 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
     
 }
 
-void subsystem_Arm::ChangeGamePieceMode(){
-    m_IsCubeMode = !m_IsCubeMode;
-}
-
-bool subsystem_Arm::IsCubeMode(){
-    return m_IsCubeMode;
-}
-
 void subsystem_Arm::WristCommandStart(double WristPos){
     m_WristTimer.Reset();
     SetWristByPosition(WristPos);
@@ -306,6 +298,35 @@ frc2::CommandPtr subsystem_Arm::ToMidCube(){
     );
 }
 
+frc2::CommandPtr subsystem_Arm::ToTiltedStow(){
+    return frc2::cmd::Sequence(
+        frc2::FunctionalCommand(
+            [this]{WristCommandStart(15);}, 
+            [this]{WristCommandExecute();},
+            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
+            [this]{return WristCommandIsFinished(false, 15 * 0.25);}
+        ),
+        frc2::FunctionalCommand(
+            [this]{ShoulderCommandStart(ArmConstants::TiltedStowShoulder);}, 
+            [this]{ShoulderCommandExecute();},
+            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
+            [this]{return ShoulderCommandIsFinished(true);}
+        ),  
+        frc2::FunctionalCommand(
+            [this]{ElbowCommandStart(ArmConstants::TiltedStowElbow);}, 
+            [this]{ElbowCommandExecute();},
+            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
+            [this]{return ElbowCommandIsFinished(false, ArmConstants::TiltedStowElbow);}
+        ),
+        frc2::FunctionalCommand(
+            [this]{WristCommandStart(ArmConstants::ScoreTilt);}, 
+            [this]{WristCommandExecute();},
+            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
+            [this]{return WristCommandIsFinished(false, ArmConstants::ScoreTilt);}
+        )       
+    );
+}
+
 void subsystem_Arm::PollArmPosition(int POV){
     switch(POV){
         case 0:
@@ -331,6 +352,9 @@ frc2::CommandPtr subsystem_Arm::ConeMovement(){
         case DPAD::NODE_LEVEL::MID:
             return ToMidCone();
             break;
+        case DPAD::NODE_LEVEL::LOW:
+            return ToTiltedStow();
+            break;
         default:
             return RunOnce([this]{frc2::WaitCommand(0.0_s);});
             break;
@@ -344,6 +368,9 @@ frc2::CommandPtr subsystem_Arm::CubeMovement(){
             break;
         case DPAD::NODE_LEVEL::MID:
             return ToMidCube();
+            break;
+        case DPAD::NODE_LEVEL::LOW:
+            return ToTiltedStow();
             break;
         default:
             return RunOnce([this]{frc2::WaitCommand(0.0_s);});
