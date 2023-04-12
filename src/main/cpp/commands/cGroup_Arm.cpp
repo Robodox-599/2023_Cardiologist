@@ -3,15 +3,17 @@
 #include <frc/smartdashboard/Smartdashboard.h>
 
 frc2::CommandPtr ArmMovements::ToHighCone(subsystem_Arm *Arm) {
-  return frc2::cmd::Sequence( command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+  return frc2::cmd::Sequence( 
                             // command_MoveElbow(Arm, [=]{return 26;}, [=]{return true;}, [=]{return 26;}).ToPtr(),
+                            command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::HighConeElbow;}, [=]{return true;}, [=]{return ArmConstants::HighConeElbow * 0.80;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::HighConeTilt;}, [=]{return false;}, [=]{return ArmConstants::HighConeTilt;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::HighConeShoulder;}, [=]{return false;}).ToPtr());
 }
 
 frc2::CommandPtr ArmMovements::ToMidCone(subsystem_Arm *Arm){
-  return frc2::cmd::Sequence( command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+  return frc2::cmd::Sequence( 
+    command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
                               command_MoveElbow(Arm, [=]{return ArmConstants::MidConeElbow;}, [=]{return true;}, [=]{return ArmConstants::MidConeElbow  * 0.50;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::MidConeTilt;}, [=]{return false;}, [=]{return ArmConstants::MidConeTilt;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::MidConeShoulder;}, [=]{return false;}).ToPtr());

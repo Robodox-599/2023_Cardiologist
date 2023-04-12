@@ -10,6 +10,7 @@
 #include <rev/CANSparkMax.h>
 #include <frc2/command/FunctionalCommand.h>
 #include <frc2/command/CommandPtr.h>
+#include <frc2/command/WaitUntilCommand.h>
 #include <frc2/command/WaitCommand.h>
 #include <frc2/command/Commands.h>
 #include <frc2/command/SequentialCommandGroup.h>
@@ -62,13 +63,16 @@ public:
 
   bool IsCubeMode();
   void ChangeGamePieceMode();
+
   frc2::CommandPtr ResetWrist();
   frc2::CommandPtr ToHighCone();
   frc2::CommandPtr ToMidCone();
   frc2::CommandPtr ToHighCube();
   frc2::CommandPtr ToMidCube();
   frc2::CommandPtr ToTiltedStow();
-
+  frc2::CommandPtr MoveShoulderCommand(double EncPosition);
+  frc2::CommandPtr MoveElbowCommand(double EncPosition);
+  frc2::CommandPtr MoveWristCommand(double EncPosition);
   frc2::CommandPtr ConeMovement();
   frc2::CommandPtr CubeMovement();
 

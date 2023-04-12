@@ -110,221 +110,74 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
 
     m_WristTimer.Start();
     m_ElbowTimer.Start();
-    m_ShoulderTimer.Start();
-
-    // DesiredElbowPosition = m_ElbowRelEncoder.GetPosition();
-    
+    m_ShoulderTimer.Start(); 
 }
 
-void subsystem_Arm::WristCommandStart(double WristPos){
-    m_WristTimer.Reset();
-    SetWristByPosition(WristPos);
+frc2::CommandPtr subsystem_Arm::MoveShoulderCommand(double EncPosition){
+    return RunOnce([this, EncPosition]{return SetShoulderByPosition(EncPosition);});
 }
+frc2::CommandPtr subsystem_Arm::MoveElbowCommand(double EncPosition){
+    return RunOnce([this, EncPosition]{return SetElbowByPosition(EncPosition);});
 
-void subsystem_Arm::ElbowCommandStart(double ElbowPos){
-    m_ElbowTimer.Reset();
-    SetElbowByPosition(ElbowPos);
 }
-
-void subsystem_Arm::ShoulderCommandStart(double ShoulderPos){
-    m_ShoulderTimer.Reset();
-    SetShoulderByPosition(ShoulderPos);
-}
-
-void subsystem_Arm::WristCommandExecute(){
-  if(IsWristAtDesiredPosition()){
-    m_WristTimer.Reset();
-  }
-}
-
-void subsystem_Arm::ElbowCommandExecute(){
-  if(IsElbowAtDesiredPosition()){
-    m_ElbowTimer.Reset();
-  }
-}
-
-void subsystem_Arm::ShoulderCommandExecute(){
-  if(IsShoulderAtDesiredPosition()){
-    m_ShoulderTimer.Reset();
-  }
-}
-
-bool subsystem_Arm::WristCommandIsFinished(bool IsWait, double Threshold){
-    if(IsWait && m_WristTimer.Get() < ArmConstants::ManualTimer){
-        if(WristThreshold(Threshold)){
-            return true;
-        }
-        return false;
-    }
-    else{
-        return true;
-    }
-}
-
-bool subsystem_Arm::ElbowCommandIsFinished(bool IsWait, double Threshold){
-    if(IsWait && m_ElbowTimer.Get() < ArmConstants::ManualTimer){
-        if(ElbowThreshold(Threshold)){
-            return true;
-        }
-        return false;
-    }
-    else{
-        return true;
-    }
-}
-
-bool subsystem_Arm::ShoulderCommandIsFinished(bool IsWait){
-    if(IsWait && m_ShoulderTimer.Get() < ArmConstants::ManualTimer){
-        return false;
-    }
-    else{
-        return true;
-    }
+frc2::CommandPtr subsystem_Arm::MoveWristCommand(double EncPosition){
+    return RunOnce([this, EncPosition]{return SetWristByPosition(EncPosition);});
 }
 
 frc2::CommandPtr subsystem_Arm::ToHighCone(){
     return frc2::cmd::Sequence(
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(15);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(true, 15 * 0.25);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{ElbowCommandStart(ArmConstants::HighConeElbow);}, 
-            [this]{ElbowCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ElbowCommandIsFinished(true, ArmConstants::HighConeElbow * 0.8);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(ArmConstants::HighConeTilt);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(false, ArmConstants::HighConeTilt);}
-        ),       
-        frc2::FunctionalCommand(
-            [this]{ShoulderCommandStart(ArmConstants::HighConeShoulder);}, 
-            [this]{ShoulderCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ShoulderCommandIsFinished(false);}
-        )     
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(15 * 0.80);}).ToPtr(),
+                    MoveWristCommand(15)), 
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return ElbowThreshold(ArmConstants::HighConeElbow * 0.80);}).ToPtr(),
+                    MoveElbowCommand(ArmConstants::HighConeElbow)),  
+    MoveWristCommand(ArmConstants::HighConeTilt),
+    MoveShoulderCommand(ArmConstants::HighConeShoulder)           
     );
 }
 
 frc2::CommandPtr subsystem_Arm::ToMidCone(){
     return frc2::cmd::Sequence(
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(15);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(true, 15 * 0.25);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{ElbowCommandStart(ArmConstants::MidConeElbow);}, 
-            [this]{ElbowCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ElbowCommandIsFinished(true, ArmConstants::MidConeElbow * 0.5);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(ArmConstants::MidConeTilt);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(false, ArmConstants::MidConeTilt);}
-        ),       
-        frc2::FunctionalCommand(
-            [this]{ShoulderCommandStart(ArmConstants::MidConeShoulder);}, 
-            [this]{ShoulderCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ShoulderCommandIsFinished(false);}
-        )     
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(15 * 0.80);}).ToPtr(),
+                    MoveWristCommand(15)), 
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return ElbowThreshold(ArmConstants::MidConeElbow * 0.50);}).ToPtr(),
+                    MoveElbowCommand(ArmConstants::MidConeElbow)),  
+    MoveWristCommand(ArmConstants::MidConeTilt),
+    MoveShoulderCommand(ArmConstants::MidConeShoulder)           
     );
 }
 
+
 frc2::CommandPtr subsystem_Arm::ToHighCube(){
     return frc2::cmd::Sequence(
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(15);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(true, 15 * 0.25);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{ElbowCommandStart(ArmConstants::HighCubeElbow);}, 
-            [this]{ElbowCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ElbowCommandIsFinished(true, ArmConstants::HighCubeElbow * 0.8);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{ShoulderCommandStart(ArmConstants::HighCubeShoulder);}, 
-            [this]{ShoulderCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ShoulderCommandIsFinished(false);}
-        ),  
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(ArmConstants::HighCubeTilt);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(true, ArmConstants::HighCubeTilt);}
-        )       
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(15 * 0.80);}).ToPtr(),
+                    MoveWristCommand(15)), 
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return ElbowThreshold(ArmConstants::HighCubeElbow * 0.80);}).ToPtr(),
+                    MoveElbowCommand(ArmConstants::HighCubeElbow)),  
+    MoveShoulderCommand(ArmConstants::HighConeShoulder),
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(ArmConstants::HighCubeTilt);}).ToPtr(),
+                    MoveWristCommand(ArmConstants::HighCubeTilt))
     );
 }
 
 frc2::CommandPtr subsystem_Arm::ToMidCube(){
     return frc2::cmd::Sequence(
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(15);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(true, 15 * 0.25);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{ElbowCommandStart(ArmConstants::MidCubeElbow);}, 
-            [this]{ElbowCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ElbowCommandIsFinished(true, ArmConstants::HighCubeElbow * 0.6);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{ShoulderCommandStart(ArmConstants::MidCubeShoulder);}, 
-            [this]{ShoulderCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ShoulderCommandIsFinished(false);}
-        ),  
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(ArmConstants::MidCubeTilt);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(true, ArmConstants::MidCubeTilt * 0.5);}
-        )       
-    );
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(15 * 0.80);}).ToPtr(),
+                    MoveWristCommand(15)), 
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return ElbowThreshold(ArmConstants::MidCubeElbow * 0.60);}).ToPtr(),
+                    MoveElbowCommand(ArmConstants::MidCubeElbow)),  
+    MoveShoulderCommand(ArmConstants::MidCubeShoulder),
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(ArmConstants::MidCubeTilt * 0.50);}).ToPtr(),
+                    MoveWristCommand(ArmConstants::MidCubeTilt))
+    );   
 }
 
 frc2::CommandPtr subsystem_Arm::ToTiltedStow(){
     return frc2::cmd::Sequence(
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(15);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(false, 15 * 0.25);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{ShoulderCommandStart(ArmConstants::TiltedStowShoulder);}, 
-            [this]{ShoulderCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ShoulderCommandIsFinished(true);}
-        ),  
-        frc2::FunctionalCommand(
-            [this]{ElbowCommandStart(ArmConstants::TiltedStowElbow);}, 
-            [this]{ElbowCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return ElbowCommandIsFinished(false, ArmConstants::TiltedStowElbow);}
-        ),
-        frc2::FunctionalCommand(
-            [this]{WristCommandStart(ArmConstants::ScoreTilt);}, 
-            [this]{WristCommandExecute();},
-            [this](bool interrupted) {frc2::WaitCommand(0.0_s);},
-            [this]{return WristCommandIsFinished(false, ArmConstants::ScoreTilt);}
-        )       
-    );
+    MoveWristCommand(14), 
+    MoveShoulderCommand(ArmConstants::TiltedStowShoulder),
+    MoveElbowCommand(ArmConstants::TiltedStowElbow),
+    MoveWristCommand(ArmConstants::ScoreTilt)
+    );  
 }
 
 void subsystem_Arm::PollArmPosition(int POV){
@@ -381,7 +234,6 @@ frc2::CommandPtr subsystem_Arm::CubeMovement(){
 DPAD::NODE_LEVEL subsystem_Arm::GetArmPoll(){
     return m_ArmPoll;
 }
-
 
 double subsystem_Arm::CalculateShoulderAngle(double x, double y)
 {
@@ -551,11 +403,6 @@ bool subsystem_Arm::IsWristAtDesiredPosition(){
     }
     return false;
 }
-
-// double subsystem_Arm::EncoderToDegrees(double ticks)
-// {
-//     return (ticks - ArmConstants::TicksOffset) * ArmConstants::TicksToDegrees;
-// }
 
 double subsystem_Arm::GetShoulderIncrement(){
 
