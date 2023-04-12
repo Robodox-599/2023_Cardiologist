@@ -73,6 +73,9 @@ class RobotContainer {
   frc2::CommandPtr m_ThreeScoreAuto1 = autos::ThreeScoreAuto(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake );
   frc2::CommandPtr m_ThreeScoreAuto2 = autos::ThreeScoreAuto2(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake );
 
+  frc2::CommandPtr m_ThreeScoreAutoBalance1 = autos::ThreeScoreAutoBalance(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake );
+  frc2::CommandPtr m_ThreeScoreAutoBalance2 = autos::ThreeScoreAutoBalance2(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake );
+
   // frc2::CommandPtr m_One_ScoreIntakeScore = autos::One_ScoreIntakeScore(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
   // frc2::CommandPtr m_TestPickUp = autos::TestPickUp(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
   void ConfigureBindings();

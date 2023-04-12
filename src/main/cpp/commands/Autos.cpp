@@ -31,6 +31,35 @@ frc2::CommandPtr autos::ThreeScoreAuto2(subsystem_DriveTrain* DriveTrain, subsys
                             command_AutoClamp(Intake).ToPtr() /* Outtake Cube */); 
 }
 
+frc2::CommandPtr ThreeScoreAutoBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake){
+  return frc2::cmd::Sequence( ArmMovements::HighConeScoreAndStow(Arm, Intake), 
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 First Option Pt 1", true).ToPtr(), 
+                                                frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                    Intake->UnclampCommand())/* Intake Cube and Stop Wheels */),
+                                                Intake->ClampCommand() /* Outtake Cube */,
+                                                frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 First Option Pt 2", true).ToPtr(), 
+                                                                    frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                                        Intake->UnclampCommand())/* Intake Cube and Stop Wheels */),
+                            command_AutoClamp(Intake).ToPtr() /* Outtake Cube */,
+                            command_DriveAuton(DriveTrain, PoseTracker, "Charge After Yes^3", false).ToPtr(),
+                            command_Balance(DriveTrain).ToPtr());
+}
+
+frc2::CommandPtr ThreeScoreAutoBalance2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake){
+  return frc2::cmd::Sequence( ArmMovements::HighConeScoreAndStow(Arm, Intake), 
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Second Option Pt 1", true).ToPtr(), 
+                                                frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                    Intake->UnclampCommand())/* Intake Cube and Stop Wheels */),
+                                                Intake->ClampCommand() /* Outtake Cube */,
+                                                frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Second Option Pt 2", true).ToPtr(), 
+                                                                    frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                                        Intake->UnclampCommand())/* Intake Cube and Stop Wheels */),
+                            command_AutoClamp(Intake).ToPtr() /* Outtake Cube */,
+                            command_DriveAuton(DriveTrain, PoseTracker, "Charge After Yes^3", false).ToPtr(),
+                            command_Balance(DriveTrain).ToPtr()); 
+}
+
+
 frc2::CommandPtr autos::TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker){
   return command_DriveAuton(DriveTrain, PoseTracker, "Test",  true).ToPtr();
 }
