@@ -148,16 +148,16 @@ namespace ArmConstants {
     const double bufferZone = 2; 
     constexpr units::time::second_t ManualTimer{0.1};
 
-    constexpr double HighConeShoulder = 17.0;
-    constexpr double HighConeElbow = 28.1;
-    constexpr double HighConeTilt = 5.0;
+    constexpr double HighConeShoulder = 16.285;
+    constexpr double HighConeElbow = 25.854;
+    constexpr double HighConeTilt = 9.432;
 
-    constexpr double MidConeShoulder = 5.24;
-    constexpr double MidConeElbow = 17.29;
-    constexpr double MidConeTilt = 4.3;
+    constexpr double MidConeShoulder = 5.5;
+    constexpr double MidConeElbow = 15.5;
+    constexpr double MidConeTilt = 4.0;
 
-    constexpr double HighCubeShoulder = 12.8;
-    constexpr double HighCubeElbow = 19.56;
+    constexpr double HighCubeShoulder = 13.857;
+    constexpr double HighCubeElbow = 21.484;
     constexpr double HighCubeTilt = 4.3;
 
     constexpr double MidCubeShoulder = 3.98;
@@ -178,7 +178,7 @@ namespace ArmConstants {
     constexpr double StowTiltThreshold = -15;
    
     constexpr double PortalElbow = 0.5;
-    constexpr double PortalTilt = 5;
+    constexpr double PortalTilt = 10;
     constexpr double PortalTiltThreshold = -15;
 
     constexpr double TiltedStowShoulder = 0.05;
@@ -196,10 +196,10 @@ namespace ArmConstants {
     constexpr double GroundY = 0.0;
     constexpr double GroundTempElbow = 8.0;
     constexpr double GroundTempElbowThreshold = 5.88;
-    constexpr double GroundElbow = -6.75; 
+    constexpr double GroundElbow = -4.75; 
     constexpr double GroundShoulder = 13.3;
     constexpr double TempElbow = 6.0;
-    constexpr double GroundTilt = -28.0; 
+    constexpr double GroundTilt = -25.0; 
     constexpr double GroundTiltThreshold = -10.5;
 
     constexpr double floorCubeShoulder = 0.5;
@@ -428,9 +428,9 @@ namespace BackRightModule{
 }
 
 namespace AutoConstants{
-    constexpr units::meters_per_second_t MaxSpeed{ 1 };
-    constexpr units::meters_per_second_squared_t MaxAccel{ 1 };
-    constexpr units::radians_per_second_t MaxAngularSpeed{ 6 };
+    constexpr units::meters_per_second_t MaxSpeed{ 2};
+    constexpr units::meters_per_second_squared_t MaxAccel{ 2 };
+    constexpr units::radians_per_second_t MaxAngularSpeed{ 12 };
     constexpr units::radians_per_second_squared_t MaxAngularAccel{ 3 };
 
     /*Auto Swerve Drive Motor PID gains*/
@@ -517,12 +517,21 @@ namespace ColorConstants {
 }
 
 namespace GroundTakeConstants{
-    constexpr int LeftBeamBreakID = 4;
-    constexpr int CenterBeamBreakID = 5;
-    constexpr int RightBeamBreakID = 6;
+    constexpr int LeftBeamBreakID = 0;
+    constexpr int CenterBeamBreakID = 1;
+    constexpr int RightBeamBreakID = 2;
 
 
-    constexpr int ExtenderID = 40;
-    constexpr int IntakeID = 41;
+    constexpr int ExtenderID = 41;
+    constexpr int IntakeID = 40;
+
+    constexpr double kP = 0.0002;
+    constexpr double kD = 0.00028;
+    constexpr double kFF = 0.0007;
+    constexpr double maxVel = 1280.0;
+    constexpr double maxAccel = 1280.0;
+
+    constexpr double ExtendedPosition = 6.19;
+    constexpr double RetractedPosition = 0.0;
 
 }

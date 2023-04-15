@@ -7,6 +7,66 @@
 #include <frc2/command/Commands.h>
 
 
+frc2::CommandPtr autos::ThreeScoreAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake){
+  return frc2::cmd::Sequence( ArmMovements::HighConeScoreAndStow(Arm, Intake), 
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Third Option Pt 1", true).ToPtr(), 
+                                                frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                    /* Intake Cube and Stop Wheels */
+                                                                    command_EngageGroundTake(GroundTake).ToPtr())),
+                            GroundTake->RunIntakeCommand() /* Outtake Cube */,
+                            frc2::WaitCommand(0.25_s),
+                            GroundTake->StopIntakeCommand(),
+                            GroundTake->RetractGroundTakeCommand(),
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Third Option Pt 2", true).ToPtr(), 
+                                                                    frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                                        /* Intake Cube and Stop Wheels */
+                                                                                        command_EngageGroundTake(GroundTake).ToPtr())),
+                            GroundTake->RunIntakeCommand(),
+                            frc2::WaitCommand(0.25_s),
+                            GroundTake->StopIntakeCommand(),
+                            GroundTake->RetractGroundTakeCommand()); 
+}
+
+
+
+frc2::CommandPtr autos::ThreeScoreAutoBalance1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake){
+  return frc2::cmd::Sequence( ArmMovements::HighConeScoreAndStow(Arm, Intake), 
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Third Option Pt 1", true).ToPtr(), 
+                                                frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                    /* Intake Cube and Stop Wheels */
+                                                                    command_EngageGroundTake(GroundTake).ToPtr())),
+                            GroundTake->RunIntakeCommand() /* Outtake Cube */,
+                            frc2::WaitCommand(0.25_s),
+                            GroundTake->StopIntakeCommand(),
+                            GroundTake->RetractGroundTakeCommand(),
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Third Option Charge 1", true).ToPtr(), 
+                                                                    frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                                        /* Intake Cube and Stop Wheels */
+                                                                                        command_EngageGroundTake(GroundTake).ToPtr())),
+                            command_Balance(DriveTrain).ToPtr());
+}
+
+frc2::CommandPtr autos::ThreeScoreAutoBalance2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake){
+  return frc2::cmd::Sequence( ArmMovements::HighConeScoreAndStow(Arm, Intake), 
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Third Option Pt 1", true).ToPtr(), 
+                                                frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                    /* Intake Cube and Stop Wheels */
+                                                                    command_EngageGroundTake(GroundTake).ToPtr())),
+                            GroundTake->RunIntakeCommand() /* Outtake Cube */,
+                            frc2::WaitCommand(0.25_s),
+                            GroundTake->StopIntakeCommand(),
+                            GroundTake->RetractGroundTakeCommand(),
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Third Option Pt 2", true).ToPtr(), 
+                                                frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                    /* Intake Cube and Stop Wheels */
+                                                                    command_EngageGroundTake(GroundTake).ToPtr())),
+                            GroundTake->RunIntakeCommand() /* Outtake Cube */,
+                            frc2::WaitCommand(0.25_s),
+                            GroundTake->StopIntakeCommand(),
+                            GroundTake->RetractGroundTakeCommand(),
+                            command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Third Option Charge 2", false).ToPtr(),
+                            command_Balance(DriveTrain).ToPtr()); 
+}
 
 
 frc2::CommandPtr autos::TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker){
@@ -25,35 +85,35 @@ frc2::CommandPtr autos::Kasparov(subsystem_DriveTrain* DriveTrain, subsystem_Pos
 }
 
 
-// frc2::CommandPtr ArmMovements::HighCubeScoreAndStow(subsystem_Intake* Intake, subsystem_Arm* Arm){
-//   return frc2::cmd::Sequence(Intake->ClampCommand(),
+// frc2::CommandPtr ArmMovements::HighCubeScoreAndStow(subsystem_Intake* Intake, subsystem_GroundTake* GroundTake, subsystem_Arm* Arm){
+//   return frc2::cmd::Sequence(GroundTake->RetractGroundTakeCommand(),
 //                             ArmMovements::ToHighCube(Arm),
 //                             command_TimeOut([=]{return 1.0;}).ToPtr(),
-//                             Intake->UnclampCommand(),
+//                             command_EngageGroundTake(GroundTake).ToPtr(),
 //                             ArmMovements::ToStow(Arm, Intake));
 // }
 
-// frc2::CommandPtr autos::ScoreMidCube(subsystem_Intake* Intake, subsystem_Arm* Arm){
-//   return frc2::cmd::Sequence(Intake->ClampCommand(),
+// frc2::CommandPtr autos::ScoreMidCube(subsystem_Intake* Intake, subsystem_GroundTake* GroundTake, subsystem_Arm* Arm){
+//   return frc2::cmd::Sequence(GroundTake->RetractGroundTakeCommand(),
 //                             ArmMovements::ToMidCube(Arm),
 //                             command_TimeOut([=]{return 1.0;}).ToPtr(),
-//                             Intake->UnclampCommand(),
+//                             command_EngageGroundTake(GroundTake).ToPtr(),
 //                             ArmMovements::ToStow(Arm, Intake));
 // }
 
-// frc2::CommandPtr autos::ScoreHighCone(subsystem_Intake* Intake, subsystem_Arm* Arm){
-//   return frc2::cmd::Sequence(Intake->ClampCommand(),
+// frc2::CommandPtr autos::ScoreHighCone(subsystem_Intake* Intake, subsystem_GroundTake* GroundTake, subsystem_Arm* Arm){
+//   return frc2::cmd::Sequence(GroundTake->RetractGroundTakeCommand(),
 //                             ArmMovements::ToHighCone(Arm),
 //                             command_TimeOut([=]{return 1.0;}).ToPtr(),
-//                             Intake->UnclampCommand(),
+//                             command_EngageGroundTake(GroundTake).ToPtr(),
 //                             ArmMovements::ToStow(Arm, Intake));
 // }
 
 // frc2::CommandPtr autos::ScoreMidCone(subsystem_Intake* Intake, subsystem_Arm* Arm){
-//   return frc2::cmd::Sequence(Intake->ClampCommand(),
+//   return frc2::cmd::Sequence(GroundTake->RetractGroundTakeCommand(),
 //                             ArmMovements::ToHighCube(Arm),
 //                             command_TimeOut([=]{return 1.0;}).ToPtr(),
-//                             Intake->UnclampCommand(),
+//                             command_EngageGroundTake(GroundTake).ToPtr(),
 //                             ArmMovements::ToStow(Arm, Intake));
 // }
 
@@ -76,18 +136,18 @@ frc2::CommandPtr autos::TwoTaxiAndBalance(subsystem_DriveTrain*DriveTrain, subsy
     return frc2::cmd::Sequence(command_DriveAuton(DriveTrain, PoseTracker, "2TC", true).ToPtr(), command_Balance(DriveTrain).ToPtr());
 }
 
-frc2::CommandPtr autos::One_ScoreIntakeScore(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+frc2::CommandPtr autos::One_ScoreIntakeScore(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake, subsystem_Arm* Arm){
   return frc2::cmd::Sequence(ArmMovements::HighCubeScoreAndStow(Arm, Intake), 
                             command_DriveAuton(DriveTrain, PoseTracker, "OneToTopPiece", true).ToPtr(), 
-                            ArmMovements::ToStow(Arm, Intake),
-                            command_TimeOut([=]{return 2.0;}),
-                            frc2::cmd::Race(                            
-                            command_DriveAuton(DriveTrain, PoseTracker, "IntakeTopPiece", false), 
-                            Intake->ClampCommand()),
+                            ArmMovements::ToGround(Arm, Intake),
+                            command_TimeOut([=]{return 2.0;}).ToPtr(),
+                            GroundTake->RetractGroundTakeCommand(),
                             ArmMovements::ToStow(Arm, Intake), 
-                            command_DriveAuton(DriveTrain, PoseTracker, "TopPieceToOne", false),
+                            command_DriveAuton(DriveTrain, PoseTracker, "TopPieceToOne", false).ToPtr(),
                             ArmMovements::MidCubeScoreAndStow(Arm, Intake));
 }
+
+
 
 frc2::CommandPtr autos::Two_ScoreTaxiAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
   return frc2::cmd::Sequence(ArmMovements::HighCubeScoreAndStow(Arm, Intake), 
@@ -95,11 +155,14 @@ frc2::CommandPtr autos::Two_ScoreTaxiAndBalance(subsystem_DriveTrain* DriveTrain
                               command_Balance(DriveTrain).ToPtr());
 }
 
-frc2::CommandPtr autos::TestPickUp(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm){
+frc2::CommandPtr autos::TestPickUp(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm, subsystem_GroundTake* GroundTake){
   return frc2::cmd::Sequence( command_DriveAuton(DriveTrain, PoseTracker, "LinePath", true).ToPtr(),
-                              Intake->UnclampCommand(),
+                              command_EngageGroundTake(GroundTake).ToPtr(),
+                                                          GroundTake->RunIntakeCommand(),
+                            frc2::WaitCommand(0.25_s),
                              ArmMovements::ToGround(Arm, Intake),
                              command_TimeOut([=]{return 1.5;}).ToPtr(),
-                             command_Clamp(Intake).ToPtr(),
+                             command_AutoClamp(Intake).ToPtr(),
                              ArmMovements::ToPortal(Arm));
 }
+

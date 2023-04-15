@@ -2,11 +2,15 @@
 
 #include <frc2/command/CommandPtr.h>
 #include "subsystems/subsystem_Arm.h"
+#include "subsystems/subsystem_GroundTake.h"
 #include "commands/command_MoveElbow.h"
 #include "commands/command_MoveShoulder.h"
 #include "commands/command_MoveWrist.h"
 #include "commands/command_AutoClamp.h"
+#include "commands/command_Clamp.h"
 #include "commands/command_TimeOut.h"
+#include "commands/command_EngageGroundTake.h"
+#include <frc2/command/WaitCommand.h>
 #include "Constants.h"
 
 namespace ArmMovements
@@ -35,6 +39,8 @@ namespace ArmMovements
   frc2::CommandPtr StowFromMidCube(subsystem_Arm* Arm, subsystem_Intake* Intake);
   frc2::CommandPtr StowFromHighCube(subsystem_Arm* Arm, subsystem_Intake* Intake);
   frc2::CommandPtr TiltedStow(subsystem_Arm* Arm);
+
+  frc2::CommandPtr ToHandOff(subsystem_Arm* Arm, subsystem_Intake* Intake);
 
   //POV jazz
   // frc2::CommandPtr CubeScore(subsystem_Arm* Arm, subsystem_Intake* Intake);

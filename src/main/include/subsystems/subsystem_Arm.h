@@ -5,10 +5,15 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <frc2/command/CommandPtr.h>
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <rev/CANSparkMax.h>
+#include <frc2/command/FunctionalCommand.h>
+#include <frc2/command/CommandPtr.h>
+#include <frc2/command/WaitUntilCommand.h>
+#include <frc2/command/WaitCommand.h>
+#include <frc2/command/Commands.h>
+#include <frc2/command/SequentialCommandGroup.h>
 #include <frc/DutyCycleEncoder.h>
 #include <frc/controller/ArmFeedforward.h>
 #include "frc/DoubleSolenoid.h"
@@ -58,9 +63,32 @@ public:
 
   bool IsCubeMode();
   void ChangeGamePieceMode();
+
   frc2::CommandPtr ResetWrist();
+  frc2::CommandPtr ToHighCone();
+  frc2::CommandPtr ToMidCone();
+  frc2::CommandPtr ToHighCube();
+  frc2::CommandPtr ToMidCube();
+  frc2::CommandPtr ToTiltedStow();
+  frc2::CommandPtr MoveShoulderCommand(double EncPosition);
+  frc2::CommandPtr MoveElbowCommand(double EncPosition);
+  frc2::CommandPtr MoveWristCommand(double EncPosition);
+  frc2::CommandPtr ConeMovement();
+  frc2::CommandPtr CubeMovement();
 
   units::angle::radian_t RotationsToRadians(double rotations);
+
+  void WristCommandStart(double WristPos);
+  void WristCommandExecute();
+  bool WristCommandIsFinished(bool IsWait, double Threshold);
+
+  void ElbowCommandStart(double ElbowPos);
+  void ElbowCommandExecute();
+  bool ElbowCommandIsFinished(bool IsWait, double Threshold);
+
+  void ShoulderCommandStart(double ShoulderPos);
+  void ShoulderCommandExecute();
+  bool ShoulderCommandIsFinished(bool IsWait);
 
   void SetElbowPIDByDirection(double desiredElbowPos);
   void SetShoulderPIDByDirection(double desiredShoulderPos);
@@ -160,7 +188,9 @@ private:
   frc::DutyCycleEncoder m_ElbowAbsEncoder;
   frc::DutyCycleEncoder m_WristAbsEncoder;
 
-
+  frc::Timer m_WristTimer{};
+  frc::Timer m_ElbowTimer{};
+  frc::Timer m_ShoulderTimer{};
 
   frc::ArmFeedforward m_ElbowFeedforward;
   units::volt_t ElbowFF;

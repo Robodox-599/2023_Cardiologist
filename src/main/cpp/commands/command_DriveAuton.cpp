@@ -55,7 +55,7 @@ void command_DriveAuton::Execute() {
   // if(m_DriveTrain->HasAcceptableTargets()){
   //   m_DriveTrain->ImplementVisionPose(m_DriveTrain->getEstimatedGlobalPose());    
   // }
-  m_DriveTrain->ImplementVisionPose(m_PoseTracker->GetEstimatedGlobalPose());
+  // m_DriveTrain->ImplementVisionPose(m_PoseTracker->GetEstimatedGlobalPose());
 
   pathplanner::PathPlannerTrajectory::PathPlannerState state = m_Trajectory.sample(m_Timer.Get()); 
   auto chassisSpeeds = m_DriveController.Calculate(m_DriveTrain->GetPose(), 

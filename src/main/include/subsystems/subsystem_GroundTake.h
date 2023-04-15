@@ -8,12 +8,23 @@
 #include <frc/AnalogInput.h>
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
+#include <frc2/command/CommandPtr.h>
 
 
 
 class subsystem_GroundTake : public frc2::SubsystemBase {
  public:
   subsystem_GroundTake();
+  bool IsCubeDetected();
+  void ExtendGroundTake();
+  void RetractGroundTake();
+  frc2::CommandPtr RunIntakeToggleCommand();
+  frc2::CommandPtr RunIntakeCommand();
+  frc2::CommandPtr ExtendGroundTakeCommand();
+  frc2::CommandPtr RetractGroundTakeCommand();
+  frc2::CommandPtr StopIntakeCommand();
+  void RunIntake();
+  void StopIntake();
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -35,4 +46,6 @@ class subsystem_GroundTake : public frc2::SubsystemBase {
 
   rev::SparkMaxRelativeEncoder m_ExtenderRelEncoder;
   rev::SparkMaxRelativeEncoder m_IntakeRelEncoder;
+
+  
 };

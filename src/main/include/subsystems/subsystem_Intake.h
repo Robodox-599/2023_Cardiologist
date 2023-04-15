@@ -70,8 +70,8 @@ class subsystem_Intake : public frc2::SubsystemBase {
   rev::ColorSensorV3 m_ColorSensor;
   rev::ColorMatch m_ColorMatcher;
 
-  frc::Color m_CurrentColor = frc::Color(0.0, 0.0, 0.0);
-  frc::Color m_PreviousColor = frc::Color(0.0, 0.0, 0.0);
+  // frc::Color m_CurrentColor = frc::Color(0.0, 0.0, 0.0);
+  // frc::Color m_PreviousColor = frc::Color(0.0, 0.0, 0.0);
   int m_ColorChangeCount = 0;
   double m_CurrentProximity = 0;
 

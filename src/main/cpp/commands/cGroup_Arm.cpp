@@ -3,32 +3,38 @@
 #include <frc/smartdashboard/Smartdashboard.h>
 
 frc2::CommandPtr ArmMovements::ToHighCone(subsystem_Arm *Arm) {
-  return frc2::cmd::Sequence(
-                             command_MoveElbow(Arm, [=]{return ArmConstants::HighConeElbow;}, [=]{return true;}, [=]{return ArmConstants::HighConeElbow * 0.80 ;}).ToPtr(),
-                             command_MoveShoulder(Arm, [=]{return ArmConstants::HighConeShoulder;}, [=]{return false;}).ToPtr(),
-                             command_MoveWrist(Arm, [=]{return ArmConstants::HighConeTilt;}, [=]{return false;}, [=]{return ArmConstants::HighConeTilt;}).ToPtr());
+  return frc2::cmd::Sequence( 
+                            // command_MoveElbow(Arm, [=]{return 26;}, [=]{return true;}, [=]{return 26;}).ToPtr(),
+                            command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+                             command_MoveElbow(Arm, [=]{return ArmConstants::HighConeElbow;}, [=]{return true;}, [=]{return ArmConstants::HighConeElbow * 0.80;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return ArmConstants::HighConeTilt;}, [=]{return false;}, [=]{return ArmConstants::HighConeTilt;}).ToPtr(),
+                             command_MoveShoulder(Arm, [=]{return ArmConstants::HighConeShoulder;}, [=]{return false;}).ToPtr());
 }
 
 frc2::CommandPtr ArmMovements::ToMidCone(subsystem_Arm *Arm){
-  return frc2::cmd::Sequence(
-                             command_MoveElbow(Arm, [=]{return ArmConstants::MidConeElbow * 0.25;}, [=]{return true;}, [=]{return ArmConstants::MidConeElbow * 0.25;}).ToPtr(),
-                             command_MoveWrist(Arm, [=]{return ArmConstants::MidConeTilt;}, [=]{return true;}, [=]{return ArmConstants::MidConeTilt;}).ToPtr(),
-                             command_MoveElbow(Arm, [=]{return ArmConstants::MidConeElbow;}, [=]{return true;}, [=]{return ArmConstants::MidConeElbow * 0.80;}).ToPtr(),
+  return frc2::cmd::Sequence( 
+    command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+                              command_MoveElbow(Arm, [=]{return ArmConstants::MidConeElbow;}, [=]{return true;}, [=]{return ArmConstants::MidConeElbow  * 0.50;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return ArmConstants::MidConeTilt;}, [=]{return false;}, [=]{return ArmConstants::MidConeTilt;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::MidConeShoulder;}, [=]{return false;}).ToPtr());
+
 }
+
 frc2::CommandPtr ArmMovements::ToHighCube(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(
+                             command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::HighCubeElbow;}, [=]{return true;}, [=]{return ArmConstants::HighCubeElbow * 0.80;}).ToPtr(),
-                             command_MoveWrist(Arm, [=]{return ArmConstants::HighCubeTilt;}, [=]{return false;}, [=]{return ArmConstants::HighCubeTilt * 0.50;}).ToPtr(),
-                             command_MoveShoulder(Arm, [=]{return ArmConstants::HighCubeShoulder;}, [=]{return false;}).ToPtr());
+                             command_MoveShoulder(Arm, [=]{return ArmConstants::HighCubeShoulder;}, [=]{return false;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return ArmConstants::HighCubeTilt;}, [=]{return true;}, [=]{return ArmConstants::HighCubeTilt;}).ToPtr());
 
 }
 frc2::CommandPtr ArmMovements::ToMidCube(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(
-                             command_MoveElbow(Arm, [=]{return ArmConstants::MidCubeTempElbow;}, [=]{return true;}, [=]{return ArmConstants::MidCubeTempElbowThreshold;}).ToPtr(),
-                             command_MoveWrist(Arm, [=]{return ArmConstants::MidCubeTilt;}, [=]{return true;}, [=]{return ArmConstants::MidCubeTiltThreshold;}).ToPtr(),
-                             command_MoveElbow(Arm, [=]{return ArmConstants::MidCubeElbow;}, [=]{return false;}, [=]{return ArmConstants::MidCubeElbow;}).ToPtr(),
-                             command_MoveShoulder(Arm, [=]{return ArmConstants::MidCubeShoulder;}, [=]{return true;}).ToPtr());
+                             command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+                             command_MoveElbow(Arm, [=]{return ArmConstants::MidCubeElbow;}, [=]{return true;}, [=]{return ArmConstants::MidCubeElbow * 0.60;}).ToPtr(),
+                             command_MoveShoulder(Arm, [=]{return ArmConstants::MidCubeShoulder;}, [=]{return false;}).ToPtr(),
+                            command_MoveWrist(Arm, [=]{return ArmConstants::MidCubeTilt;}, [=]{return true;}, [=]{return ArmConstants::MidCubeTilt * 0.50;}).ToPtr()
+);
 }
 
 frc2::CommandPtr ArmMovements::ToSubstation(subsystem_Arm *Arm){
@@ -83,7 +89,7 @@ frc2::CommandPtr ArmMovements::ScoreConeAndStow(subsystem_Arm *Arm, subsystem_In
                               command_MoveWrist(Arm, [=]{return ArmConstants::ScoreTilt;}, [=]{return true;}, [=]{return ArmConstants::ScoreTilt;}).ToPtr(),
                               command_TimeOut([=]{return ArmConstants::ScoreTimeout;}).ToPtr(),
                               Intake->UnclampCommand(),
-                              ArmMovements::ToStow(Arm, Intake));
+                              ArmMovements::ToPortal(Arm));
 }
 
 frc2::CommandPtr ArmMovements::StowFromMidCube(subsystem_Arm *Arm, subsystem_Intake *Intake){
@@ -111,7 +117,7 @@ frc2::CommandPtr ArmMovements::StowFromHighCube(subsystem_Arm *Arm, subsystem_In
 frc2::CommandPtr ArmMovements::HighConeScoreAndStow(subsystem_Arm *Arm, subsystem_Intake *Intake){
 
     return frc2::cmd::Sequence( ArmMovements::ToHighCone(Arm), 
-                                command_TimeOut([=]{return ArmConstants::ScoreTimeout;}).ToPtr(),
+                                command_TimeOut([=]{return 1.0;}).ToPtr(),
                                 ArmMovements::ScoreConeAndStow(Arm, Intake) );
 }
 
@@ -143,9 +149,20 @@ frc2::CommandPtr ArmMovements::HybridScoreAndStow(subsystem_Arm *Arm, subsystem_
 
 frc2::CommandPtr ArmMovements::TiltedStow(subsystem_Arm* Arm){
   return frc2::cmd::Sequence(
+                              command_MoveWrist(Arm, [=]{return 14.0;}, [=]{return false;}, [=]{return 14.0 * 0.25;}),
+                              command_MoveShoulder(Arm, [=]{return ArmConstants::TiltedStowShoulder;}, [=]{return true;}).ToPtr(),
                               command_MoveElbow(Arm, [=]{return ArmConstants::TiltedStowElbow;}, [=]{return false;}, [=]{return ArmConstants::TiltedStowElbow;}).ToPtr(),
-                              command_MoveWrist(Arm, [=]{return ArmConstants::TiltedStowTilt;}, [=]{return false;}, [=]{return ArmConstants::TiltedStowTilt;}).ToPtr(),
-                              command_MoveShoulder(Arm, [=]{return ArmConstants::TiltedStowShoulder;}, [=]{return true;}).ToPtr());
+                              command_MoveWrist(Arm, [=]{return ArmConstants::ScoreTilt;}, [=]{return false;}, [=]{return ArmConstants::TiltedStowTilt;}).ToPtr());
+}
+
+frc2::CommandPtr ArmMovements::ToHandOff(subsystem_Arm* Arm, subsystem_Intake* Intake){
+  return frc2::cmd::Sequence(
+    command_MoveElbow(Arm, [=]{return 9.2;}, [=]{return true;}, [=]{return 9.2;}).ToPtr(),
+    command_MoveWrist(Arm, [=]{return -20.9;}, [=]{return true;}, [=]{return -20.9;}).ToPtr(),
+    Intake->UnclampCommand(),
+    command_MoveShoulder(Arm, [=]{return 9.0;}, [=]{return true;}).ToPtr(),
+    command_MoveElbow(Arm, [=]{return -0.11;}, [=]{return true;}, [=]{return -0.11;}).ToPtr()
+  );
 }
 
 // frc2::CommandPtr ArmMovements::ConeScore(subsystem_Arm* Arm, subsystem_Intake* Intake, std::function<int()> NODE_LEVEL){

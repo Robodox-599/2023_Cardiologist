@@ -108,15 +108,76 @@ subsystem_Arm::subsystem_Arm() : m_ShoulderMotor{ArmConstants::ShoulderMotorID, 
     m_FrontLimit.EnableLimitSwitch(true);
     m_BackLimit.EnableLimitSwitch(true);
 
-    
+    m_WristTimer.Start();
+    m_ElbowTimer.Start();
+    m_ShoulderTimer.Start(); 
 }
 
-void subsystem_Arm::ChangeGamePieceMode(){
-    m_IsCubeMode = !m_IsCubeMode;
+frc2::CommandPtr subsystem_Arm::MoveShoulderCommand(double EncPosition){
+    return RunOnce([this, EncPosition]{return SetShoulderByPosition(EncPosition);});
+}
+frc2::CommandPtr subsystem_Arm::MoveElbowCommand(double EncPosition){
+    return RunOnce([this, EncPosition]{return SetElbowByPosition(EncPosition);});
+
+}
+frc2::CommandPtr subsystem_Arm::MoveWristCommand(double EncPosition){
+    return RunOnce([this, EncPosition]{return SetWristByPosition(EncPosition);});
 }
 
-bool subsystem_Arm::IsCubeMode(){
-    return m_IsCubeMode;
+frc2::CommandPtr subsystem_Arm::ToHighCone(){
+    return frc2::cmd::Sequence(
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(15 * 0.80);}).ToPtr(),
+                    MoveWristCommand(15)), 
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return ElbowThreshold(ArmConstants::HighConeElbow * 0.80);}).ToPtr(),
+                    MoveElbowCommand(ArmConstants::HighConeElbow)),  
+    MoveWristCommand(ArmConstants::HighConeTilt),
+    MoveShoulderCommand(ArmConstants::HighConeShoulder)           
+    );
+}
+
+frc2::CommandPtr subsystem_Arm::ToMidCone(){
+    return frc2::cmd::Sequence(
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(15 * 0.80);}).ToPtr(),
+                    MoveWristCommand(15)), 
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return ElbowThreshold(ArmConstants::MidConeElbow * 0.50);}).ToPtr(),
+                    MoveElbowCommand(ArmConstants::MidConeElbow)),  
+    MoveWristCommand(ArmConstants::MidConeTilt),
+    MoveShoulderCommand(ArmConstants::MidConeShoulder)           
+    );
+}
+
+
+frc2::CommandPtr subsystem_Arm::ToHighCube(){
+    return frc2::cmd::Sequence(
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(15 * 0.80);}).ToPtr(),
+                    MoveWristCommand(15)), 
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return ElbowThreshold(ArmConstants::HighCubeElbow * 0.80);}).ToPtr(),
+                    MoveElbowCommand(ArmConstants::HighCubeElbow)),  
+    MoveShoulderCommand(ArmConstants::HighConeShoulder),
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(ArmConstants::HighCubeTilt);}).ToPtr(),
+                    MoveWristCommand(ArmConstants::HighCubeTilt))
+    );
+}
+
+frc2::CommandPtr subsystem_Arm::ToMidCube(){
+    return frc2::cmd::Sequence(
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(15 * 0.80);}).ToPtr(),
+                    MoveWristCommand(15)), 
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return ElbowThreshold(ArmConstants::MidCubeElbow * 0.60);}).ToPtr(),
+                    MoveElbowCommand(ArmConstants::MidCubeElbow)),  
+    MoveShoulderCommand(ArmConstants::MidCubeShoulder),
+    frc2::cmd::Deadline(frc2::WaitUntilCommand([this]{return WristThreshold(ArmConstants::MidCubeTilt * 0.50);}).ToPtr(),
+                    MoveWristCommand(ArmConstants::MidCubeTilt))
+    );   
+}
+
+frc2::CommandPtr subsystem_Arm::ToTiltedStow(){
+    return frc2::cmd::Sequence(
+    MoveWristCommand(14), 
+    MoveShoulderCommand(ArmConstants::TiltedStowShoulder),
+    MoveElbowCommand(ArmConstants::TiltedStowElbow),
+    MoveWristCommand(ArmConstants::ScoreTilt)
+    );  
 }
 
 void subsystem_Arm::PollArmPosition(int POV){
@@ -136,10 +197,43 @@ void subsystem_Arm::PollArmPosition(int POV){
     }
 }
 
+frc2::CommandPtr subsystem_Arm::ConeMovement(){
+    switch(m_ArmPoll){
+        case DPAD::NODE_LEVEL::HIGH:
+            return ToHighCone();
+            break;
+        case DPAD::NODE_LEVEL::MID:
+            return ToMidCone();
+            break;
+        case DPAD::NODE_LEVEL::LOW:
+            return ToTiltedStow();
+            break;
+        default:
+            return RunOnce([this]{frc2::WaitCommand(0.0_s);});
+            break;
+    }
+}
+
+frc2::CommandPtr subsystem_Arm::CubeMovement(){
+    switch(m_ArmPoll){
+        case DPAD::NODE_LEVEL::HIGH:
+            return ToHighCube();
+            break;
+        case DPAD::NODE_LEVEL::MID:
+            return ToMidCube();
+            break;
+        case DPAD::NODE_LEVEL::LOW:
+            return ToTiltedStow();
+            break;
+        default:
+            return RunOnce([this]{frc2::WaitCommand(0.0_s);});
+            break;
+    }
+}
+
 DPAD::NODE_LEVEL subsystem_Arm::GetArmPoll(){
     return m_ArmPoll;
 }
-
 
 double subsystem_Arm::CalculateShoulderAngle(double x, double y)
 {
@@ -310,11 +404,6 @@ bool subsystem_Arm::IsWristAtDesiredPosition(){
     return false;
 }
 
-double subsystem_Arm::EncoderToDegrees(double ticks)
-{
-    return (ticks - ArmConstants::TicksOffset) * ArmConstants::TicksToDegrees;
-}
-
 double subsystem_Arm::GetShoulderIncrement(){
 
     double Difference = (DesiredShoulderPosition - ShoulderPosition);
@@ -445,21 +534,26 @@ void subsystem_Arm::Periodic()
     ShoulderPosition = GetShoulderIncrement();
     WristPosition = GetWristIncrement();
 // :)
-    frc::SmartDashboard::PutNumber("ElbowAbsPosition", (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio );
-    frc::SmartDashboard::PutNumber("AbsPos with offset", m_ElbowAbsEncoder.GetAbsolutePosition() -0.77);
-    frc::SmartDashboard::PutNumber("ABsPos without Offset", m_ElbowAbsEncoder.GetAbsolutePosition());
+    // frc::SmartDashboard::PutNumber("ElbowAbsPosition", (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio );
+    // frc::SmartDashboard::PutNumber("AbsPos with offset", m_ElbowAbsEncoder.GetAbsolutePosition() -0.77);
+    // frc::SmartDashboard::PutNumber("ABsPos without Offset", m_ElbowAbsEncoder.GetAbsolutePosition());
+    // frc::SmartDashboard::PutNumber("Elbow Abs Angle",(( (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio)/ (ArmConstants::kElbowGearRatio / 360.0) - 49));
 
+    frc::SmartDashboard::PutNumber("Shoulder Ang w offset", 1.88 -( (2 * 3.14)/ (ArmConstants::kElbowGearRatio) * m_ShoulderRelEncoder.GetPosition() ));
+    frc::SmartDashboard::PutNumber(" Shoulder Ang W/o offset", m_ShoulderRelEncoder.GetPosition() / (ArmConstants::kElbowGearRatio / 6.28) );
 
     DesiredElbowRadians = RotationsToRadians(DesiredElbowPosition);
-    DesiredShoulderRadians = RotationsToRadians(DesiredShoulderPosition);
+    DesiredShoulderRadians = units::radian_t{ 1.88-( (2 * 3.14)/ (ArmConstants::kElbowGearRatio) * DesiredShoulderPosition )};
     DesiredWristRadians = units::angle::radian_t{DesiredWristPostion * 0.07197237113};
 
-    frc::SmartDashboard::PutNumber("ShoulderRadians", DesiredShoulderRadians.value());
-    if(DesiredElbowPosition >= ElbowEnc){
-        ElbowFF = m_ElbowFeedforward.Calculate((DesiredElbowRadians - units::radian_t{0.45378}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{2.5});
-    } else if (DesiredElbowPosition < ElbowEnc){
-        ElbowFF = m_ElbowFeedforward.Calculate((DesiredElbowRadians - units::radian_t{0.45378}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{5.0});
-    }
+    frc::SmartDashboard::PutNumber("ShoulderRadians", RotationsToRadians(m_ShoulderRelEncoder.GetPosition()).value());
+    // if(DesiredElbowPosition >= ElbowEnc){
+    //     ElbowFF = m_ElbowFeedforward.Calculate((DesiredElbowRadians - units::radian_t{0.45378}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{2.5});
+    // } else if (DesiredElbowPosition < ElbowEnc){
+    //     ElbowFF = m_ElbowFeedforward.Calculate((DesiredElbowRadians - units::radian_t{0.45378}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{5.0});
+    // }
+    ElbowFF = m_ElbowFeedforward.Calculate((DesiredElbowRadians - units::radian_t{0.45378}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{1});
+
     ShoulderFF = m_ShoulderFeedforward.Calculate((DesiredShoulderRadians + units::radian_t{1.24965}), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{2.5});
     // WristFF = m_WristFeedforward.Calculate((DesiredShoulderRadians), ArmConstants::kEndVel, units::angular_acceleration::degrees_per_second_squared_t{6.0});
     m_ElbowPID.SetFF(ElbowFF.value(), m_ElbowSlot);
@@ -470,23 +564,24 @@ void subsystem_Arm::Periodic()
     m_ShoulderPID.SetReference(DesiredShoulderPosition, rev::CANSparkMax::ControlType::kPosition, m_ShoulderSlot);
     m_WristPID.SetReference(WristPosition, rev::CANSparkMaxLowLevel::ControlType::kPosition, 0);
 
-    frc::SmartDashboard::PutNumber("DesiredShoulderPos", DesiredShoulderPosition);
+    // frc::SmartDashboard::PutNumber("DesiredShoulderPos", DesiredShoulderPosition);
     // m_ElbowPID.SetReference(ElbowPosition, rev::CANSparkMaxLowLevel::ControlType::kPosition, m_ElbowSlot, Power4Elbow, rev::SparkMaxPIDController::ArbFFUnits::kPercentOut);
     // m_ShoulderPID.SetReference(DesiredShoulderPosition, rev::CANSparkMaxLowLevel::ControlType::kPosition, m_ShoulderSlot, Power4Shoulder, rev::SparkMaxPIDController::ArbFFUnits::kPercentOut);
 
     // m_ElbowMotor.Set(Power4Elbow);
     // m_ShoulderMotor.Set(Power4Shoulder);
 
-    frc::SmartDashboard::PutBoolean("IsElbowDesired", IsElbowAtDesiredPosition());
-    frc::SmartDashboard::PutBoolean("IsShoulderDesired", IsShoulderAtDesiredPosition());
+    // frc::SmartDashboard::PutBoolean("IsElbowDesired", IsElbowAtDesiredPosition());
+    // frc::SmartDashboard::PutBoolean("IsShoulderDesired", IsShoulderAtDesiredPosition());
     frc::SmartDashboard::PutNumber("Shoulder Arm Pos", m_ShoulderRelEncoder.GetPosition());
     frc::SmartDashboard::PutNumber("Elbow Arm Pos", m_ElbowRelEncoder.GetPosition());
     frc::SmartDashboard::PutNumber("Intake Tilt Pos", m_WristEncoder.GetPosition());
 
-    // frc::SmartDashboard::PutNumber("ElbowAbsPosition", (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio );
-    // frc::SmartDashboard::PutNumber("AbsPos with offset", m_ElbowAbsEncoder.GetAbsolutePosition() -0.77);
-    frc::SmartDashboard::PutNumber("Tilt AbsPos", -1 *(m_WristAbsEncoder.GetAbsolutePosition() - 0.2927) * 83.7);
-    frc::SmartDashboard::PutNumber("Wrist enc", m_WristAbsEncoder.GetAbsolutePosition());
+    // // frc::SmartDashboard::PutNumber("ElbowAbsPosition", (m_ElbowAbsEncoder.GetAbsolutePosition() - 0.77) * ArmConstants::kElbowGearRatio );
+    // // frc::SmartDashboard::PutNumber("AbsPos with offset", m_ElbowAbsEncoder.GetAbsolutePosition() -0.77);
+    // frc::SmartDashboard::PutNumber("Tilt AbsPos", -1 *(m_WristAbsEncoder.GetAbsolutePosition() - 0.2927) * 83.7);
+    // frc::SmartDashboard::PutNumber("Tilt Abs Angle", (-1 *(m_WristAbsEncoder.GetAbsolutePosition() - 0.2927) * 83.7 )/ 0.2325);
+    // frc::SmartDashboard::PutNumber("Wrist enc", m_WristAbsEncoder.GetAbsolutePosition());
     
 }
 

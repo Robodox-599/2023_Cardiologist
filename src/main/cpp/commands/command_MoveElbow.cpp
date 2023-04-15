@@ -35,9 +35,6 @@ void command_MoveElbow::Execute() {
 
 // Called once the command ends or is interrupted.
 void command_MoveElbow::End(bool interrupted) {
-  // if(m_arm->IsAtDesiredPosition()){
-  //   m_arm->LockArm();
-  // }
 }
 
 // Returns true when the command should end.

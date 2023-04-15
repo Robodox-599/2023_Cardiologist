@@ -11,7 +11,10 @@ command_AutoClamp::command_AutoClamp(subsystem_Intake* intake) : m_Intake{intake
 
 // Called when the command is initially scheduled.
 void command_AutoClamp::Initialize() {
-  m_Intake->IntakeOpen();
+
+  if(m_Intake ->GetCurrentProximity() >= 80.0){
+    m_Intake->IntakeOpen();
+  }
   m_Timer.Reset();
   m_Timer.Start();
   // if(m_Intake->GetCurrentState() == IntakeConstants::State::Purple){
@@ -36,5 +39,5 @@ void command_AutoClamp::End(bool interrupted) {
 // Returns true when the command should end.
 bool command_AutoClamp::IsFinished() {
   // return (m_Intake->GetCurrentState() != IntakeConstants::State::Empty);
-  return m_Timer.Get() > IntakeConstants::TimerConstant;
+  return m_Timer.Get() > 0.05_s;
 }

@@ -25,7 +25,7 @@ void command_AlignToDesired::Initialize() {}
 void command_AlignToDesired::Execute() {
 
   // m_DriveTrain->ImplementVisionPose(m_DriveTrain->getEstimatedGlobalPose());
-  m_DriveTrain->ImplementVisionPose(m_PoseTracker->GetEstimatedGlobalPose());
+  // m_DriveTrain->ImplementVisionPose(m_PoseTracker->GetEstimatedGlobalPose());
 
   units::meters_per_second_t SupplementX { m_XProfiledPID.Calculate(m_DriveTrain->GetPose().X()) }; 
   units::meters_per_second_t SupplementY { m_YProfiledPID.Calculate(m_DriveTrain->GetPose().Y()) };

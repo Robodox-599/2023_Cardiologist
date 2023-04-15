@@ -31,7 +31,7 @@ void command_DriveTeleop::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void command_DriveTeleop::Execute() {
 
-    m_DriveTrain->ImplementVisionPose(m_PoseTracker->GetEstimatedGlobalPose());
+    // m_DriveTrain->ImplementVisionPose(m_PoseTracker->GetEstimatedGlobalPose());
 
     // std::pair<frc::Pose2d, units::second_t> Pose = m_PoseTracker->GetEstimatedGlobalPose().;
     // frc::SmartDashboard::PutNumber("VisionX")

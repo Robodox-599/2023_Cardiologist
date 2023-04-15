@@ -8,9 +8,9 @@ subsystem_Intake::subsystem_Intake() : /*m_IntakeMotor{IntakeConstants::IntakeMo
                                        m_IntakeMotorPID{m_IntakeMotor.GetPIDController()},
                                        m_IntakeEncoder{m_IntakeMotor.GetEncoder()},*/
                                        m_Solenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonA, IntakeConstants::IntakePistonB},
-                                       m_ColorSensor{frc::I2C::Port::kOnboard},
-                                       m_ColorMatcher{},
-                                       m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD}
+                                        m_ColorSensor{frc::I2C::Port::kOnboard},
+                                        m_ColorMatcher{},
+                                        m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD}
 {
     // m_IntakeMotor.SetSmartCurrentLimit(25);
     // // m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
@@ -18,9 +18,9 @@ subsystem_Intake::subsystem_Intake() : /*m_IntakeMotor{IntakeConstants::IntakeMo
     // m_IntakeMotorPID.SetP(0.01);
     // m_IntakeMotorPID.SetI(0.0);
     // m_IntakeMotorPID.SetD(0.0);
-    m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
-    m_ColorMatcher.AddColorMatch(ColorConstants::YellowTarget);
-    m_ProximityPID.SetSetpoint(ColorConstants::TargetProximity);
+    // m_ColorMatcher.AddColorMatch(ColorConstants::PurpleTarget);
+    // m_ColorMatcher.AddColorMatch(ColorConstants::YellowTarget);
+    // m_ProximityPID.SetSetpoint(ColorConstants::TargetProximity);
     m_Solenoid.Set(frc::DoubleSolenoid::kForward);
     
 }
@@ -126,9 +126,9 @@ frc2::CommandPtr subsystem_Intake::ToggleCommand(){
 //     // }
 // }
 
-frc::Color subsystem_Intake::GetColor(){
-    return m_CurrentColor;
-}
+// frc::Color subsystem_Intake::GetColor(){
+//     return m_CurrentColor;
+// }
 
 
 
@@ -151,44 +151,44 @@ void subsystem_Intake::Periodic()
     frc::SmartDashboard::PutNumber("Prox", m_CurrentProximity);
 
     // Current Color (changes member variable curr color)
-    m_CurrentColor = m_ColorSensor.GetColor();
+    // m_CurrentColor = m_ColorSensor.GetColor();
 
     // MatchedColor (gives you the detected color)
-    double Confidence = 0.95;
-    frc::Color MatchedColor = m_ColorMatcher.MatchClosestColor(m_CurrentColor, Confidence);
+    // double Confidence = 0.95;
+    // frc::Color MatchedColor = m_ColorMatcher.MatchClosestColor(m_CurrentColor, Confidence);
 
     // Checking Instantaneous State (sets instant state to whatever it detects at the moment)
-    IntakeConstants::State InstStateStr = IntakeConstants::State::Empty;
+    // IntakeConstants::State InstStateStr = IntakeConstants::State::Empty;
 
-    if (m_CurrentProximity <= ColorConstants::RecognitionProximity)
-    {
-        if (MatchedColor == ColorConstants::PurpleTarget)
-        {
-            InstStateStr = IntakeConstants::State::Purple;
-        }
-        else if (MatchedColor == ColorConstants::YellowTarget)
-        {
-            InstStateStr = IntakeConstants::State::Yellow;
-        }
-    }
-    else
-    {
-        InstStateStr = IntakeConstants::State::Empty;
-    }
+    // if (m_CurrentProximity <= ColorConstants::RecognitionProximity)
+    // {
+    //     if (MatchedColor == ColorConstants::PurpleTarget)
+    //     {
+    //         InstStateStr = IntakeConstants::State::Purple;
+    //     }
+    //     else if (MatchedColor == ColorConstants::YellowTarget)
+    //     {
+    //         InstStateStr = IntakeConstants::State::Yellow;
+    //     }
+    // }
+    // else
+    // {
+    //     InstStateStr = IntakeConstants::State::Empty;
+    // }
 
-    // Enum stuff
-    if (m_PreviousColor != m_CurrentColor)
-    {
-        m_ColorChangeCount = 0;
-    }
+    // // Enum stuff
+    // if (m_PreviousColor != m_CurrentColor)
+    // {
+    //     m_ColorChangeCount = 0;
+    // }
 
-    if (m_ColorChangeCount >= 4)
-    {
-        m_CurrentState = InstStateStr;
-    }
+    // if (m_ColorChangeCount >= 4)
+    // {
+    //     m_CurrentState = InstStateStr;
+    // }
 
-    m_PreviousColor = m_CurrentColor;
-    m_ColorChangeCount++;
+    // m_PreviousColor = m_CurrentColor;
+    // m_ColorChangeCount++;
 
     // frc::SmartDashboard::PutNumber("Intake P", 0);
     // frc::SmartDashboard::PutNumber("Intake I", 0);
