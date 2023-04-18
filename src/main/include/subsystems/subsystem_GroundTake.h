@@ -9,6 +9,7 @@
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
 #include <frc2/command/CommandPtr.h>
+#include <frc2/command/WaitUntilCommand.h>
 
 
 
@@ -18,11 +19,23 @@ class subsystem_GroundTake : public frc2::SubsystemBase {
   bool IsCubeDetected();
   void ExtendGroundTake();
   void RetractGroundTake();
-  frc2::CommandPtr RunIntakeCommand();
+  double GetExtenderPosition();
+  frc2::CommandPtr RunIntakeToggleCommand();
+  frc2::CommandPtr RunPassThroughIntakeCommand();
+  frc2::CommandPtr RunHybridIntakeCommand();
   frc2::CommandPtr ExtendGroundTakeCommand();
   frc2::CommandPtr RetractGroundTakeCommand();
-  void RunIntake();
+  frc2::CommandPtr WaitUntilRetractedCommand();
+  frc2::CommandPtr WaitUntilEmptyCommand();
+  frc2::CommandPtr StopIntakeCommand();
+  frc2::CommandPtr StowCompleteleyCommand();
+  void StopAndRetract();
+  void RunPassThroughIntake();
+  void RunHybridIntake();
+  void PassiveTransitionIntake();
   void StopIntake();
+  
+  void MaintainIntakeMode();
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -44,6 +57,7 @@ class subsystem_GroundTake : public frc2::SubsystemBase {
 
   rev::SparkMaxRelativeEncoder m_ExtenderRelEncoder;
   rev::SparkMaxRelativeEncoder m_IntakeRelEncoder;
+  GroundTakeConstants::Power m_IntakePower = GroundTakeConstants::Power::Transition;
 
   
 };

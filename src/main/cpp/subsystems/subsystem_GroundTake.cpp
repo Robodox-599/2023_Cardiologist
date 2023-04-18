@@ -17,16 +17,16 @@ subsystem_GroundTake::subsystem_GroundTake():
                                               m_IntakeRelEncoder{m_IntakeMotor.GetEncoder()} {
     m_IntakeMotor.SetInverted(false);
     m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    m_IntakeMotor.SetSmartCurrentLimit(21);
+    m_IntakeMotor.SetSmartCurrentLimit(25);
+    frc::SmartDashboard::PutNumber("InnerVel", 0.0);
+    frc::SmartDashboard::PutNumber("OutterVel", 0.0);
+    frc::SmartDashboard::PutNumber("Intake", 0.0);
+    frc::SmartDashboard::GetNumber("InnerVel", 0.0);
+    frc::SmartDashboard::GetNumber("OutterVel", 0.0);
+    frc::SmartDashboard::GetNumber("Intake", 0.0);
 
-    // frc::SmartDashboard::PutNumber("kP", 0.0);
-    // frc::SmartDashboard::PutNumber("kI", 0.0);
-    // frc::SmartDashboard::PutNumber("kD", 0.0);
-    // frc::SmartDashboard::PutNumber("kFF", 0.0);
-    // frc::SmartDashboard::PutNumber("Vel", 0.0);
-    // frc::SmartDashboard::PutNumber("Accel", 0.0);
     m_ExtenderMotor.SetInverted(false);
-    m_ExtenderMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_ExtenderMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     m_ExtenderMotor.SetSmartCurrentLimit(25);
     m_ExtenderPID.SetP(GroundTakeConstants::kP);
     m_ExtenderPID.SetI(0.0);
@@ -36,6 +36,12 @@ subsystem_GroundTake::subsystem_GroundTake():
     m_ExtenderMotor.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, true);
     m_ExtenderPID.SetSmartMotionMaxVelocity(GroundTakeConstants::maxVel);
     m_ExtenderPID.SetSmartMotionMaxAccel(GroundTakeConstants::maxAccel);
+
+
+    m_IntakePID.SetP(0.00001);
+    m_IntakePID.SetI(0.0);
+    m_IntakePID.SetD(0.0);
+    m_IntakePID.SetFF(0.0002);
 
     m_ExtenderRelEncoder.SetPosition(0.0);
 
@@ -63,16 +69,74 @@ void subsystem_GroundTake::RetractGroundTake(){
     m_ExtenderPID.SetReference(GroundTakeConstants::RetractedPosition, rev::CANSparkMax::ControlType::kSmartMotion);
 }
 
-void subsystem_GroundTake::RunIntake(){
-    m_IntakeMotor.Set(0.4);
+double subsystem_GroundTake::GetExtenderPosition(){
+    return m_ExtenderRelEncoder.GetPosition();
+}
+
+void subsystem_GroundTake::RunPassThroughIntake(){
+    m_IntakePower = GroundTakeConstants::Power::PassThroughIntake;
+}
+
+void subsystem_GroundTake::RunHybridIntake(){
+    m_IntakePower = GroundTakeConstants::Power::HybridIntake;
 }
 
 void subsystem_GroundTake::StopIntake(){
-    m_IntakeMotor.Set(0.0);
+    m_IntakePower = GroundTakeConstants::Power::Stopped;
 }
 
-frc2::CommandPtr subsystem_GroundTake::RunIntakeCommand(){
-    return RunEnd([this]{return RunIntake();}, [this]{return StopIntake();});
+void subsystem_GroundTake::StopAndRetract(){
+    StopIntake();
+    RetractGroundTake();
+}
+
+void subsystem_GroundTake::PassiveTransitionIntake(){
+    m_IntakePower = GroundTakeConstants::Power::Transition;
+}
+
+void subsystem_GroundTake::MaintainIntakeMode(){
+    //  frc::SmartDashboard::GetNumber("InnerVel", 0.0);
+    //frc::SmartDashboard::GetNumber("OutterVel", 0.0);
+    //frc::SmartDashboard::GetNumber("Intake", 0.0);
+    switch(m_IntakePower){
+        case(GroundTakeConstants::Power::PassThroughIntake):
+            // m_IntakeMotor.Set(0.4);
+            m_IntakePID.SetReference(1600, rev::CANSparkMax::ControlType::kVelocity);
+            break;
+        case(GroundTakeConstants::Power::HybridIntake):
+            m_IntakePID.SetReference(1200, rev::CANSparkMax::ControlType::kVelocity);
+            break;
+        case(GroundTakeConstants::Power::Transition):
+            if(GetExtenderPosition() < GroundTakeConstants::ExtendedPosition * 0.50){
+                // m_IntakeMotor.Set(-0.05);
+                m_IntakePID.SetReference(-400, rev::CANSparkMax::ControlType::kVelocity);
+            }else{
+                // m_IntakeMotor.Set(0.015);
+                m_IntakePID.SetReference(400, rev::CANSparkMax::ControlType::kVelocity);
+
+            }
+            break;
+        case(GroundTakeConstants::Power::Stopped):
+            m_IntakeMotor.Set(0.0);
+            break;
+    };
+}
+
+frc2::CommandPtr subsystem_GroundTake::StowCompleteleyCommand(){
+    return RunOnce([this]{return StopAndRetract();});
+}
+
+frc2::CommandPtr subsystem_GroundTake::RunIntakeToggleCommand(){
+    return RunEnd([this]{return RunHybridIntake();}, [this]{return StopAndRetract();});
+}
+
+frc2::CommandPtr subsystem_GroundTake::RunPassThroughIntakeCommand(){
+    return RunOnce([this]{return RunPassThroughIntake();});
+}
+
+frc2::CommandPtr subsystem_GroundTake::RunHybridIntakeCommand(){
+    return RunOnce([this]{return RunHybridIntake();});
+
 }
 
 frc2::CommandPtr subsystem_GroundTake::ExtendGroundTakeCommand(){
@@ -81,6 +145,19 @@ frc2::CommandPtr subsystem_GroundTake::ExtendGroundTakeCommand(){
 
 frc2::CommandPtr subsystem_GroundTake::RetractGroundTakeCommand(){
     return RunOnce([this]{return RetractGroundTake();});
+}
+// I HATE DIEGO PADILLA
+
+frc2::CommandPtr subsystem_GroundTake::WaitUntilRetractedCommand(){
+    return frc2::WaitUntilCommand([this]{return GetExtenderPosition() < GroundTakeConstants::ExtendedPosition * 0.25;}).ToPtr();
+}
+
+frc2::CommandPtr subsystem_GroundTake::WaitUntilEmptyCommand(){
+    return frc2::WaitUntilCommand([this]{return !IsCubeDetected();}).ToPtr();
+}
+
+frc2::CommandPtr subsystem_GroundTake::StopIntakeCommand(){
+    return RunOnce([this]{return StopIntake();});
 }
 
 
@@ -91,8 +168,9 @@ void subsystem_GroundTake::Periodic() {
     frc::SmartDashboard::PutNumber("LEFTBB", m_LeftBeamBreak.GetVoltage());
     frc::SmartDashboard::PutNumber("CenterBB", m_CenterBeamBreak.GetVoltage());
     frc::SmartDashboard::PutNumber("RightBB", m_RightBeamBreak.GetVoltage());
+    MaintainIntakeMode();
+
+    frc::SmartDashboard::PutNumber("IntakeRelVel", m_IntakeRelEncoder.GetVelocity());
 
 
-
-    
 }

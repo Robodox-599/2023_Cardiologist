@@ -38,7 +38,12 @@ namespace ArmMovements
   frc2::CommandPtr HybridScoreAndStow(subsystem_Arm* Arm, subsystem_Intake* Intake);
   frc2::CommandPtr StowFromMidCube(subsystem_Arm* Arm, subsystem_Intake* Intake);
   frc2::CommandPtr StowFromHighCube(subsystem_Arm* Arm, subsystem_Intake* Intake);
-  frc2::CommandPtr TiltedStow(subsystem_Arm* Arm);
+  frc2::CommandPtr TiltedStow(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake);
+
+  frc2::CommandPtr GroundTake(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake);
+  frc2::CommandPtr GroundTakeShoot(subsystem_Arm*Arm, subsystem_GroundTake* GroundTake);
+
+  frc2::CommandPtr PassThrough(subsystem_Arm*Arm, subsystem_GroundTake* GroundTake, subsystem_Intake* Intake);
 
   //POV jazz
   // frc2::CommandPtr CubeScore(subsystem_Arm* Arm, subsystem_Intake* Intake);

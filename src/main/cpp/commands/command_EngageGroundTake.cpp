@@ -14,7 +14,7 @@ void command_EngageGroundTake::Initialize() {
   m_Timer.Restart();
   if(! m_GroundTake->IsCubeDetected()){
       m_GroundTake->ExtendGroundTake();
-      m_GroundTake->RunIntake();
+      m_GroundTake->RunHybridIntake();
   }
 }
 
@@ -28,10 +28,12 @@ void command_EngageGroundTake::Execute() {
 // Called once the command ends or is interrupted.
 void command_EngageGroundTake::End(bool interrupted) {
   m_GroundTake->RetractGroundTake();
-  m_GroundTake->StopIntake();
+  m_GroundTake->PassiveTransitionIntake();
 }
 
 // Returns true when the command should end.
 bool command_EngageGroundTake::IsFinished() {
-  return m_Timer.Get() > 0.15_s;
+  // return m_Timer.Get() > 0.01_s;
+  return m_GroundTake->IsCubeDetected();
 }
+

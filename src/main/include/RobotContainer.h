@@ -61,8 +61,9 @@ class RobotContainer {
   // subsystem_EveryBotIntake m_EveryBotIntake;
 
   frc::XboxController XboxDrive{ControllerConstants::XboxDriveID};
-  frc::XboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
+  // frc::XboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
 
+  frc2::CommandXboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
   frc::SendableChooser<frc2::Command*> m_Chooser;
   frc::Timer m_Timer{};
 

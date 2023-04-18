@@ -188,9 +188,9 @@ private:
   frc::DutyCycleEncoder m_ElbowAbsEncoder;
   frc::DutyCycleEncoder m_WristAbsEncoder;
 
-  frc::Timer m_WristTimer{};
-  frc::Timer m_ElbowTimer{};
-  frc::Timer m_ShoulderTimer{};
+  // frc::Timer m_WristTimer{};
+  // frc::Timer m_ElbowTimer{};
+  // frc::Timer m_ShoulderTimer{};
 
   frc::ArmFeedforward m_ElbowFeedforward;
   units::volt_t ElbowFF;

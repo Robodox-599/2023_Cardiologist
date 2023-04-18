@@ -30,8 +30,9 @@ class command_MoveElbow
 
  private:
   subsystem_Arm *m_Arm;
-  std::function<double()> m_Threshold;
   std::function<double()> m_EncPosition;
   std::function<bool()> m_IsWait;
+    std::function<double()> m_Threshold;
+
   frc::Timer m_Timer{};
 };

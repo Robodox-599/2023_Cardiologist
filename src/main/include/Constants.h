@@ -146,7 +146,7 @@ namespace ArmConstants {
     const double IntakeJointMass = 1.814;
 
     const double bufferZone = 2; 
-    constexpr units::time::second_t ManualTimer{0.1};
+    constexpr units::time::second_t ManualTimer{0.02};
 
     constexpr double HighConeShoulder = 16.285;
     constexpr double HighConeElbow = 25.854;
@@ -533,5 +533,12 @@ namespace GroundTakeConstants{
 
     constexpr double ExtendedPosition = 6.19;
     constexpr double RetractedPosition = 0.0;
+
+    enum Power{
+        PassThroughIntake,
+        HybridIntake,
+        Transition,
+        Stopped
+    };
 
 }
