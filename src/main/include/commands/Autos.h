@@ -24,17 +24,15 @@
 
 namespace autos {
 
-    frc2::CommandPtr ThreeScoreAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake);
+    frc2::CommandPtr One_ThreeScoreAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake);
 
-    frc2::CommandPtr ThreeScoreAuto2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake);
+    frc2::CommandPtr One_TwoScoreAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake);
 
-    frc2::CommandPtr ThreeScoreAutoBalance1(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake);
+    frc2::CommandPtr One_ThreeScoreAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake);
 
-    frc2::CommandPtr ThreeScoreAutoBalance2(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake);
+    // frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker );
 
-    frc2::CommandPtr TestAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker );
-
-    frc2::CommandPtr Kasparov(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker );
+   frc2::CommandPtr Taxi(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker );
 
     // frc2::CommandPtr ScoreHighCube(subsystem_Intake* Intake, subsystem_Arm* Arm);
     // frc2::CommandPtr ScoreMidCube(subsystem_Intake* Intake, subsystem_Arm* Arm);
@@ -49,9 +47,7 @@ namespace autos {
     frc2::CommandPtr TwoTaxiAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker );
     frc2::CommandPtr Two_ScoreTaxiAndBalance(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
 
-    frc2::CommandPtr One_ScoreIntakeScore(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
 
-    frc2::CommandPtr TestPickUp(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Intake* Intake, subsystem_Arm* Arm);
 
 }
 

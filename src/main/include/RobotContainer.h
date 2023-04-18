@@ -67,7 +67,7 @@ class RobotContainer {
   frc::SendableChooser<frc2::Command*> m_Chooser;
   frc::Timer m_Timer{};
 
-  frc2::CommandPtr m_TaxiAuto = autos::Kasparov(&m_Drive, &m_PoseTracker);
+  frc2::CommandPtr m_TaxiAuto = autos::Taxi(&m_Drive, &m_PoseTracker);
   frc2::CommandPtr m_OneScoreAndTaxi = autos::OneScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
   frc2::CommandPtr m_TwoScoreAndTaxi = autos::TwoScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
   frc2::CommandPtr m_ThreeScoreAndTaxi = autos::ThreeScoreAndTaxi(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
@@ -82,11 +82,10 @@ class RobotContainer {
   frc2::CommandPtr m_ScoreConeHigh = ArmMovements::HighConeScoreAndStow(&m_Arm, &m_Intake);
   frc2::CommandPtr m_ScoreConeMid = ArmMovements::MidConeScoreAndStow(&m_Arm, &m_Intake);
 
-  frc2::CommandPtr m_ThreeScoreAuto1 = autos::ThreeScoreAuto(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake );
-  frc2::CommandPtr m_ThreeScoreAuto2 = autos::ThreeScoreAuto2(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake );
+  frc2::CommandPtr m_ThreeScoreAuto1 = autos::One_ThreeScoreAuto(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake, &m_GroundTake );
 
-  frc2::CommandPtr m_ThreeScoreAutoBalance1 = autos::ThreeScoreAutoBalance1(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake );
-  frc2::CommandPtr m_ThreeScoreAutoBalance2 = autos::ThreeScoreAutoBalance2(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake );
+  frc2::CommandPtr m_TwoScoreAndBalance = autos::One_TwoScoreAndBalance(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake, &m_GroundTake  );
+  frc2::CommandPtr m_ThreeScoreAndBalance = autos::One_ThreeScoreAndBalance(&m_Drive, &m_PoseTracker, &m_Arm, &m_Intake, &m_GroundTake  );
 
   // frc2::CommandPtr m_One_ScoreIntakeScore = autos::One_ScoreIntakeScore(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
   // frc2::CommandPtr m_TestPickUp = autos::TestPickUp(&m_Drive, &m_PoseTracker, &m_Intake, &m_Arm);
