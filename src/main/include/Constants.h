@@ -352,7 +352,7 @@ namespace SwerveConstants{
 
 namespace LEDConstants{
     enum LEDState{
-        Standby, Yellow, Purple, Intaked, Error
+        Standby, Yellow, Purple, Intaked, Error, Off
     };
     constexpr units::second_t Timeout{ 10.0 };
     

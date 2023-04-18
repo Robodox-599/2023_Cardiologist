@@ -54,7 +54,6 @@ frc2::CommandPtr ArmMovements::ToHighCone(subsystem_Arm *Arm) {
                              command_MoveShoulder(Arm, [=]{return ArmConstants::HighConeShoulder;}, [=]{return false;}).ToPtr());
 }
 
-
 frc2::CommandPtr ArmMovements::ToMidCone(subsystem_Arm *Arm){
   return frc2::cmd::Sequence( 
     command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),

@@ -146,7 +146,6 @@ frc2::CommandPtr subsystem_GroundTake::ExtendGroundTakeCommand(){
 frc2::CommandPtr subsystem_GroundTake::RetractGroundTakeCommand(){
     return RunOnce([this]{return RetractGroundTake();});
 }
-// I HATE DIEGO PADILLA
 
 frc2::CommandPtr subsystem_GroundTake::WaitUntilRetractedCommand(){
     return frc2::WaitUntilCommand([this]{return GetExtenderPosition() < GroundTakeConstants::ExtendedPosition * 0.25;}).ToPtr();

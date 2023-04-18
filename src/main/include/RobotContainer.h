@@ -27,6 +27,7 @@
 
 #include "subsystems/subsystem_LED.h"
 #include "commands/command_SetLED.h"
+#include "commands/command_Blink.h"
 
 #include "subsystems/subsystem_Intake.h"
 #include "commands/command_AutoClamp.h"
@@ -61,9 +62,8 @@ class RobotContainer {
   // subsystem_EveryBotIntake m_EveryBotIntake;
 
   frc::XboxController XboxDrive{ControllerConstants::XboxDriveID};
-  // frc::XboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
+  frc::XboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
 
-  frc2::CommandXboxController XboxYaperator{ControllerConstants::XboxYaperatorID};
   frc::SendableChooser<frc2::Command*> m_Chooser;
   frc::Timer m_Timer{};
 

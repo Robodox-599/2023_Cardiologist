@@ -21,6 +21,7 @@ class subsystem_LED : public frc2::SubsystemBase {
   void SetStandbyLED();
   void SetIntakedLED();
   void SetErrorLED();
+  void SetOffLED();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */

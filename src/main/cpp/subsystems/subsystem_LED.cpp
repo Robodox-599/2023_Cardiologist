@@ -43,6 +43,10 @@ void subsystem_LED::SetErrorLED(){
 
 }
 
+void subsystem_LED::SetOffLED(){
+    m_LEDState = LEDConstants::LEDState::Off;
+}
+
 
 // This method will be called once per scheduler run
 void subsystem_LED::Periodic() {
@@ -68,6 +72,10 @@ void subsystem_LED::Periodic() {
             break;
         case(LEDConstants::LEDState::Error):
             // m_CANdle.SetLEDs(0, 255, 0);
+            break;
+        
+        case(LEDConstants::LEDState::Off):
+            m_CANdle.SetLEDs(0, 0, 255);
             break;
     }
 }
