@@ -29,6 +29,12 @@ void command_AutoClamp::Execute() {
     m_Timer.Reset();
     m_Timer.Start();
   }
+
+
+  if(m_Intake->DetectsGamePiece()){
+    m_Timer.Reset();
+    m_Timer.Start();
+  }
 }
 
 // Called once the command ends or is interrupted.

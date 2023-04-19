@@ -10,7 +10,8 @@ subsystem_Intake::subsystem_Intake() : /*m_IntakeMotor{IntakeConstants::IntakeMo
                                        m_Solenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonA, IntakeConstants::IntakePistonB},
                                         m_ColorSensor{frc::I2C::Port::kOnboard},
                                         m_ColorMatcher{},
-                                        m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD}
+                                        m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD},
+                                        m_BeamBreaker{1}
 {
     // m_IntakeMotor.SetSmartCurrentLimit(25);
     // // m_IntakeMotorPID.SetSmartMotionMaxVelocity(IntakeConstants::MaxVelocity);
@@ -130,6 +131,10 @@ frc2::CommandPtr subsystem_Intake::ToggleCommand(){
 //     return m_CurrentColor;
 // }
 
+
+bool subsystem_Intake::DetectsGamePiece(){
+    return m_BeamBreaker.GetVoltage() < 1;
+}
 
 
 // This method will be called once per scheduler run

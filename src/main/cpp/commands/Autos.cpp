@@ -6,6 +6,17 @@
 
 #include <frc2/command/Commands.h>
 
+frc2::CommandPtr autos::One_TwoScore(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake){
+  return frc2::cmd::Sequence( ArmMovements::HighConeScoreAndStow(Arm, Intake), 
+                            frc2::cmd::Parallel(command_DriveAuton(DriveTrain, PoseTracker, "Yes^3 Third Option Pt 1", true).ToPtr(), 
+                                                frc2::cmd::Sequence(frc2::WaitCommand(1.0_s), 
+                                                                    /* Intake Cube and Stop Wheels */
+                                                                    command_EngageGroundTake(GroundTake).ToPtr())),
+                            GroundTake->RunHybridIntakeCommand() /* Outtake Cube */,
+                            frc2::WaitCommand(0.25_s),
+                            GroundTake->StopIntakeCommand(),
+                            GroundTake->RetractGroundTakeCommand());
+}
 
 frc2::CommandPtr autos::One_ThreeScoreAuto(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, subsystem_Arm* Arm, subsystem_Intake* Intake, subsystem_GroundTake* GroundTake){
   return frc2::cmd::Sequence( ArmMovements::HighConeScoreAndStow(Arm, Intake), 

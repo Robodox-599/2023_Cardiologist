@@ -6,7 +6,7 @@
 frc2::CommandPtr ArmMovements::GroundTake(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake){
   return frc2::cmd::Sequence( 
                             ToPortal(Arm),
-                            frc2::WaitCommand(0.25_s),
+                            frc2::WaitCommand(0.10_s),
                             command_EngageGroundTake(GroundTake).ToPtr(), 
                             GroundTake->WaitUntilRetractedCommand(),
                             TiltedStow(Arm, GroundTake),

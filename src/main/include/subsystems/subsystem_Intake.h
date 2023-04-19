@@ -16,6 +16,9 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
 
+#include <frc/AnalogInput.h>
+
+
 #include <frc/controller/PIDController.h>
 
 class subsystem_Intake : public frc2::SubsystemBase {
@@ -29,6 +32,7 @@ class subsystem_Intake : public frc2::SubsystemBase {
   void SetOff();
   void SetIntake();
   void SetOutake();
+  bool DetectsGamePiece();
   IntakeConstants::IntakeMode GetCurrentMode();
 
   
@@ -80,6 +84,8 @@ class subsystem_Intake : public frc2::SubsystemBase {
   
 
   frc::PIDController m_ProximityPID;
+
+  frc::AnalogInput m_BeamBreaker;
 
 
 };
