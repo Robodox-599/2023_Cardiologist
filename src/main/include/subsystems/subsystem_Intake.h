@@ -18,7 +18,6 @@
 
 #include <frc/AnalogInput.h>
 
-
 #include <frc/controller/PIDController.h>
 
 class subsystem_Intake : public frc2::SubsystemBase {
