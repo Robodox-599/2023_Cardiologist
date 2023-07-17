@@ -20,6 +20,8 @@ class subsystem_GroundTake : public frc2::SubsystemBase {
   void ExtendGroundTake();
   void RetractGroundTake();
   double GetExtenderPosition();
+  void Outake();
+  frc2::CommandPtr OutakeCommand();
   frc2::CommandPtr RunIntakeToggleCommand();
   frc2::CommandPtr RunPassThroughIntakeCommand();
   frc2::CommandPtr RunHybridIntakeCommand();
@@ -46,8 +48,8 @@ class subsystem_GroundTake : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
   frc::AnalogInput m_LeftBeamBreak;
-  frc::AnalogInput m_CenterBeamBreak;
-  frc::AnalogInput m_RightBeamBreak;
+  // frc::AnalogInput m_CenterBeamBreak;
+  // frc::AnalogInput m_RightBeamBreak;
 
   rev::CANSparkMax m_ExtenderMotor;
   rev::CANSparkMax m_IntakeMotor;
@@ -57,7 +59,7 @@ class subsystem_GroundTake : public frc2::SubsystemBase {
 
   rev::SparkMaxRelativeEncoder m_ExtenderRelEncoder;
   rev::SparkMaxRelativeEncoder m_IntakeRelEncoder;
-  GroundTakeConstants::Power m_IntakePower = GroundTakeConstants::Power::Transition;
+  GroundTakeConstants::Power m_IntakePower = GroundTakeConstants::Power::Stopped;
 
   
 };

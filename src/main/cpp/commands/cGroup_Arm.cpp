@@ -1,45 +1,50 @@
 #include "commands/cGroup_Arm.h"
 #include <frc2/command/Commands.h>
 #include <frc/smartdashboard/Smartdashboard.h>
+
 #include <frc2/command/WaitCommand.h>
 
-frc2::CommandPtr ArmMovements::GroundTake(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake){
-  return frc2::cmd::Sequence( 
-                            ToPortal(Arm),
-                            frc2::WaitCommand(0.10_s),
-                            command_EngageGroundTake(GroundTake).ToPtr(), 
-                            GroundTake->WaitUntilRetractedCommand(),
-                            TiltedStow(Arm, GroundTake),
-                            frc2::WaitCommand(2_s),
-                            GroundTake->StopIntakeCommand());
-}
+// frc2::CommandPtr ArmMovements::GroundTake(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake, subsystem_LED* LED){
+//   return frc2::cmd::Sequence( 
+//                             command_MoveElbow(Arm, [=]{return 10;}, [=]{return true;}, [=]{return 10 * 0.5;}).ToPtr(),
+//                             ToPortal(Arm),
+//                             frc2::WaitCommand(0.10_s),
+//                             command_MoveWrist(Arm, [=]{return -5;}, [=]{return false;}, [=]{return -6;}).ToPtr(),
+//                             command_EngageGroundTake(GroundTake).ToPtr(), 
+//                             command_Blink(LED, [=] {return 1;}).ToPtr(),
+//                             GroundTake->WaitUntilRetractedCommand(),
+//                             TiltedStow(Arm, GroundTake)
+//                             // frc2::WaitCommand(10.0_s),
+//                             // GroundTake->StopIntakeCommand()
+//                             );
+// }
 
-frc2::CommandPtr ArmMovements::GroundTakeShoot(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake){
-    return frc2::cmd::Sequence(
-                          ToPortal(Arm),
-                          frc2::WaitCommand(0.5_s),
-                          GroundTake->RunHybridIntakeCommand(),
-                          frc2::cmd::Race(frc2::WaitCommand(3_s),
-                                          GroundTake->WaitUntilEmptyCommand()),
-                          TiltedStow(Arm, GroundTake)
-    );
-}
+// frc2::CommandPtr ArmMovements::GroundTakeShoot(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake){
+//     return frc2::cmd::Sequence(
+//                           ToPortal(Arm),
+//                           frc2::WaitCommand(0.5_s),
+//                           GroundTake->RunHybridIntakeCommand(),
+//                           frc2::cmd::Race(frc2::WaitCommand(3_s),
+//                                           GroundTake->WaitUntilEmptyCommand()),
+//                           TiltedStow(Arm, GroundTake)
+//     );
+// }
 
-frc2::CommandPtr ArmMovements::PassThrough(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake, subsystem_Intake* Intake){
-return frc2::cmd::Sequence(
-    command_MoveElbow(Arm, [=]{return 9.2;}, [=]{return true;}, [=]{return 9.2 * 0.40;}).ToPtr(),
-    GroundTake->ExtendGroundTakeCommand(),
-    GroundTake->RunPassThroughIntakeCommand(),
-    command_MoveWrist(Arm, [=]{return -20.9;}, [=]{return true;}, [=]{return -20.9 * 0.5;}).ToPtr(),
-    Intake->UnclampCommand(),
-    command_MoveShoulder(Arm, [=]{return 8.5;}, [=]{return true;}).ToPtr(),
-    command_MoveElbow(Arm, [=]{return -0.11;}, [=]{return true;}, [=]{return -0.11 * 0.5;}).ToPtr(),
-    command_AutoClamp(Intake).ToPtr(),
-    command_MoveElbow(Arm, [=]{return 9.2;}, [=]{return true;}, [=]{return 9.2;}).ToPtr(),
-    TiltedStow(Arm, GroundTake),
-    GroundTake->StopIntakeCommand() 
-  );
-}
+// frc2::CommandPtr ArmMovements::PassThrough(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake, subsystem_Intake* Intake){
+// return frc2::cmd::Sequence(
+//     command_MoveElbow(Arm, [=]{return 9.2;}, [=]{return true;}, [=]{return 9.2 * 0.40;}).ToPtr(),
+//     GroundTake->ExtendGroundTakeCommand(),
+//     GroundTake->RunPassThroughIntakeCommand(),
+//     command_MoveWrist(Arm, [=]{return -20.9;}, [=]{return true;}, [=]{return -20.9 * 0.80;}).ToPtr(),
+//     Intake->UnclampCommand(),
+//     command_MoveShoulder(Arm, [=]{return 8.5;}, [=]{return true;}).ToPtr(),
+//     command_MoveElbow(Arm, [=]{return -2;}, [=]{return true;}, [=]{return -0.11 * 0.5;}).ToPtr(),
+//     command_AutoClamp(Intake).ToPtr(),
+//     command_MoveElbow(Arm, [=]{return 9.2;}, [=]{return true;}, [=]{return 9.2;}).ToPtr(),
+//     TiltedStow(Arm, GroundTake),
+//     GroundTake->StopIntakeCommand() 
+//   );
+// }
 
 
 
@@ -48,7 +53,7 @@ return frc2::cmd::Sequence(
 frc2::CommandPtr ArmMovements::ToHighCone(subsystem_Arm *Arm) {
   return frc2::cmd::Sequence( 
                             command_MoveElbow(Arm, [=]{return 4.2;}, [=]{return false;}, [=]{return 4.2;}).ToPtr(),
-                            command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+                            command_MoveWrist(Arm, [=]{return 11;}, [=]{return true;}, [=]{return 11 * 0.25;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::HighConeElbow;}, [=]{return true;}, [=]{return ArmConstants::HighConeElbow * 0.80;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::HighConeTilt;}, [=]{return false;}, [=]{return ArmConstants::HighConeTilt;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::HighConeShoulder;}, [=]{return false;}).ToPtr());
@@ -56,7 +61,7 @@ frc2::CommandPtr ArmMovements::ToHighCone(subsystem_Arm *Arm) {
 
 frc2::CommandPtr ArmMovements::ToMidCone(subsystem_Arm *Arm){
   return frc2::cmd::Sequence( 
-    command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+    command_MoveWrist(Arm, [=]{return 11;}, [=]{return true;}, [=]{return 11 * 0.25;}).ToPtr(),
                               command_MoveElbow(Arm, [=]{return ArmConstants::MidConeElbow;}, [=]{return true;}, [=]{return ArmConstants::MidConeElbow  * 0.50;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::MidConeTilt;}, [=]{return false;}, [=]{return ArmConstants::MidConeTilt;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::MidConeShoulder;}, [=]{return false;}).ToPtr());
@@ -65,7 +70,7 @@ frc2::CommandPtr ArmMovements::ToMidCone(subsystem_Arm *Arm){
 
 frc2::CommandPtr ArmMovements::ToHighCube(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(
-                             command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return 11;}, [=]{return true;}, [=]{return 11 * 0.25;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::HighCubeElbow;}, [=]{return true;}, [=]{return ArmConstants::HighCubeElbow * 0.80;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::HighCubeShoulder;}, [=]{return false;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::HighCubeTilt;}, [=]{return true;}, [=]{return ArmConstants::HighCubeTilt;}).ToPtr());
@@ -73,7 +78,7 @@ frc2::CommandPtr ArmMovements::ToHighCube(subsystem_Arm *Arm){
 }
 frc2::CommandPtr ArmMovements::ToMidCube(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(
-                             command_MoveWrist(Arm, [=]{return 15;}, [=]{return true;}, [=]{return 15 * 0.25;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return 11;}, [=]{return true;}, [=]{return 11 * 0.25;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::MidCubeElbow;}, [=]{return true;}, [=]{return ArmConstants::MidCubeElbow * 0.60;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::MidCubeShoulder;}, [=]{return false;}).ToPtr(),
                             command_MoveWrist(Arm, [=]{return ArmConstants::MidCubeTilt;}, [=]{return true;}, [=]{return ArmConstants::MidCubeTilt * 0.50;}).ToPtr()
@@ -106,7 +111,7 @@ frc2::CommandPtr ArmMovements::ToGround(subsystem_Arm *Arm, subsystem_Intake* In
 
 frc2::CommandPtr ArmMovements::ToPortal(subsystem_Arm *Arm){
   return frc2::cmd::Sequence(
-                             command_MoveElbow(Arm, [=]{return 10;}, [=]{return true;}, [=]{return 10 * 0.5;}).ToPtr(),
+                             command_MoveElbow(Arm, [=]{return 10;}, [=]{return false;}, [=]{return 10 * 0.5;}).ToPtr(),
                              command_MoveWrist(Arm, [=]{return ArmConstants::PortalTilt;}, [=]{return true;}, [=]{return ArmConstants::PortalTiltThreshold;}).ToPtr(),
                              command_MoveShoulder(Arm, [=]{return ArmConstants::StowShoulder;}, [=]{return true;}).ToPtr(),
                              command_MoveElbow(Arm, [=]{return ArmConstants::PortalElbow;}, [=]{return false;}, [=]{return ArmConstants::PortalElbow;}).ToPtr());
@@ -133,7 +138,7 @@ frc2::CommandPtr ArmMovements::ScoreConeAndStow(subsystem_Arm *Arm, subsystem_In
                               command_MoveWrist(Arm, [=]{return ArmConstants::ScoreTilt;}, [=]{return true;}, [=]{return ArmConstants::ScoreTilt;}).ToPtr(),
                               command_TimeOut([=]{return ArmConstants::ScoreTimeout;}).ToPtr(),
                               Intake->UnclampCommand(),
-                              ArmMovements::ToStow(Arm, Intake));
+                              ArmMovements::AutonStow(Arm));
 }
 
 frc2::CommandPtr ArmMovements::StowFromMidCube(subsystem_Arm *Arm, subsystem_Intake *Intake){
@@ -160,7 +165,9 @@ frc2::CommandPtr ArmMovements::StowFromHighCube(subsystem_Arm *Arm, subsystem_In
 
 frc2::CommandPtr ArmMovements::HighConeScoreAndStow(subsystem_Arm *Arm, subsystem_Intake *Intake){
 
-    return frc2::cmd::Sequence( ArmMovements::ToHighCone(Arm), 
+    return frc2::cmd::Sequence( 
+                                command_MoveElbow(Arm, [=]{return 10;}, [=]{return true;}, [=]{return 10 * 0.5;}).ToPtr(),
+                                ArmMovements::ToHighCone(Arm), 
                                 command_TimeOut([=]{return 1.0;}).ToPtr(),
                                 ArmMovements::ScoreConeAndStow(Arm, Intake) );
 }
@@ -191,14 +198,20 @@ frc2::CommandPtr ArmMovements::HybridScoreAndStow(subsystem_Arm *Arm, subsystem_
                               );
 }
 
-frc2::CommandPtr ArmMovements::TiltedStow(subsystem_Arm* Arm, subsystem_GroundTake* GroundTake){
+frc2::CommandPtr ArmMovements::TiltedStow(subsystem_Arm* Arm){
   return frc2::cmd::Sequence(
-                              GroundTake->StowCompleteleyCommand(),
-                              // GroundTake->WaitUntilRetractedCommand(),
-                              command_MoveWrist(Arm, [=]{return 14.0;}, [=]{return false;}, [=]{return 14.0 * 0.25;}),
+
+                              command_MoveWrist(Arm, [=]{return 11.0;}, [=]{return false;}, [=]{return 11.0 * 0.25;}),
                               command_MoveShoulder(Arm, [=]{return ArmConstants::TiltedStowShoulder;}, [=]{return true;}).ToPtr(),
                               command_MoveElbow(Arm, [=]{return ArmConstants::TiltedStowElbow;}, [=]{return false;}, [=]{return ArmConstants::TiltedStowElbow;}).ToPtr(),
-                              command_MoveWrist(Arm, [=]{return ArmConstants::ScoreTilt;}, [=]{return false;}, [=]{return ArmConstants::TiltedStowTilt;}).ToPtr());
+                              command_MoveWrist(Arm, [=]{return ArmConstants::TiltedStowTilt;}, [=]{return false;}, [=]{return ArmConstants::TiltedStowTilt;}).ToPtr());
+}
+
+frc2::CommandPtr ArmMovements::AutonStow(subsystem_Arm* Arm){
+  return frc2::cmd::Sequence(
+                              command_MoveWrist(Arm, [=]{return 11.0;}, [=]{return false;}, [=]{return 11.0 * 0.25;}),
+                              command_MoveShoulder(Arm, [=]{return ArmConstants::TiltedStowShoulder;}, [=]{return true;}).ToPtr(),
+                              command_MoveElbow(Arm, [=]{return ArmConstants::TiltedStowElbow;}, [=]{return false;}, [=]{return ArmConstants::TiltedStowElbow;}).ToPtr());
 }
 
 // frc2::CommandPtr ArmMovements::ConeScore(subsystem_Arm* Arm, subsystem_Intake* Intake, std::function<int()> NODE_LEVEL){

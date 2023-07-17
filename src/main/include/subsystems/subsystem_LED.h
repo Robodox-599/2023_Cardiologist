@@ -22,6 +22,7 @@ class subsystem_LED : public frc2::SubsystemBase {
   void SetIntakedLED();
   void SetErrorLED();
   void SetOffLED();
+  void SetTriggerStateLED();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
@@ -36,4 +37,5 @@ class subsystem_LED : public frc2::SubsystemBase {
   ctre::phoenix::led::CANdle m_CANdle;
   frc::Timer m_LEDTimer;
   LEDConstants::LEDState m_LEDState = LEDConstants::LEDState::Standby;
+  LEDConstants::LEDState m_TriggerState = LEDConstants::LEDState::Standby;
 };

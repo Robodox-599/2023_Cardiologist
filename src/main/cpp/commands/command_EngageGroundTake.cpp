@@ -33,7 +33,7 @@ void command_EngageGroundTake::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool command_EngageGroundTake::IsFinished() {
-  // return m_Timer.Get() > 0.01_s;
+  // return m_Timer.Get() > 0.1_s;
   return m_GroundTake->IsCubeDetected();
 }
 

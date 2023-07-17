@@ -8,8 +8,8 @@ subsystem_Intake::subsystem_Intake() : /*m_IntakeMotor{IntakeConstants::IntakeMo
                                        m_IntakeMotorPID{m_IntakeMotor.GetPIDController()},
                                        m_IntakeEncoder{m_IntakeMotor.GetEncoder()},*/
                                        m_Solenoid{frc::PneumaticsModuleType::CTREPCM, IntakeConstants::IntakePistonA, IntakeConstants::IntakePistonB},
-                                        m_ColorSensor{frc::I2C::Port::kOnboard},
-                                        m_ColorMatcher{},
+                                        // m_ColorSensor{frc::I2C::Port::kOnboard},
+                                        // m_ColorMatcher{},
                                         m_ProximityPID{IntakeConstants::kProximityP, 0.0, IntakeConstants::kProximityD},
                                         m_BeamBreaker{1}
 {
@@ -141,6 +141,8 @@ bool subsystem_Intake::DetectsGamePiece(){
 void subsystem_Intake::Periodic()
 {
 
+    frc::SmartDashboard::PutNumber("DetectsPiece", DetectsGamePiece());
+
 
 
     // m_IntakeMotorPID.SetReference(7000, rev::ControlType::kVelocity, 0, 10);
@@ -152,8 +154,7 @@ void subsystem_Intake::Periodic()
 
     // Current Proximity (changes member variable curr proximity)
     // 10000.0 / 1.2 is the constant that transforms proximity into a number out of 100
-    m_CurrentProximity = (10000.0 / 1.2) / m_ColorSensor.GetProximity();
-    frc::SmartDashboard::PutNumber("Prox", m_CurrentProximity);
+
 
     // Current Color (changes member variable curr color)
     // m_CurrentColor = m_ColorSensor.GetColor();

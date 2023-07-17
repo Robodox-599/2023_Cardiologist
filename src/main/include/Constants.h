@@ -122,7 +122,7 @@ namespace ArmConstants {
     const double radiansToEncoder = 0.0; 
     const double AbsToRel = 16384/507; 
     const double JoystickToArm = 1.0; 
-    const double TriggerToArm = 0.5;
+    const double TriggerToArm = 0.8;
 
     const double kWristStep = 1.0;
     const double kElbowStep = 0.5;
@@ -148,23 +148,28 @@ namespace ArmConstants {
     const double bufferZone = 2; 
     constexpr units::time::second_t ManualTimer{0.02};
 
-    constexpr double HighConeShoulder = 16.285;
-    constexpr double HighConeElbow = 25.854;
-    constexpr double HighConeTilt = 9.432;
 
-    constexpr double MidConeShoulder = 5.5;
-    constexpr double MidConeElbow = 15.5;
-    constexpr double MidConeTilt = 4.0;
+
+    //mid cone: shoulder +.5 rot
+    //high cone: shoulder -1 rot
+
+    constexpr double HighConeShoulder = 14.285;
+    constexpr double HighConeElbow = 26.9;
+    constexpr double HighConeTilt = 5.0;
+
+    constexpr double MidConeShoulder = 6;
+    constexpr double MidConeElbow = 16.1;
+    constexpr double MidConeTilt = 5.0;
 
     constexpr double HighCubeShoulder = 13.857;
     constexpr double HighCubeElbow = 21.484;
-    constexpr double HighCubeTilt = 4.3;
+    constexpr double HighCubeTilt = 0.0;
 
     constexpr double MidCubeShoulder = 3.98;
     constexpr double MidCubeTempElbow = 16.6;
     constexpr double MidCubeTempElbowThreshold = 16;
     constexpr double MidCubeElbow = 12.0;
-    constexpr double MidCubeTilt = 3.0;
+    constexpr double MidCubeTilt = 0.0;
     constexpr double MidCubeTiltThreshold = -5;
 
     constexpr double StowShoulder = 0.5;
@@ -178,12 +183,12 @@ namespace ArmConstants {
     constexpr double StowTiltThreshold = -15;
    
     constexpr double PortalElbow = 0.5;
-    constexpr double PortalTilt = 10;
+    constexpr double PortalTilt = 11.5;
     constexpr double PortalTiltThreshold = -15;
 
     constexpr double TiltedStowShoulder = 0.05;
     constexpr double TiltedStowElbow = -6.95;
-    constexpr double TiltedStowTilt = 6.0;
+    constexpr double TiltedStowTilt = -10.0;
      
     constexpr double SubstationX = 0.0;
     constexpr double SubstationY = 0.0;
@@ -434,12 +439,12 @@ namespace AutoConstants{
     constexpr units::radians_per_second_squared_t MaxAngularAccel{ 3 };
 
     /*Auto Swerve Drive Motor PID gains*/
-    constexpr double XDriveKP = 3.0;
+    constexpr double XDriveKP = 1.0;
     constexpr double XDriveKD = 0.0;
 
     const frc2::PIDController XPID{ XDriveKP, 0.0, XDriveKD };
     
-    constexpr double YDriveKP = 3.0;
+    constexpr double YDriveKP = 1.0;
     constexpr double YDriveKD = 0.0;
     
     const frc2::PIDController YPID{ YDriveKP, 0.0, YDriveKD };
@@ -537,6 +542,7 @@ namespace GroundTakeConstants{
     enum Power{
         PassThroughIntake,
         HybridIntake,
+        Outake,
         Transition,
         Stopped
     };

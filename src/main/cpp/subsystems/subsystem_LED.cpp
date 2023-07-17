@@ -16,12 +16,14 @@ subsystem_LED::subsystem_LED(): m_CANdle{LEDConstants::CANdleID}, m_LEDTimer{} {
 
 void subsystem_LED::SetPurpleLED(){
     m_LEDState = LEDConstants::LEDState::Purple;
+    m_TriggerState = LEDConstants::LEDState::Purple;
     // m_LEDTimer.Reset();
 }
 
 void subsystem_LED::SetYellowLED(){
     // m_LEDTimer.Reset();
     m_LEDState = LEDConstants::LEDState::Yellow;
+    m_TriggerState = LEDConstants::LEDState::Yellow;
 
 }
 
@@ -45,6 +47,10 @@ void subsystem_LED::SetErrorLED(){
 
 void subsystem_LED::SetOffLED(){
     m_LEDState = LEDConstants::LEDState::Off;
+}
+
+void subsystem_LED::SetTriggerStateLED(){
+    m_LEDState = m_TriggerState;
 }
 
 

@@ -23,11 +23,12 @@ subsystem_DriveTrain::subsystem_DriveTrain():
     m_PitchCorrectionPID{0.000, 0.0, 0},
     m_RollCorrectionPID{0.01, 0.0, 0}
 {
+    frc::SmartDashboard::PutBoolean("DRIVE MODE", true );
     frc::Wait(1_s);
     ResetModulesToAbsolute();
     m_Gyro.ConfigFactoryDefault();
     ZeroGyro();
-    DegreeOfThrottle = SwerveConstants::Throttle::NONLINEAR;
+    DegreeOfThrottle = SwerveConstants::Throttle::LINEAR;
     m_IsBalancing = false;
     m_IsAutoOrient = false;
 
@@ -141,9 +142,14 @@ double subsystem_DriveTrain::SetThrottle(double input){
 void subsystem_DriveTrain::ChangeThrottle(){
     if( DegreeOfThrottle == SwerveConstants::Throttle::LINEAR){
         DegreeOfThrottle = SwerveConstants::Throttle::NONLINEAR;
+        frc::SmartDashboard::PutBoolean("DRIVE MODE", false );
+
     }else{
         DegreeOfThrottle = SwerveConstants::Throttle::LINEAR;
+        frc::SmartDashboard::PutBoolean("DRIVE MODE", true );
+
     }
+
 }
 
 frc2::CommandPtr subsystem_DriveTrain::ToggleThrottleCommand(){
@@ -373,8 +379,9 @@ bool subsystem_DriveTrain::IsPark(){
 // This method will be called once per scheduler run
 void subsystem_DriveTrain::Periodic() {
 
-    frc::SmartDashboard::PutBoolean("AutoOrient", m_IsAutoOrient);
-    frc::SmartDashboard::PutNumber("m_DPAD", m_Dpad);
+    // frc::SmartDashboard::PutBoolean("AutoOrient", m_IsAutoOrient);
+    // frc::SmartDashboard::PutNumber("m_DPAD", m_Dpad);
+
 
     // frc::SmartDashboard::PutNumber("Pitch", m_Gyro.GetPitch());
     // frc::SmartDashboard::PutNumber("Roll", m_Gyro.GetRoll());

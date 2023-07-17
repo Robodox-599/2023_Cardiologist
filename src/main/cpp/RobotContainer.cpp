@@ -9,9 +9,14 @@
 RobotContainer::RobotContainer()
  {
   m_Chooser.SetDefaultOption( "Taxi", m_TaxiAuto.get());
-  m_Chooser.AddOption( "One_ScoreAndTaxi", m_OneScoreAndTaxi.get() );
-  m_Chooser.AddOption("Two_ScoreAndTaxi", m_TwoScoreAndTaxi.get());
-  m_Chooser.AddOption("Three_ScoreAndTaxi", m_ThreeScoreAndTaxi.get());
+  m_Chooser.AddOption( "One_ScoreCubeAndTaxi", m_One_ScoreCubeAndTaxi.get() );
+  m_Chooser.AddOption("Two_ScoreCubeAndTaxi", m_Two__ScoreCubeAndTaxi.get());
+  m_Chooser.AddOption("Three_ScoreCubeAndTaxi", m_Three_ScoreCubeAndTaxi.get());
+
+  m_Chooser.AddOption( "ScoreConeAndTaxi", m_ScoreConeAndTaxi.get() );
+
+
+
   m_Chooser.AddOption("Two_TaxiAndBalance", m_TwoTaxiAndBalance.get());
   m_Chooser.AddOption("Three_TaxiAndBalance", m_ThreeTaxiAndBalance.get());
   m_Chooser.AddOption("Two_ScoreTaxiAndBalance", m_Two_ScoreTaxiAndBalance.get());
@@ -20,10 +25,10 @@ RobotContainer::RobotContainer()
   m_Chooser.AddOption("ScoreMidCube", m_ScoreCubeMid.get());
   m_Chooser.AddOption("ScoreHighCone", m_ScoreConeHigh.get());
   m_Chooser.AddOption("ScoreMidCone", m_ScoreConeMid.get());
-  m_Chooser.AddOption("One_ScoreThreeTimes", m_ThreeScoreAuto1.get());
-  m_Chooser.AddOption("One_ScoreTwoTimesBalance", m_TwoScoreAndBalance.get());
-  m_Chooser.AddOption("One_ScoreThreeTimesBalance", m_ThreeScoreAndBalance.get());
-  m_Chooser.AddOption("One_TwoScoreAuto", m_TwoScore.get());
+  // m_Chooser.AddOption("One_ScoreThreeTimes", m_ThreeScoreAuto1.get());
+  // m_Chooser.AddOption("One_ScoreTwoTimesBalance", m_TwoScoreAndBalance.get());
+  // m_Chooser.AddOption("One_ScoreThreeTimesBalance", m_ThreeScoreAndBalance.get());
+  // m_Chooser.AddOption("One_TwoScoreAuto", m_TwoScore.get());
   // m_Chooser.AddOption("TestPickup", m_TestPickUp.get());
   // // m_Chooser.SetDefaultOption("Test", "result of test");
   frc::SmartDashboard::PutData(&m_Chooser);
@@ -88,7 +93,7 @@ void RobotContainer::ConfigureBindings() {
 
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kBack)
-                       .OnTrue(ArmMovements::TiltedStow(&m_Arm, &m_GroundTake));
+                       .OnTrue(ArmMovements::TiltedStow(&m_Arm));
 
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kStart)
@@ -96,20 +101,28 @@ void RobotContainer::ConfigureBindings() {
 
   frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kRightBumper)
-                       .WhileTrue(frc2::cmd::Sequence(command_AutoClamp(&m_Intake).ToPtr(), 
+                       .OnTrue(frc2::cmd::Sequence(command_AutoClamp(&m_Intake).ToPtr(), 
                                                   command_Blink(&m_LED, [=] {return 1;}).ToPtr()));
 
   frc2::JoystickButton(&XboxYaperator,
                        frc::XboxController::Button::kLeftBumper)
-                       .OnTrue(m_Intake.UnclampCommand());
+                       .WhileTrue(frc2::cmd::Parallel(m_Intake.UnclampCommand()));
+
+    // frc2::JoystickButton(&XboxYaperator, 
+    //                    frc::XboxController::Button::kRightStick)
+    //                    .OnTrue(frc2::cmd::Sequence(m_Intake.ClampCommand(), command_Blink(&m_LED, [=] {return 1;}).ToPtr() ));  
+
 
     frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kRightStick)
-                       .WhileTrue(m_GroundTake.RunIntakeToggleCommand());  
+                       .OnTrue(frc2::cmd::Sequence(m_Intake.ClampCommand(), command_Blink(&m_LED, [=] {return 1;}).ToPtr() ));  
 
-  frc2::JoystickButton(&XboxYaperator,
-                       frc::XboxController::Button::kLeftStick)
-                       .OnTrue(ArmMovements::GroundTake(&m_Arm, &m_GroundTake));
+  // frc2::JoystickButton(&XboxYaperator,
+  //                      frc::XboxController::Button::kLeftStick)
+  //                      .OnTrue(
+  //                               ArmMovements::GroundTake(&m_Arm, &m_GroundTake, &m_LED)
+  //                                                     );
+                                                      
 
   
   

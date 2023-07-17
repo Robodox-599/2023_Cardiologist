@@ -7,8 +7,8 @@
 
 subsystem_GroundTake::subsystem_GroundTake(): 
                                               m_LeftBeamBreak{GroundTakeConstants::LeftBeamBreakID},
-                                              m_CenterBeamBreak{GroundTakeConstants::CenterBeamBreakID},
-                                              m_RightBeamBreak{GroundTakeConstants::RightBeamBreakID},
+                                            //   m_CenterBeamBreak{GroundTakeConstants::CenterBeamBreakID},
+                                            //   m_RightBeamBreak{GroundTakeConstants::RightBeamBreakID},
                                               m_ExtenderMotor{GroundTakeConstants::ExtenderID, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
                                               m_IntakeMotor{GroundTakeConstants::IntakeID, rev::CANSparkMaxLowLevel::MotorType::kBrushless},
                                               m_ExtenderPID{m_ExtenderMotor.GetPIDController()},
@@ -17,7 +17,7 @@ subsystem_GroundTake::subsystem_GroundTake():
                                               m_IntakeRelEncoder{m_IntakeMotor.GetEncoder()} {
     m_IntakeMotor.SetInverted(false);
     m_IntakeMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    m_IntakeMotor.SetSmartCurrentLimit(25);
+    m_IntakeMotor.SetSmartCurrentLimit(30);
     frc::SmartDashboard::PutNumber("InnerVel", 0.0);
     frc::SmartDashboard::PutNumber("OutterVel", 0.0);
     frc::SmartDashboard::PutNumber("Intake", 0.0);
@@ -38,7 +38,7 @@ subsystem_GroundTake::subsystem_GroundTake():
     m_ExtenderPID.SetSmartMotionMaxAccel(GroundTakeConstants::maxAccel);
 
 
-    m_IntakePID.SetP(0.00001);
+    m_IntakePID.SetP(0.00015);
     m_IntakePID.SetI(0.0);
     m_IntakePID.SetD(0.0);
     m_IntakePID.SetFF(0.0002);
@@ -94,6 +94,11 @@ void subsystem_GroundTake::PassiveTransitionIntake(){
     m_IntakePower = GroundTakeConstants::Power::Transition;
 }
 
+void subsystem_GroundTake::Outake(){
+    ExtendGroundTake();
+    m_IntakePower = GroundTakeConstants::Power::Outake;
+}
+
 void subsystem_GroundTake::MaintainIntakeMode(){
     //  frc::SmartDashboard::GetNumber("InnerVel", 0.0);
     //frc::SmartDashboard::GetNumber("OutterVel", 0.0);
@@ -101,23 +106,26 @@ void subsystem_GroundTake::MaintainIntakeMode(){
     switch(m_IntakePower){
         case(GroundTakeConstants::Power::PassThroughIntake):
             // m_IntakeMotor.Set(0.4);
-            m_IntakePID.SetReference(1600, rev::CANSparkMax::ControlType::kVelocity);
+            m_IntakePID.SetReference(2500, rev::CANSparkMax::ControlType::kVelocity);
             break;
         case(GroundTakeConstants::Power::HybridIntake):
-            m_IntakePID.SetReference(1200, rev::CANSparkMax::ControlType::kVelocity);
+            m_IntakePID.SetReference(2000, rev::CANSparkMax::ControlType::kVelocity);
             break;
         case(GroundTakeConstants::Power::Transition):
-            if(GetExtenderPosition() < GroundTakeConstants::ExtendedPosition * 0.50){
+            if(GetExtenderPosition() < GroundTakeConstants::ExtendedPosition * 0.75){
                 // m_IntakeMotor.Set(-0.05);
-                m_IntakePID.SetReference(-400, rev::CANSparkMax::ControlType::kVelocity);
+                m_IntakePID.SetReference(-600, rev::CANSparkMax::ControlType::kVelocity);
             }else{
                 // m_IntakeMotor.Set(0.015);
-                m_IntakePID.SetReference(400, rev::CANSparkMax::ControlType::kVelocity);
+                m_IntakePID.SetReference(500, rev::CANSparkMax::ControlType::kVelocity);
 
             }
             break;
         case(GroundTakeConstants::Power::Stopped):
             m_IntakeMotor.Set(0.0);
+            break;
+        case(GroundTakeConstants::Power::Outake):
+            m_IntakePID.SetReference(-2000, rev::CANSparkMax::ControlType::kVelocity);
             break;
     };
 }
@@ -159,17 +167,23 @@ frc2::CommandPtr subsystem_GroundTake::StopIntakeCommand(){
     return RunOnce([this]{return StopIntake();});
 }
 
+frc2::CommandPtr subsystem_GroundTake::OutakeCommand(){
+    return RunOnce([this]{return Outake();});
+}
+
+
+
 
 // This method will be called once per scheduler run
 void subsystem_GroundTake::Periodic() {
     frc::SmartDashboard::PutNumber("ExtenderPos", m_ExtenderRelEncoder.GetPosition());
     frc::SmartDashboard::PutBoolean("IsCubeDetected", IsCubeDetected());
-    frc::SmartDashboard::PutNumber("LEFTBB", m_LeftBeamBreak.GetVoltage());
-    frc::SmartDashboard::PutNumber("CenterBB", m_CenterBeamBreak.GetVoltage());
-    frc::SmartDashboard::PutNumber("RightBB", m_RightBeamBreak.GetVoltage());
+    // frc::SmartDashboard::PutNumber("LEFTBB", m_LeftBeamBreak.GetVoltage());
+    // frc::SmartDashboard::PutNumber("CenterBB", m_CenterBeamBreak.GetVoltage());
+    // frc::SmartDashboard::PutNumber("RightBB", m_RightBeamBreak.GetVoltage());
     MaintainIntakeMode();
 
-    frc::SmartDashboard::PutNumber("IntakeRelVel", m_IntakeRelEncoder.GetVelocity());
+    // frc::SmartDashboard::PutNumber("IntakeRelVel", m_IntakeRelEncoder.GetVelocity());
 
 
 }

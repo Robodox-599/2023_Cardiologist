@@ -12,11 +12,14 @@ command_AutoClamp::command_AutoClamp(subsystem_Intake* intake) : m_Intake{intake
 // Called when the command is initially scheduled.
 void command_AutoClamp::Initialize() {
 
-  if(m_Intake ->GetCurrentProximity() >= 80.0){
+  // if(m_Intake ->GetCurrentProximity() >= 80.0){
+  //   m_Intake->IntakeOpen();
+  // }
+
+  if(!m_Intake->DetectsGamePiece()){
     m_Intake->IntakeOpen();
   }
-  m_Timer.Reset();
-  m_Timer.Start();
+  m_Timer.Restart();
   // if(m_Intake->GetCurrentState() == IntakeConstants::State::Purple){
   //   m_Intake->SetOutake();
   // }
@@ -25,15 +28,14 @@ void command_AutoClamp::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void command_AutoClamp::Execute() {
-  if(m_Intake->GetCurrentProximity() >= 80.0) {
-    m_Timer.Reset();
-    m_Timer.Start();
-  }
+  // if(m_Intake->GetCurrentProximity() >= 80.0) {
+  //   m_Timer.Reset();
+  //   m_Timer.Start();
+  // }
 
 
-  if(m_Intake->DetectsGamePiece()){
-    m_Timer.Reset();
-    m_Timer.Start();
+  if(!m_Intake->DetectsGamePiece()){
+    m_Timer.Restart();
   }
 }
 

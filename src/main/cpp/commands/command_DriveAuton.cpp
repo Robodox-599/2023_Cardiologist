@@ -12,7 +12,15 @@ m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_ToReset{ToReset},  m_Dri
   AddRequirements({m_DriveTrain});
   AddRequirements({m_PoseTracker});
   // m_Trajectory = frc::TrajectoryUtil::FromPathweaverJson(deployDirectory.string());
-  m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );  
+
+  if(TrajFilePath.starts_with("Yes^3") ){
+    m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(4_mps, units::meters_per_second_squared_t{4}) );  
+
+  }else{
+    m_Trajectory = pathplanner::PathPlanner::loadPath(TrajFilePath, pathplanner::PathConstraints(AutoConstants::MaxSpeed, AutoConstants::MaxAccel) );  
+
+  }
+
 
 
 
