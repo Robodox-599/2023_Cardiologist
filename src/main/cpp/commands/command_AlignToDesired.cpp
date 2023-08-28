@@ -4,7 +4,7 @@
 
 #include "commands/command_AlignToDesired.h"
 
-command_AlignToDesired::command_AlignToDesired(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::function<frc::Pose2d()> DesiredPose): m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}, m_DesiredPose{DesiredPose}{
+command_AlignToDesired::command_AlignToDesired(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker): m_DriveTrain{DriveTrain}, m_PoseTracker{PoseTracker}{
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({m_PoseTracker});
   AddRequirements({m_DriveTrain});
@@ -24,14 +24,26 @@ void command_AlignToDesired::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void command_AlignToDesired::Execute() {
 
+  std::pair<frc::Pose2d, units::second_t> visionPose = m_PoseTracker->GetEstimatedGlobalPose();
+  
+  units::degree_t theta;
+  if(visionPose.second != units::second_t{-1.0}){
+    if(visionPose.first.Rotation().Degrees() < 0_deg){
+      theta = -180_deg;
+    } else {
+      theta = 180_deg;
+    }
+  } else {
+    theta = m_DriveTrain->GetPose().Rotation().Degrees();
+  }
   // m_DriveTrain->ImplementVisionPose(m_DriveTrain->getEstimatedGlobalPose());
   // m_DriveTrain->ImplementVisionPose(m_PoseTracker->GetEstimatedGlobalPose());
 
   units::meters_per_second_t SupplementX { m_XProfiledPID.Calculate(m_DriveTrain->GetPose().X()) }; 
   units::meters_per_second_t SupplementY { m_YProfiledPID.Calculate(m_DriveTrain->GetPose().Y()) };
-  units::degrees_per_second_t SupplementTheta { m_ThetaProfiledPID.Calculate(m_DriveTrain->GetPose().Rotation().Degrees()) };
-
+  units::degrees_per_second_t SupplementTheta { m_ThetaProfiledPID.Calculate(theta)};
   m_DriveTrain->SwerveDrive( SupplementX, SupplementY, SupplementTheta, true, false);
+  
 
 }
 

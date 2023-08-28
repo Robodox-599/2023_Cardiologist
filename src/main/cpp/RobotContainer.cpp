@@ -74,6 +74,10 @@ void RobotContainer::ConfigureBindings() {
   frc2::JoystickButton(&XboxDrive,
                         frc::XboxController::Button::kY)
       .OnTrue(m_Drive.ZeroGyroCommand());
+
+  frc2::JoystickButton(&XboxDrive,
+                        frc::XboxController::Button::kRightBumper)
+      .OnTrue(command_AlignToDesired(&m_Drive, &m_PoseTracker).ToPtr());
   
   frc2::JoystickButton(&XboxYaperator, 
                        frc::XboxController::Button::kY)

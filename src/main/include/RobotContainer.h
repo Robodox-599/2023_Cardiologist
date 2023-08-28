@@ -19,7 +19,7 @@
 #include "commands/command_DriveTeleop.h"
 #include "commands/Autos.h"
 
-
+#include "commands/command_AlignToDesired.h"
 
 #include "subsystems/subsystem_Arm.h"
 #include "commands/command_MoveArmManually.h"

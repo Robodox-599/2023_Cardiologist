@@ -25,7 +25,7 @@
 class command_AlignToDesired
     : public frc2::CommandHelper<frc2::CommandBase, command_AlignToDesired> {
  public:
-  command_AlignToDesired(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker, std::function<frc::Pose2d()> DesiredPose);
+  command_AlignToDesired(subsystem_DriveTrain* DriveTrain, subsystem_PoseTracker* PoseTracker);
 
   void Initialize() override;
 
@@ -38,7 +38,6 @@ class command_AlignToDesired
   private:
   subsystem_DriveTrain* m_DriveTrain;
   subsystem_PoseTracker* m_PoseTracker;
-  std::function<frc::Pose2d()> m_DesiredPose;
   
 
 
