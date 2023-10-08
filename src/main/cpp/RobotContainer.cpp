@@ -127,6 +127,9 @@ void RobotContainer::ConfigureBindings() {
                                                       
 
   
+  frc2::JoystickButton(&XboxYaperator, 
+                       frc::XboxController::Button::kLeftStick)
+                       .OnTrue(ArmMovements::ToDoubleSubstation(&m_Arm));
   
 
   // frc2::JoystickButton(&XboxYaperator, 

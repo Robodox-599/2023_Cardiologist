@@ -171,6 +171,10 @@ namespace ArmConstants {
     constexpr double MidCubeElbow = 12.0;
     constexpr double MidCubeTilt = 0.0;
     constexpr double MidCubeTiltThreshold = -5;
+    
+    constexpr double DoubleSubstationElbow = 20.65710;
+    constexpr double DoubleSubstationShoulder = 0.428;
+    constexpr double DoubleSubstationWrist = -1.32;
 
     constexpr double StowShoulder = 0.5;
     constexpr double StowTempElbow = 7.5;
@@ -405,7 +409,7 @@ namespace FrontLeftModule{
     constexpr int DriveMotorID = 0;
     constexpr int AngleMotorID = 1;
     constexpr int CanCoderID = 2;
-    constexpr double AngleOffset = 352.617;
+    constexpr double AngleOffset = 352.002; //meant to be negative
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset };
 }
 
@@ -413,7 +417,7 @@ namespace FrontRightModule{
     constexpr int DriveMotorID = 3;
     constexpr int AngleMotorID = 4;
     constexpr int CanCoderID = 5;
-    constexpr double AngleOffset = 321.855;
+    constexpr double AngleOffset = 321.328;//meant to be negative
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackLeftModule{
@@ -421,14 +425,14 @@ namespace BackLeftModule{
     constexpr int AngleMotorID = 7;
     constexpr int CanCoderID = 8;
     // constexpr auto AngleOffset = 266.045;
-    constexpr double AngleOffset = 97.822;
+    constexpr double AngleOffset = 98.525;
     constexpr double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 namespace BackRightModule{
     constexpr int DriveMotorID = 9;
     constexpr int AngleMotorID = 10;
     constexpr int CanCoderID = 11;
-    constexpr double AngleOffset = 71.104;
+    constexpr double AngleOffset = 68.555;
     const double Constants[4] = { DriveMotorID, AngleMotorID, CanCoderID, AngleOffset};
 }
 

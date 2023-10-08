@@ -214,6 +214,13 @@ frc2::CommandPtr ArmMovements::AutonStow(subsystem_Arm* Arm){
                               command_MoveElbow(Arm, [=]{return ArmConstants::TiltedStowElbow;}, [=]{return false;}, [=]{return ArmConstants::TiltedStowElbow;}).ToPtr());
 }
 
+frc2::CommandPtr ArmMovements::ToDoubleSubstation(subsystem_Arm *Arm){//could change use constants file to find a better threshold
+  return frc2::cmd::Sequence(command_MoveElbow(Arm, [=]{return ArmConstants::DoubleSubstationElbow;}, [=]{return true;}, [=]{return ArmConstants::DoubleSubstationElbow;}).ToPtr(),
+                             command_MoveShoulder(Arm, [=]{return ArmConstants::DoubleSubstationShoulder;}, [=]{return false;}).ToPtr(),
+                             command_MoveWrist(Arm, [=]{return ArmConstants::DoubleSubstationWrist;}, [=]{return false;}, [=]{return ArmConstants::DoubleSubstationWrist;}).ToPtr());
+}
+//maybe change iswait to ture?
+
 // frc2::CommandPtr ArmMovements::ConeScore(subsystem_Arm* Arm, subsystem_Intake* Intake, std::function<int()> NODE_LEVEL){
 //     DPAD::NODE_LEVEL ArmPoll = DPAD::NODE_LEVEL::NON_SPECIFIED;
 //     frc::SmartDashboard::PutNumber("Node Level", NODE_LEVEL());
